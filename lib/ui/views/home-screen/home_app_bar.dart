@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:recipeshopper/ui/widgets/svg_icon.dart';
 
 class HomeAppBar extends StatelessWidget {
   const HomeAppBar({super.key});
@@ -31,9 +32,8 @@ class HomeAppBar extends StatelessWidget {
           ),
           child: Padding(
             padding: const EdgeInsets.all(4.0),
-            child: SvgPicture.asset(
-              "lib/assets/icons/shopping_basket.svg",
-              semanticsLabel: "Shopping Cart",
+            child: SvgIcon(
+              icon: LocalIcons.shoppingCart,
             ),
           ),
         )
@@ -48,8 +48,8 @@ class HomeAppBar extends StatelessWidget {
         child: Center(
           child: Padding(
             padding: const EdgeInsets.only(top: 30.0),
-            child: SvgPicture.asset(
-              "lib/assets/images/recipeshopper.svg",
+            child: SvgIcon(
+              icon: LocalIcons.logo,
               height: 45,
               width: 147,
               fit: BoxFit.cover,

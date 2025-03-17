@@ -8,7 +8,8 @@ enum LocalIcons {
   settings("settings"),
   profile("profile"),
   shoppingCart("shopping_basket"),
-  addRecipe("add_recipe_icon");
+  addRecipe("add_recipe_icon"),
+  logo("recipeshopper");
 
   const LocalIcons(String path) : _path = path;
 
@@ -17,16 +18,25 @@ enum LocalIcons {
 }
 
 class SvgIcon extends StatelessWidget {
-  const SvgIcon({super.key, required this.icon, this.width});
+  const SvgIcon(
+      {super.key,
+      required this.icon,
+      this.width,
+      this.height,
+      this.fit = BoxFit.contain});
 
   final LocalIcons icon;
   final double? width;
+  final double? height;
+  final BoxFit fit;
 
   @override
   Widget build(BuildContext context) {
     return SvgPicture.asset(
       icon.path,
       width: width,
+      height: height,
+      fit: fit,
     );
   }
 }
