@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:recipeshopper/ui/extenstions.dart';
+import 'package:recipeshopper/ui/extensions.dart';
 
 final _kalamTextStyle = TextStyle(fontFamily: "Kalam");
 
