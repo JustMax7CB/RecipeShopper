@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:recipeshopper/resources/resources.dart' as res;
 
 enum LocalIcons {
-  home("home"),
-  search("search"),
-  favorites("favorites"),
-  settings("settings"),
-  profile("profile"),
-  shoppingCart("shopping_basket"),
-  addRecipe("add_recipe_icon"),
-  logo("recipeshopper");
+  home(res.Icons.home),
+  search(res.Icons.search),
+  favorites(res.Icons.favorites),
+  settings(res.Icons.settings),
+  profile(res.Icons.profile),
+  shoppingCart(res.Icons.shoppingBasket),
+  addRecipe(res.Icons.addRecipeIcon),
+  logo(res.Icons.splashLogo);
 
-  const LocalIcons(String path) : _path = path;
+  const LocalIcons(this.path);
 
-  final String _path;
-  String get path => "lib/assets/icons/$_path.svg";
+  final String path;
 }
 
 class SvgIcon extends StatelessWidget {

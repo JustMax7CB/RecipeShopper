@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:recipeshopper/ui/widgets/image_resource.dart';
 import 'package:recipeshopper/ui/widgets/svg_icon.dart';
 
 class HomeAppBar extends StatelessWidget {
@@ -16,7 +16,7 @@ class HomeAppBar extends StatelessWidget {
           height: 36,
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: AssetImage("lib/assets/images/appbar_bg.png"),
+              image: ImageResource(ImageRes.appbarBg),
               fit: BoxFit.cover,
             ),
             borderRadius: BorderRadius.circular(6),
@@ -41,7 +41,7 @@ class HomeAppBar extends StatelessWidget {
       flexibleSpace: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage("lib/assets/images/appbar_bg.png"),
+            image: ImageResource(ImageRes.appbarBg),
             fit: BoxFit.cover, // Ensure it covers the full space
           ),
         ),

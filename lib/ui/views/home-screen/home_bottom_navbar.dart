@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:recipeshopper/ui/widgets/image_resource.dart';
 import 'package:recipeshopper/ui/widgets/svg_icon.dart';
 
 class HomeBottomNavbar extends StatefulWidget {
@@ -18,7 +18,7 @@ class _HomeBottomNavbarState extends State<HomeBottomNavbar> {
       height: MediaQuery.sizeOf(context).height * 0.09,
       decoration: BoxDecoration(
         image: DecorationImage(
-          image: AssetImage("lib/assets/images/appbar_bg.png"),
+          image: ImageResource(ImageRes.appbarBg),
           fit: BoxFit.fill,
         ),
       ),
