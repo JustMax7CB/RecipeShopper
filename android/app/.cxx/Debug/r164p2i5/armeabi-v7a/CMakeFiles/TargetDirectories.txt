@@ -1,0 +1,2 @@
+C:/Users/97254/Desktop/recipe_shopper/android/app/.cxx/Debug/r164p2i5/armeabi-v7a/CMakeFiles/edit_cache.dir
+C:/Users/97254/Desktop/recipe_shopper/android/app/.cxx/Debug/r164p2i5/armeabi-v7a/CMakeFiles/rebuild_cache.dir

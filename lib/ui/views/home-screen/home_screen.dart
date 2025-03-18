@@ -23,7 +23,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: HomeAppBar() as PreferredSizeWidget,
+      appBar: HomeAppBar(),
       bottomNavigationBar: HomeBottomNavbar(),
       body: SafeArea(
         child: Padding(
@@ -39,7 +39,11 @@ class HomeScreen extends StatelessWidget {
                     children: [
                       Text("Recipes", style: titleTextStyle),
                       Center(
-                        child: SvgIcon(icon: LocalIcons.addRecipe),
+                        child: InkWell(
+                            onTap: () {
+                              Navigator.pushNamed(context, "/addRecipe");
+                            },
+                            child: SvgIcon(icon: LocalIcons.addRecipe)),
                       )
                     ],
                   ),
