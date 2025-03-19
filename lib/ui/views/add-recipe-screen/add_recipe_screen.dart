@@ -1,38 +1,22 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 import 'package:recipeshopper/ui/text_styles.dart';
-import 'package:recipeshopper/ui/views/add-recipe-screen/ingredient_row.dart';
+import 'package:recipeshopper/ui/viewmodels/add_recipe_viewmodel.dart';
 import 'package:recipeshopper/ui/widgets/svg_icon.dart';
 
-class AddRecipeScreen extends StatefulWidget {
+class AddRecipeScreen extends StatelessWidget {
   AddRecipeScreen({super.key});
 
-  @override
-  State<AddRecipeScreen> createState() => _AddRecipeScreenState();
-}
-
-class _AddRecipeScreenState extends State<AddRecipeScreen> {
   final TextEditingController _recipeName = TextEditingController();
   final TextEditingController _instructions = TextEditingController();
-  List<IngredientRow> ingredients = [];
-
-  int ingredientId = 1;
-
-  void removeIngredient(int id) {
-    setState(() {
-      print("Removing ingredient row with id: $id");
-      ingredients.removeWhere((ingredient) => ingredient.id == id);
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    ingredients.add(IngredientRow(ingredientId, onDelete: removeIngredient));
-    ingredientId++;
-  }
 
   @override
   Widget build(BuildContext context) {
+    final AddRecipeViewModel viewModel = context.watch<AddRecipeViewModel>();
+
     return Scaffold(
       backgroundColor: Color.fromRGBO(255, 255, 255, 0.95),
       body: SafeArea(
@@ -42,7 +26,7 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
               Stack(
                 children: [
                   GestureDetector(
-                    onTap: LoadImage,
+                    onTap: () => _showImageSourceDialog(context, viewModel),
                     child: Container(
                       height: 200,
                       decoration: BoxDecoration(
@@ -57,7 +41,14 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                               bottom:
                                   BorderSide(color: Colors.black, width: 1))),
                       child: Center(
-                        child: SvgIcon(icon: LocalIcons.placeholderImage),
+                        child: viewModel.selectedImage == null
+                            ? SvgIcon(icon: LocalIcons.placeholderImage)
+                            : Image.file(
+                                viewModel.selectedImage!,
+                                fit: BoxFit.cover,
+                                width: double.infinity,
+                                height: double.infinity,
+                              ),
                       ),
                     ),
                   ),
@@ -76,6 +67,26 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                               blurRadius: 8)
                         ],
                       )),
+                  if (viewModel.selectedImage != null)
+                    Positioned(
+                      left: MediaQuery.sizeOf(context).width / 2.3,
+                      top: 70,
+                      child: IconButton(
+                          onPressed: () {
+                            viewModel.selectedImage = null;
+                          },
+                          icon: Icon(
+                            Icons.remove_circle_outline,
+                            size: 25,
+                            color: Color(0xAAFFFFFF),
+                            shadows: [
+                              Shadow(
+                                  color: Colors.black,
+                                  offset: Offset(0, 1),
+                                  blurRadius: 8)
+                            ],
+                          )),
+                    ),
                 ],
               ),
               Padding(
@@ -96,7 +107,7 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                   ),
                 ),
               ),
-              IngredientsSection(),
+              IngredientsSection(viewModel),
               InstructionSection(),
               Container(
                 margin: EdgeInsets.only(top: 35, bottom: 30),
@@ -127,7 +138,11 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                       shadowColor: Colors.transparent,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8))),
-                  onPressed: () {},
+                  onPressed: () {
+                    viewModel.createRecipe(_recipeName.text).then(
+                          (value) => Navigator.pop(context),
+                        );
+                  },
                   child: Text(
                     "Save",
                     style: newRecipeSaveButtonTextStyle,
@@ -141,7 +156,7 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
     );
   }
 
-  Widget IngredientsSection() {
+  Widget IngredientsSection(AddRecipeViewModel vm) {
     return Container(
       padding: EdgeInsets.only(top: 5, bottom: 70),
       margin: EdgeInsets.only(bottom: 8),
@@ -169,10 +184,10 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                 ListView.builder(
                   physics: NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
-                  itemCount: ingredients.length,
+                  itemCount: vm.ingredients.length,
                   itemBuilder: (context, index) => Container(
                       margin: EdgeInsets.only(bottom: 10),
-                      child: ingredients[index]),
+                      child: vm.ingredients[index]),
                 ),
                 Align(
                   alignment: Alignment.centerLeft,
@@ -181,13 +196,7 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                           shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(5),
                       )),
-                      onPressed: () {
-                        setState(() {
-                          ingredients.add(IngredientRow(ingredientId,
-                              onDelete: removeIngredient));
-                          ingredientId++;
-                        });
-                      },
+                      onPressed: () => vm.addIngredient(),
                       child: FittedBox(
                         child: Row(
                           children: [
@@ -238,6 +247,7 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
           Padding(
             padding: const EdgeInsets.fromLTRB(12, 10, 12, 20),
             child: TextFormField(
+              controller: _instructions,
               onTapOutside: (_) =>
                   FocusManager.instance.primaryFocus?.unfocus(),
               decoration: InputDecoration(
@@ -259,7 +269,53 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
     );
   }
 
-  void LoadImage() {
+  Future<void> _loadImage(
+      ImageSource source, AddRecipeViewModel viewModel) async {
     print("Pressed on LoadImage");
+    final ImagePicker imagePicker = ImagePicker();
+
+    final pickedImage = await imagePicker.pickImage(source: source);
+
+    if (pickedImage == null) {
+      return;
+    }
+
+    // Assign the selected image to the ViewModel
+
+    viewModel.selectedImage = File(pickedImage.path);
+
+    print("Image selected: ${pickedImage.path}");
+  }
+
+  void _showImageSourceDialog(
+      BuildContext context, AddRecipeViewModel viewModel) {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return SafeArea(
+            child: Wrap(
+          children: [
+            ListTile(
+              leading: Icon(Icons.camera_alt),
+              iconColor: Colors.blue,
+              title: Text("Take Photo"),
+              onTap: () {
+                Navigator.pop(context);
+                _loadImage(ImageSource.camera, viewModel);
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.photo_library),
+              iconColor: Colors.green,
+              title: Text("Choose From Library"),
+              onTap: () {
+                Navigator.pop(context);
+                _loadImage(ImageSource.gallery, viewModel);
+              },
+            ),
+          ],
+        ));
+      },
+    );
   }
 }

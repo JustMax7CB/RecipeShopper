@@ -1,5 +1,7 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 sealed class EnvVariables {
-  static const projectId = String.fromEnvironment('PROJECT_ID');
-  static const dbId = String.fromEnvironment('DB_ID');
-  static const recipeCollectionId = String.fromEnvironment('RECIPE_COLLECTION_ID');
+  static String projectId = dotenv.env['PROJECT_ID'] ?? "";
+  static String dbId = dotenv.env['DB_ID'] ?? "";
+  static String recipeCollectionId = dotenv.env['RECIPE_COLLECTION_ID'] ?? "";
 }

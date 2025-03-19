@@ -6,7 +6,7 @@ import 'package:recipeshopper/core/services/recipe_service.dart';
 import 'package:recipeshopper/environment.dart';
 import 'package:recipeshopper/extensions.dart';
 
-@Injectable(env: ["prod"])
+@Singleton()
 class RemoteRecipeService implements RecipeService {
   final Databases appWriteDB;
 

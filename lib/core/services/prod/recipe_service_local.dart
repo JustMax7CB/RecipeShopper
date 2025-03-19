@@ -7,7 +7,7 @@ import 'package:recipeshopper/data/local/recipe_model.dart';
 import 'package:recipeshopper/data/local/units.dart';
 import 'package:recipeshopper/extensions.dart';
 
-@Injectable(env: ["prod"])
+@Singleton()
 class LocalRecipeService implements RecipeService {
   static const String _boxName = 'recipeBox';
 
@@ -18,8 +18,7 @@ class LocalRecipeService implements RecipeService {
   bool isBoxOpen() {
     try {
       return Hive.box(_boxName).isOpen;
-    }
-    on Exception catch (_) {
+    } on Exception catch (_) {
       return false;
     }
   }
@@ -32,8 +31,20 @@ class LocalRecipeService implements RecipeService {
 
   @override
   Future<List<Recipe>> getAllRecipes() async {
+    await Hive.openBox<RecipeModel>(_boxName);
+
     final box = Hive.box<RecipeModel>(_boxName);
     return box.values.map((r) => r.convertToRecipe()).toList();
+  }
+
+  Future<Stream<List<Recipe>>> get recipeStream async {
+    await Hive.openBox(_boxName);
+    return Hive.box(_boxName).watch().map((event) {
+      return Hive.box(_boxName)
+          .values
+          .map((recipeModel) => (recipeModel as RecipeModel).convertToRecipe())
+          .toList();
+    });
   }
 
   @override
@@ -66,7 +77,6 @@ class LocalRecipeService implements RecipeService {
     final box = Hive.box<RecipeModel>(_boxName);
     await box.deleteAll(box.keys);
   }
-
 
   void _registerHiveAdapters() {
     Hive.registerAdapter(UnitEnumAdapter());

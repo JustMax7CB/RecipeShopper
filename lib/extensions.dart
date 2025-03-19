@@ -22,6 +22,7 @@ extension RecipeToModel on Recipe {
         ingredients: ingredients
             .map((ingredient) => _convertIngredientToModel(ingredient))
             .toList(),
+        imagePath: imagePath,
       );
 
   IngredientModel _convertIngredientToModel(Ingredient ingredient) =>
@@ -39,11 +40,11 @@ extension RecipeToModel on Recipe {
 
 extension RecipeModelToRecipe on RecipeModel {
   Recipe convertToRecipe() => Recipe(
-        id: id,
-        name: name,
-        ingredients:
-            ingredients.map((model) => _convertToIngredient(model)).toList(),
-      );
+      id: id,
+      name: name,
+      ingredients:
+          ingredients.map((model) => _convertToIngredient(model)).toList(),
+      imagePath: imagePath);
 
   Ingredient _convertToIngredient(IngredientModel model) => Ingredient(
         id: model.id,

@@ -1,28 +1,35 @@
+import 'package:injectable/injectable.dart';
 import 'package:recipeshopper/core/models/recipe.dart';
-import 'package:recipeshopper/core/services/recipe_service.dart';
+import 'package:recipeshopper/core/services/prod/recipe_service_local.dart';
+import 'package:recipeshopper/core/services/prod/recipe_service_remote.dart';
 
+@lazySingleton
 class RecipeRepository {
-  final RecipeService _recipeService; // Local or Remote
+  final LocalRecipeService _localRecipeService; // Local
+  final RemoteRecipeService _remoteRecipeService; // Remote
 
-  RecipeRepository(this._recipeService);
+  RecipeRepository(this._localRecipeService, this._remoteRecipeService);
+
+  Future<Stream<List<Recipe>>> get recipeStream =>
+      _localRecipeService.recipeStream;
 
   Future<List<Recipe>> getRecipes() async {
-    return _recipeService.getAllRecipes();
+    return _localRecipeService.getAllRecipes();
   }
 
   Future<void> addRecipe(Recipe recipe) async {
-    await _recipeService.saveRecipe(recipe);
+    await _localRecipeService.saveRecipe(recipe);
   }
 
   Future<Recipe?> getRecipeById(String id) async {
-    return await _recipeService.getRecipeById(id);
+    return await _localRecipeService.getRecipeById(id);
   }
 
   Future<void> deleteRecipe(String id) async {
-    await _recipeService.deleteRecipe(id);
+    await _localRecipeService.deleteRecipe(id);
   }
 
   Future<void> updateRecipe(Recipe updatedRecipe) async {
-    await _recipeService.updateRecipe(updatedRecipe);
+    await _localRecipeService.updateRecipe(updatedRecipe);
   }
 }

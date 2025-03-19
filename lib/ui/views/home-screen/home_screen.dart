@@ -1,27 +1,39 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:recipeshopper/core/models/recipe.dart';
 import 'package:recipeshopper/core/services/mock/recipe_service_local.dart';
 import 'package:recipeshopper/core/services/mock/recipe_service_remote.dart';
 import 'package:recipeshopper/core/services/recipe_service.dart';
 import 'package:recipeshopper/ui/text_styles.dart';
+import 'package:recipeshopper/ui/viewmodels/home_viewmodel.dart';
 import 'package:recipeshopper/ui/views/home-screen/home_app_bar.dart';
 import 'package:recipeshopper/ui/views/home-screen/home_bottom_navbar.dart';
 import 'package:recipeshopper/ui/widgets/recipe_card.dart';
 import 'package:recipeshopper/ui/widgets/svg_icon.dart';
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({
-    super.key,
-    required LocalRecipeServiceMock localMockService,
-    required RemoteRecipeServiceMock remoteMockService,
-  })  : localService = localMockService,
-        remoteService = remoteMockService;
+class HomeScreen extends StatefulWidget {
+  HomeScreen({super.key});
 
-  final RecipeService localService;
-  final RecipeService remoteService;
+  final GlobalKey<RefreshIndicatorState> refreshIndicatorKey =
+      GlobalKey<RefreshIndicatorState>();
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    super.initState();
+    // Load recipes when the screen is initialized
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<HomeViewModel>().loadRecipes();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    final viewModel = context.watch<HomeViewModel>();
+
     return Scaffold(
       appBar: HomeAppBar(),
       bottomNavigationBar: HomeBottomNavbar(),
@@ -51,10 +63,9 @@ class HomeScreen extends StatelessWidget {
               ),
               Expanded(
                 flex: 10,
-                child: FutureBuilder<List<Recipe>>(
-                  future: localService.getAllRecipes(),
-                  builder: (context, snapshot) {
-                    if (!snapshot.hasData) {
+                child: Consumer<HomeViewModel>(
+                  builder: (context, viewModel, child) {
+                    if (viewModel.isLoading) {
                       return Center(
                         child: CircularProgressIndicator(
                           color: Colors.amber,
@@ -62,18 +73,27 @@ class HomeScreen extends StatelessWidget {
                         ),
                       );
                     }
-                    final recipeList = [...?snapshot.data];
-                    return GridView.builder(
-                      padding: EdgeInsets.all(5),
-                      physics: BouncingScrollPhysics(),
-                      itemCount: 5,
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          crossAxisSpacing: 20,
-                          mainAxisSpacing: 20),
-                      itemBuilder: (context, index) {
-                        return RecipeCard(recipe: recipeList[index]);
-                      },
+                    if (viewModel.recipes.isEmpty) {
+                      return Center(
+                        child: Text("No recipes found"),
+                      );
+                    }
+                    return RefreshIndicator(
+                      key: widget.refreshIndicatorKey,
+                      onRefresh: viewModel.loadRecipes,
+                      triggerMode: RefreshIndicatorTriggerMode.anywhere,
+                      child: GridView.builder(
+                        padding: EdgeInsets.all(5),
+                        physics: AlwaysScrollableScrollPhysics(),
+                        itemCount: viewModel.recipes.length,
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            crossAxisSpacing: 20,
+                            mainAxisSpacing: 20),
+                        itemBuilder: (context, index) {
+                          return RecipeCard(recipe: viewModel.recipes[index]);
+                        },
+                      ),
                     );
                   },
                 ),

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:recipeshopper/core/models/recipe.dart';
 import 'package:recipeshopper/ui/text_styles.dart';
@@ -24,11 +26,6 @@ class _RecipeCardState extends State<RecipeCard> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      // onTap: () {
-      //   setState(() {
-      //     isSelected = true;
-      //   });
-      // },
       child: Container(
         width: 160,
         height: 145,
@@ -53,12 +50,21 @@ class _RecipeCardState extends State<RecipeCard> {
               child: Stack(
                 children: [
                   ClipRRect(
-                    borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
-                    child: Image.asset(
-                      widget._recipe.imagePath,
-                      width: double.infinity,
-                      fit: BoxFit.cover,
-                    ),
+                    borderRadius:
+                        BorderRadius.vertical(top: Radius.circular(12)),
+                    child: widget._recipe.isPlaceholder
+                        ? Image.asset(
+                            widget._recipe.imagePath!,
+                            width: 160,
+                            height: 145,
+                            fit: BoxFit.cover,
+                          )
+                        : Image.file(
+                            File(widget._recipe.imagePath!),
+                            width: 160,
+                            height: 145,
+                            fit: BoxFit.cover,
+                          ),
                   ),
 
                   // Small white square at top-left
