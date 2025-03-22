@@ -16,6 +16,7 @@ void configureDependencies() {
       .setEndpoint("https://cloud.appwrite.io/v1")
       .setProject(Env.EnvVariables.projectId);
 
+  getIt.registerLazySingleton<Client>(() => client);
   getIt.registerLazySingleton<Account>(() => Account(client));
 
   getIt.init();

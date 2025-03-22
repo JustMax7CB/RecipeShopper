@@ -3,7 +3,9 @@ import 'package:recipeshopper/resources/resources.dart';
 
 enum ImageRes {
   appbarBg(Images.appbarBg),
-  recipeImage(Images.recipeImage);
+  recipeImage(Images.recipeImage),
+  fadedWood(Images.fadedWoodBg),
+  foodPlaceholder(Images.foodPlaceholder);
 
   const ImageRes(this.path);
 

@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:recipeshopper/core/models/recipe.dart';
-import 'package:recipeshopper/core/services/mock/recipe_service_local.dart';
-import 'package:recipeshopper/core/services/mock/recipe_service_remote.dart';
-import 'package:recipeshopper/core/services/recipe_service.dart';
 import 'package:recipeshopper/ui/text_styles.dart';
 import 'package:recipeshopper/ui/viewmodels/home_viewmodel.dart';
 import 'package:recipeshopper/ui/views/home-screen/home_app_bar.dart';
@@ -33,7 +29,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final viewModel = context.watch<HomeViewModel>();
-
     return Scaffold(
       appBar: HomeAppBar(),
       bottomNavigationBar: HomeBottomNavbar(),

@@ -5,7 +5,7 @@ import 'package:recipeshopper/core/models/units.dart';
 import 'package:recipeshopper/ui/text_styles.dart';
 
 class IngredientRow extends StatefulWidget {
-  IngredientRow(this.id, {Key? key, required this.onDelete}) : super(key: key);
+  IngredientRow(this.id, {super.key, required this.onDelete});
 
   final String id;
   final Function(String id) onDelete;

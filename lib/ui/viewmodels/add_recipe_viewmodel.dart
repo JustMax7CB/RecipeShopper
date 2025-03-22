@@ -10,7 +10,9 @@ import 'package:uuid/uuid.dart';
 
 @injectable
 class AddRecipeViewModel extends ChangeNotifier {
-  AddRecipeViewModel(this._recipeRepository);
+  AddRecipeViewModel(this._recipeRepository) {
+    ingredients.add(IngredientRow(uuid.v4(), onDelete: removeIngredient));
+  }
 
   final RecipeRepository _recipeRepository;
 
@@ -43,6 +45,8 @@ class AddRecipeViewModel extends ChangeNotifier {
     if (_selectedImage != null) {
       savedImagePath = await _saveImageToLocal(_selectedImage!);
     }
+
+    print(_selectedImage);
 
     final recipe = Recipe(
         id: uuid.v4(),

@@ -5,6 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:recipeshopper/ui/text_styles.dart';
 import 'package:recipeshopper/ui/viewmodels/add_recipe_viewmodel.dart';
+import 'package:recipeshopper/ui/widgets/image_resource.dart';
 import 'package:recipeshopper/ui/widgets/svg_icon.dart';
 
 class AddRecipeScreen extends StatelessWidget {
@@ -21,135 +22,140 @@ class AddRecipeScreen extends StatelessWidget {
       backgroundColor: Color.fromRGBO(255, 255, 255, 0.95),
       body: SafeArea(
         child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Stack(
-                children: [
-                  GestureDetector(
-                    onTap: () => _showImageSourceDialog(context, viewModel),
-                    child: Container(
-                      height: 200,
-                      decoration: BoxDecoration(
-                          boxShadow: [
-                            BoxShadow(
-                                color: Color.fromRGBO(0, 0, 0, 0.25),
-                                offset: Offset(0, 4),
-                                blurRadius: 4)
-                          ],
-                          color: Color(0xFFF4F4F4),
-                          border: Border(
-                              bottom:
-                                  BorderSide(color: Colors.black, width: 1))),
-                      child: Center(
-                        child: viewModel.selectedImage == null
-                            ? SvgIcon(icon: LocalIcons.placeholderImage)
-                            : Image.file(
-                                viewModel.selectedImage!,
-                                fit: BoxFit.cover,
-                                width: double.infinity,
-                                height: double.infinity,
-                              ),
+          child: Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(image: ImageResource(ImageRes.fadedWood), fit: BoxFit.cover)
+            ),
+            child: Column(
+              children: [
+                Stack(
+                  children: [
+                    GestureDetector(
+                      onTap: () => _showImageSourceDialog(context, viewModel),
+                      child: Container(
+                        height: 250,
+                        decoration: BoxDecoration(
+                            boxShadow: [
+                              BoxShadow(
+                                  color: Color.fromRGBO(0, 0, 0, 0.25),
+                                  offset: Offset(0, 4),
+                                  blurRadius: 4)
+                            ],
+                            color: Color(0xFFF4F4F4),
+                            border: Border(
+                                bottom:
+                                    BorderSide(color: Colors.black, width: 1))),
+                        child: Center(
+                          child: viewModel.selectedImage == null
+                              ? SvgIcon(icon: LocalIcons.placeholderImage)
+                              : Image.file(
+                                  viewModel.selectedImage!,
+                                  fit: BoxFit.cover,
+                                  width: double.infinity,
+                                  height: double.infinity,
+                                ),
+                        ),
                       ),
                     ),
-                  ),
-                  IconButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      icon: Icon(
-                        Icons.arrow_back_ios_sharp,
-                        size: 25,
-                        color: Colors.white,
-                        shadows: [
-                          Shadow(
-                              color: Colors.black,
-                              offset: Offset(0, 1),
-                              blurRadius: 8)
-                        ],
-                      )),
-                  if (viewModel.selectedImage != null)
-                    Positioned(
-                      left: MediaQuery.sizeOf(context).width / 2.3,
-                      top: 70,
-                      child: IconButton(
-                          onPressed: () {
-                            viewModel.selectedImage = null;
-                          },
-                          icon: Icon(
-                            Icons.remove_circle_outline,
-                            size: 25,
-                            color: Color(0xAAFFFFFF),
-                            shadows: [
-                              Shadow(
-                                  color: Colors.black,
-                                  offset: Offset(0, 1),
-                                  blurRadius: 8)
-                            ],
-                          )),
-                    ),
-                ],
-              ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 20.0, horizontal: 12),
-                child: TextFormField(
-                  onTapOutside: (_) =>
-                      FocusManager.instance.primaryFocus?.unfocus(),
-                  controller: _recipeName,
-                  decoration: InputDecoration(
-                    fillColor: Color(0xFFFEFEFE),
-                    filled: true,
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5),
-                        borderSide: BorderSide(color: Colors.black, width: 1)),
-                    hintText: "Recipe Name",
-                    hintStyle: fieldHintTextStyle,
-                  ),
-                ),
-              ),
-              IngredientsSection(viewModel),
-              InstructionSection(),
-              Container(
-                margin: EdgeInsets.only(top: 35, bottom: 30),
-                width: 150,
-                height: 45,
-                decoration: BoxDecoration(
-                  boxShadow: [
-                    BoxShadow(
-                        color: Color.fromRGBO(0, 0, 0, 0.25),
-                        offset: Offset(1, 2),
-                        blurRadius: 2),
+                    IconButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        icon: Icon(
+                          Icons.arrow_back_ios_sharp,
+                          size: 25,
+                          color: Colors.white,
+                          shadows: [
+                            Shadow(
+                                color: Colors.black,
+                                offset: Offset(0, 1),
+                                blurRadius: 8)
+                          ],
+                        )),
+                    if (viewModel.selectedImage != null)
+                      Positioned(
+                        left: MediaQuery.sizeOf(context).width / 2.3,
+                        top: 70,
+                        child: IconButton(
+                            onPressed: () {
+                              viewModel.selectedImage = null;
+                            },
+                            icon: Icon(
+                              Icons.remove_circle_outline,
+                              size: 25,
+                              color: Color(0xAAFFFFFF),
+                              shadows: [
+                                Shadow(
+                                    color: Colors.black,
+                                    offset: Offset(0, 1),
+                                    blurRadius: 8)
+                              ],
+                            )),
+                      ),
                   ],
-                  border: Border.all(color: Colors.black, width: 0.4),
-                  borderRadius: BorderRadius.circular(8),
-                  gradient: LinearGradient(
-                      colors: [
-                        Color(0xFFD6C4BD),
-                        Color(0xFFEFEFEF),
-                        Color(0xFF8D7E7E)
-                      ],
-                      begin: Alignment.bottomLeft,
-                      end: Alignment.topRight,
-                      transform: GradientRotation(-0.5)),
                 ),
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.transparent,
-                      shadowColor: Colors.transparent,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8))),
-                  onPressed: () {
-                    viewModel.createRecipe(_recipeName.text).then(
-                          (value) => Navigator.pop(context),
-                        );
-                  },
-                  child: Text(
-                    "Save",
-                    style: newRecipeSaveButtonTextStyle,
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 20.0, horizontal: 12),
+                  child: TextFormField(
+                    onTapOutside: (_) =>
+                        FocusManager.instance.primaryFocus?.unfocus(),
+                    controller: _recipeName,
+                    decoration: InputDecoration(
+                      fillColor: Color(0xFFFEFEFE),
+                      filled: true,
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5),
+                          borderSide: BorderSide(color: Colors.black, width: 1)),
+                      hintText: "Recipe Name",
+                      hintStyle: fieldHintTextStyle,
+                    ),
                   ),
                 ),
-              )
-            ],
+                IngredientsSection(viewModel),
+                InstructionSection(),
+                Container(
+                  margin: EdgeInsets.only(top: 35, bottom: 70),
+                  width: 150,
+                  height: 45,
+                  decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                          color: Color.fromRGBO(0, 0, 0, 0.25),
+                          offset: Offset(1, 2),
+                          blurRadius: 2),
+                    ],
+                    border: Border.all(color: Colors.black, width: 0.4),
+                    borderRadius: BorderRadius.circular(8),
+                    gradient: LinearGradient(
+                        colors: [
+                          Color(0xFFD6C4BD),
+                          Color(0xFFEFEFEF),
+                          Color(0xFF8D7E7E)
+                        ],
+                        begin: Alignment.bottomLeft,
+                        end: Alignment.topRight,
+                        transform: GradientRotation(-0.5)),
+                  ),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.transparent,
+                        shadowColor: Colors.transparent,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8))),
+                    onPressed: () {
+                      viewModel.createRecipe(_recipeName.text).then(
+                            (value) => Navigator.pop(context),
+                          );
+                    },
+                    child: Text(
+                      "Save",
+                      style: newRecipeSaveButtonTextStyle,
+                    ),
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),
@@ -181,13 +187,15 @@ class AddRecipeScreen extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(12, 10, 12, 0),
             child: Column(
               children: [
-                ListView.builder(
-                  physics: NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount: vm.ingredients.length,
-                  itemBuilder: (context, index) => Container(
-                      margin: EdgeInsets.only(bottom: 10),
-                      child: vm.ingredients[index]),
+                SizedBox(
+                  child: ListView.builder(
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: vm.ingredients.length,
+                    itemBuilder: (context, index) => Container(
+                        margin: EdgeInsets.only(bottom: 10),
+                        child: vm.ingredients[index]),
+                  ),
                 ),
                 Align(
                   alignment: Alignment.centerLeft,

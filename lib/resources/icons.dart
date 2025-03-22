@@ -3,6 +3,7 @@ part of 'resources.dart';
 class Icons {
   Icons._();
 
+  static const String addImageIcon = 'lib/assets/icons/add-image-icon.svg';
   static const String addRecipeIcon = 'lib/assets/icons/add_recipe_icon.svg';
   static const String back = 'lib/assets/icons/back.svg';
   static const String favorites = 'lib/assets/icons/favorites.svg';

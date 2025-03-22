@@ -26,6 +26,8 @@ class _RecipeCardState extends State<RecipeCard> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      onTap: () =>
+          Navigator.pushNamed(context, "/recipe", arguments: widget._recipe),
       child: Container(
         width: 160,
         height: 145,
@@ -49,23 +51,7 @@ class _RecipeCardState extends State<RecipeCard> {
               flex: 5,
               child: Stack(
                 children: [
-                  ClipRRect(
-                    borderRadius:
-                        BorderRadius.vertical(top: Radius.circular(12)),
-                    child: widget._recipe.isPlaceholder
-                        ? Image.asset(
-                            widget._recipe.imagePath!,
-                            width: 160,
-                            height: 145,
-                            fit: BoxFit.cover,
-                          )
-                        : Image.file(
-                            File(widget._recipe.imagePath!),
-                            width: 160,
-                            height: 145,
-                            fit: BoxFit.cover,
-                          ),
-                  ),
+                  imageWidget(),
 
                   // Small white square at top-left
                   Positioned(
@@ -102,4 +88,27 @@ class _RecipeCardState extends State<RecipeCard> {
       ),
     );
   }
+
+  Widget imageWidget() => widget._recipe.isPlaceholder
+      ? ClipRRect(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
+          child: Image.asset(
+            widget._recipe.imagePath!,
+            width: 160,
+            height: 145,
+            fit: BoxFit.cover,
+          ),
+        )
+      : Hero(
+          tag: widget._recipe.imagePath!,
+          child: ClipRRect(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
+            child: Image.file(
+              File(widget._recipe.imagePath!),
+              width: 160,
+              height: 145,
+              fit: BoxFit.cover,
+            ),
+          ),
+        );
 }

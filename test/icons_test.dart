@@ -5,6 +5,7 @@ import 'package:recipeshopper/resources/resources.dart';
 
 void main() {
   test('icons assets test', () {
+    expect(File(Icons.addImageIcon).existsSync(), isTrue);
     expect(File(Icons.addRecipeIcon).existsSync(), isTrue);
     expect(File(Icons.back).existsSync(), isTrue);
     expect(File(Icons.favorites).existsSync(), isTrue);

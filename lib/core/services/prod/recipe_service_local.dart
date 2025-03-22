@@ -1,4 +1,6 @@
+import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:injectable/injectable.dart';
 import 'package:recipeshopper/core/models/recipe.dart';
 import 'package:recipeshopper/core/services/recipe_service.dart';
@@ -23,6 +25,11 @@ class LocalRecipeService implements RecipeService {
     }
   }
 
+  Future<Box<RecipeModel>> getBox() async {
+    final box = await Hive.openBox<RecipeModel>(_boxName);
+    return box;
+  }
+
   Future<void> init() async {
     // Initialize Hive and register the adapter
     _registerHiveAdapters();
@@ -37,14 +44,8 @@ class LocalRecipeService implements RecipeService {
     return box.values.map((r) => r.convertToRecipe()).toList();
   }
 
-  Future<Stream<List<Recipe>>> get recipeStream async {
-    await Hive.openBox(_boxName);
-    return Hive.box(_boxName).watch().map((event) {
-      return Hive.box(_boxName)
-          .values
-          .map((recipeModel) => (recipeModel as RecipeModel).convertToRecipe())
-          .toList();
-    });
+  ValueListenable<Box<RecipeModel>> listenToRecipeModels() {
+    return Hive.box<RecipeModel>(_boxName).listenable();
   }
 
   @override

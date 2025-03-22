@@ -4,10 +4,12 @@ import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:recipeshopper/core/di/locator.dart';
+import 'package:recipeshopper/core/models/recipe.dart';
 import 'package:recipeshopper/ui/viewmodels/add_recipe_viewmodel.dart';
 import 'package:recipeshopper/ui/viewmodels/home_viewmodel.dart';
 import 'package:recipeshopper/ui/views/add-recipe-screen/add_recipe_screen.dart';
 import 'package:recipeshopper/ui/views/home-screen/home_screen.dart';
+import 'package:recipeshopper/ui/views/recipe-screen/recipe_screen.dart';
 
 void main() async {
   await dotenv.load(fileName: ".env");
@@ -28,6 +30,7 @@ void main() async {
               create: (_) => locate<AddRecipeViewModel>(),
               child: AddRecipeScreen(),
             ),
+        "/recipe": (_) => RecipeScreen(ModalRoute.of(_)!.settings.arguments as Recipe)
       },
       debugShowCheckedModeBanner: false,
     ),

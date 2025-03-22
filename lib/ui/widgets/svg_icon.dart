@@ -11,7 +11,9 @@ enum LocalIcons {
   shoppingCart(res.Icons.shoppingBasket),
   addRecipe(res.Icons.addRecipeIcon),
   logo(res.Icons.splashLogo),
-  placeholderImage(res.Icons.placeholderImage);
+  placeholderImage(res.Icons.placeholderImage),
+  share(res.Icons.share),
+  pencil(res.Icons.pencil);
 
   const LocalIcons(this.path);
 

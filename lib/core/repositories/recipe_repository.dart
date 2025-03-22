@@ -1,7 +1,10 @@
+import 'package:flutter/foundation.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:injectable/injectable.dart';
 import 'package:recipeshopper/core/models/recipe.dart';
 import 'package:recipeshopper/core/services/prod/recipe_service_local.dart';
 import 'package:recipeshopper/core/services/prod/recipe_service_remote.dart';
+import 'package:recipeshopper/data/local/recipe_model.dart';
 
 @lazySingleton
 class RecipeRepository {
@@ -10,8 +13,13 @@ class RecipeRepository {
 
   RecipeRepository(this._localRecipeService, this._remoteRecipeService);
 
-  Future<Stream<List<Recipe>>> get recipeStream =>
-      _localRecipeService.recipeStream;
+  ValueListenable<Box<RecipeModel>> listenToRecipeModels() {
+    return _localRecipeService.listenToRecipeModels();
+  }
+
+  Future<Box<RecipeModel>> openAndGetRecipesBox() async {
+    return await _localRecipeService.getBox();
+  }
 
   Future<List<Recipe>> getRecipes() async {
     return _localRecipeService.getAllRecipes();
@@ -19,6 +27,7 @@ class RecipeRepository {
 
   Future<void> addRecipe(Recipe recipe) async {
     await _localRecipeService.saveRecipe(recipe);
+    await _remoteRecipeService.saveRecipe(recipe);
   }
 
   Future<Recipe?> getRecipeById(String id) async {
