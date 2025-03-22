@@ -12,10 +12,13 @@ class Recipe implements LocalEntity {
   final String id;
   final String name;
   final List<Ingredient> ingredients;
-  final String imagePath;
+  final String? imagePath;
 
-  Recipe({required this.id, required this.name, required this.ingredients})
-      : imagePath = "lib/assets/images/recipe_image.jpg";
+  Recipe(
+      {required this.id,
+      required this.name,
+      required this.ingredients,
+      this.imagePath = "lib/assets/images/recipe_image.jpg"});
 
   factory Recipe.fromJson(Map<String, dynamic> json) => _$RecipeFromJson(json);
 
@@ -23,11 +26,21 @@ class Recipe implements LocalEntity {
 
   String get json => jsonEncode(toJson());
 
+  bool get isPlaceholder => imagePath == "lib/assets/images/recipe_image.jpg";
+
   @override
   String get key => id;
 
   @override
+  int get hashCode => id.hashCode;
+
+  @override
   String toString() {
-    return 'Recipe: [name: $name, ingredients: $ingredients]';
+    return 'Recipe: [ID: $id, name: $name, ingredients: $ingredients]';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return id == (other as Recipe).id;
   }
 }

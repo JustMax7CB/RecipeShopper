@@ -8,22 +8,24 @@ part of 'units.dart';
 
 class UnitEnumAdapter extends TypeAdapter<UnitEnum> {
   @override
-  final int typeId = 3;
+  final int typeId = 2;
 
   @override
   UnitEnum read(BinaryReader reader) {
     switch (reader.readByte()) {
       case 0:
         return UnitEnum.kg;
-      case 1:
-        return UnitEnum.liters;
       case 2:
-        return UnitEnum.pieces;
+        return UnitEnum.grams;
       case 3:
-        return UnitEnum.cups;
+        return UnitEnum.liters;
       case 4:
-        return UnitEnum.teaspoons;
+        return UnitEnum.pieces;
       case 5:
+        return UnitEnum.cups;
+      case 6:
+        return UnitEnum.teaspoons;
+      case 7:
         return UnitEnum.tablespoons;
       default:
         return UnitEnum.kg;
@@ -36,20 +38,23 @@ class UnitEnumAdapter extends TypeAdapter<UnitEnum> {
       case UnitEnum.kg:
         writer.writeByte(0);
         break;
-      case UnitEnum.liters:
-        writer.writeByte(1);
-        break;
-      case UnitEnum.pieces:
+      case UnitEnum.grams:
         writer.writeByte(2);
         break;
-      case UnitEnum.cups:
+      case UnitEnum.liters:
         writer.writeByte(3);
         break;
-      case UnitEnum.teaspoons:
+      case UnitEnum.pieces:
         writer.writeByte(4);
         break;
-      case UnitEnum.tablespoons:
+      case UnitEnum.cups:
         writer.writeByte(5);
+        break;
+      case UnitEnum.teaspoons:
+        writer.writeByte(6);
+        break;
+      case UnitEnum.tablespoons:
+        writer.writeByte(7);
         break;
     }
   }

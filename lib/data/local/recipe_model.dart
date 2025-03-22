@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:hive/hive.dart';
 
@@ -17,8 +18,14 @@ class RecipeModel {
   @HiveField(2)
   final List<IngredientModel> ingredients;
 
+  @HiveField(3)
+  final String? imagePath;
+
   RecipeModel(
-      {required this.id, required this.name, required this.ingredients});
+      {required this.id,
+      required this.name,
+      required this.ingredients,
+      this.imagePath});
 
   factory RecipeModel.fromJson(Map<String, dynamic> json) {
     final ingredients = json["ingredients"] as List<String>;
@@ -26,8 +33,10 @@ class RecipeModel {
         id: json["id"],
         name: json["name"],
         ingredients: ingredients
-            .map((ingr) => IngredientModel.fromJson(jsonDecode(ingr)))
-            .toList());
+            .map((ingredient) =>
+                IngredientModel.fromJson(jsonDecode(ingredient)))
+            .toList(),
+        imagePath: json["imagePath"]);
   }
 
   @override

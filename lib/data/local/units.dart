@@ -2,19 +2,21 @@ import 'package:hive/hive.dart';
 
 part 'units.g.dart';
 
-@HiveType(typeId: 3)
+@HiveType(typeId: 2)
 enum UnitEnum implements Comparable<UnitEnum>{
   @HiveField(0)
   kg("kg"),
-  @HiveField(1)
-  liters("liters"),
   @HiveField(2)
-  pieces("pieces"),
+  grams("grams"),
   @HiveField(3)
-  cups("cups"),
+  liters("liters"),
   @HiveField(4)
-  teaspoons("teaspoons"),
+  pieces("pieces"),
   @HiveField(5)
+  cups("cups"),
+  @HiveField(6)
+  teaspoons("teaspoons"),
+  @HiveField(7)
   tablespoons("tablespoons");
 
   @override
