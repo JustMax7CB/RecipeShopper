@@ -47,22 +47,28 @@ class AddRecipeViewModel extends ChangeNotifier {
     _isLoading = true;
     notifyListeners();
 
-    String? savedImagePath;
-    if (_selectedImage != null) {
-      savedImagePath = await _saveImageToLocal(_selectedImage!);
+    try {
+      String? savedImagePath;
+      if (_selectedImage != null) {
+        savedImagePath = await _saveImageToLocal(_selectedImage!);
+      }
+
+      final recipe = Recipe(
+          id: uuid.v4(),
+          name: recipeNameController.text,
+          ingredients: ingredients.map((ingredient) => ingredient.model).toList(),
+          imagePath: savedImagePath,
+          instructions: recipeInstructionsController.text);
+
+      await _recipeRepository.addRecipe(recipe);
+    } on Exception catch (e) {
+      print(e.toString());
+    } finally {
+      _isLoading = false;
+      notifyListeners();
     }
 
-    final recipe = Recipe(
-        id: uuid.v4(),
-        name: recipeNameController.text,
-        ingredients: ingredients.map((ingredient) => ingredient.model).toList(),
-        imagePath: savedImagePath,
-        instructions: recipeInstructionsController.text);
 
-    await _recipeRepository.addRecipe(recipe);
-
-    _isLoading = false;
-    notifyListeners();
   }
 
   // Function to save the file in the app's document directory
