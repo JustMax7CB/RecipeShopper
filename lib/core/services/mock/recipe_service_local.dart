@@ -10,7 +10,7 @@ class LocalRecipeServiceMock implements RecipeService {
       Recipe(id: "1", name: "Spaghetti Carbonara", ingredients: [
     Ingredient(id: "1", name: "Guanciale", quantity: 0.3, unit: Unit.kg),
     Ingredient(id: "2", name: "Spaghetti", quantity: 0.4, unit: Unit.kg),
-    Ingredient(id: "3", name: "Eggs", quantity: 3, unit: Unit.pieces),
+    Ingredient(id: "3", name: "Eggs", quantity: 3, unit: Unit.units),
     Ingredient(
         id: "4", name: "Parmigiano Reggiano", quantity: 0.1, unit: Unit.kg)
   ]);
@@ -24,16 +24,15 @@ class LocalRecipeServiceMock implements RecipeService {
   ]);
 
   static var recipe3 = Recipe(id: "3", name: "Margherita Pizza", ingredients: [
-    Ingredient(id: "1", name: "Pizza Dough", quantity: 1, unit: Unit.pieces),
+    Ingredient(id: "1", name: "Pizza Dough", quantity: 1, unit: Unit.units),
     Ingredient(id: "2", name: "Tomato Sauce", quantity: 0.2, unit: Unit.liters),
     Ingredient(id: "3", name: "Mozzarella", quantity: 0.3, unit: Unit.kg),
-    Ingredient(id: "4", name: "Fresh Basil", quantity: 5, unit: Unit.pieces),
+    Ingredient(id: "4", name: "Fresh Basil", quantity: 5, unit: Unit.units),
     Ingredient(id: "5", name: "Olive Oil", quantity: 0.02, unit: Unit.liters)
   ]);
 
   static var recipe4 = Recipe(id: "4", name: "Caesar Salad", ingredients: [
-    Ingredient(
-        id: "1", name: "Romaine Lettuce", quantity: 1, unit: Unit.pieces),
+    Ingredient(id: "1", name: "Romaine Lettuce", quantity: 1, unit: Unit.units),
     Ingredient(
         id: "2", name: "Caesar Dressing", quantity: 0.1, unit: Unit.liters),
     Ingredient(id: "3", name: "Croutons", quantity: 0.15, unit: Unit.kg),
@@ -43,7 +42,7 @@ class LocalRecipeServiceMock implements RecipeService {
 
   static var recipe5 = Recipe(id: "5", name: "Beef Tacos", ingredients: [
     Ingredient(id: "1", name: "Ground Beef", quantity: 0.5, unit: Unit.kg),
-    Ingredient(id: "2", name: "Taco Shells", quantity: 6, unit: Unit.pieces),
+    Ingredient(id: "2", name: "Taco Shells", quantity: 6, unit: Unit.units),
     Ingredient(id: "3", name: "Lettuce", quantity: 0.2, unit: Unit.kg),
     Ingredient(id: "4", name: "Cheddar Cheese", quantity: 0.15, unit: Unit.kg),
     Ingredient(id: "5", name: "Salsa", quantity: 0.1, unit: Unit.liters)

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:recipeshopper/extensions.dart';
 import 'package:recipeshopper/ui/text_styles.dart';
 import 'package:recipeshopper/ui/viewmodels/add_recipe_viewmodel.dart';
 import 'package:recipeshopper/ui/widgets/image_resource.dart';
@@ -10,9 +11,6 @@ import 'package:recipeshopper/ui/widgets/svg_icon.dart';
 
 class AddRecipeScreen extends StatelessWidget {
   AddRecipeScreen({super.key});
-
-  final TextEditingController _recipeName = TextEditingController();
-  final TextEditingController _instructions = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -24,8 +22,9 @@ class AddRecipeScreen extends StatelessWidget {
         child: SingleChildScrollView(
           child: Container(
             decoration: BoxDecoration(
-              image: DecorationImage(image: ImageResource(ImageRes.fadedWood), fit: BoxFit.cover)
-            ),
+                image: DecorationImage(
+                    image: ImageResource(ImageRes.fadedWood),
+                    fit: BoxFit.cover)),
             child: Column(
               children: [
                 Stack(
@@ -95,25 +94,26 @@ class AddRecipeScreen extends StatelessWidget {
                   ],
                 ),
                 Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 20.0, horizontal: 12),
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 20.0, horizontal: 12),
                   child: TextFormField(
                     onTapOutside: (_) =>
                         FocusManager.instance.primaryFocus?.unfocus(),
-                    controller: _recipeName,
+                    controller: viewModel.recipeNameController,
                     decoration: InputDecoration(
                       fillColor: Color(0xFFFEFEFE),
                       filled: true,
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(5),
-                          borderSide: BorderSide(color: Colors.black, width: 1)),
-                      hintText: "Recipe Name",
+                          borderSide:
+                              BorderSide(color: Colors.black, width: 1)),
+                      hintText: context.localized.recipeName,
                       hintStyle: fieldHintTextStyle,
                     ),
                   ),
                 ),
-                IngredientsSection(viewModel),
-                InstructionSection(),
+                ingredientsSection(viewModel, context),
+                instructionsSection(viewModel, context),
                 Container(
                   margin: EdgeInsets.only(top: 35, bottom: 70),
                   width: 150,
@@ -144,12 +144,12 @@ class AddRecipeScreen extends StatelessWidget {
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8))),
                     onPressed: () {
-                      viewModel.createRecipe(_recipeName.text).then(
+                      viewModel.createRecipe().then(
                             (value) => Navigator.pop(context),
                           );
                     },
                     child: Text(
-                      "Save",
+                      context.localized.save,
                       style: newRecipeSaveButtonTextStyle,
                     ),
                   ),
@@ -162,7 +162,7 @@ class AddRecipeScreen extends StatelessWidget {
     );
   }
 
-  Widget IngredientsSection(AddRecipeViewModel vm) {
+  Widget ingredientsSection(AddRecipeViewModel vm, BuildContext context) {
     return Container(
       padding: EdgeInsets.only(top: 5, bottom: 70),
       margin: EdgeInsets.only(bottom: 8),
@@ -180,11 +180,11 @@ class AddRecipeScreen extends StatelessWidget {
       child: Column(
         children: [
           Text(
-            "Ingredients",
+            context.localized.ingredients,
             style: newRecipeSectionTitle,
           ),
           Padding(
-            padding: const EdgeInsets.fromLTRB(12, 10, 12, 0),
+            padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
             child: Column(
               children: [
                 SizedBox(
@@ -209,7 +209,8 @@ class AddRecipeScreen extends StatelessWidget {
                         child: Row(
                           children: [
                             Padding(
-                              padding: const EdgeInsets.only(right: 8.0),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8.0),
                               child: SvgIcon(
                                 icon: LocalIcons.addRecipe,
                                 width: 20,
@@ -217,7 +218,7 @@ class AddRecipeScreen extends StatelessWidget {
                               ),
                             ),
                             Text(
-                              "Add Ingredient",
+                              context.localized.addIngredient,
                               style: newRecipeAddIngredientTextStyle,
                             ),
                           ],
@@ -232,7 +233,7 @@ class AddRecipeScreen extends StatelessWidget {
     );
   }
 
-  Widget InstructionSection() {
+  Widget instructionsSection(AddRecipeViewModel viewModel, BuildContext ctx) {
     return Container(
       padding: EdgeInsets.only(top: 5),
       decoration: BoxDecoration(
@@ -249,19 +250,19 @@ class AddRecipeScreen extends StatelessWidget {
       child: Column(
         children: [
           Text(
-            "Instructions",
+            ctx.localized.instructions,
             style: newRecipeSectionTitle,
           ),
           Padding(
             padding: const EdgeInsets.fromLTRB(12, 10, 12, 20),
             child: TextFormField(
-              controller: _instructions,
+              controller: viewModel.recipeInstructionsController,
               onTapOutside: (_) =>
                   FocusManager.instance.primaryFocus?.unfocus(),
               decoration: InputDecoration(
                 fillColor: Color(0xFFFEFEFE),
                 filled: true,
-                hintText: "Write instructions for the recipe...",
+                hintText: ctx.localized.instructionHint,
                 hintStyle: fieldHintTextStyle,
                 border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5),
@@ -279,7 +280,6 @@ class AddRecipeScreen extends StatelessWidget {
 
   Future<void> _loadImage(
       ImageSource source, AddRecipeViewModel viewModel) async {
-    print("Pressed on LoadImage");
     final ImagePicker imagePicker = ImagePicker();
 
     final pickedImage = await imagePicker.pickImage(source: source);
@@ -291,8 +291,6 @@ class AddRecipeScreen extends StatelessWidget {
     // Assign the selected image to the ViewModel
 
     viewModel.selectedImage = File(pickedImage.path);
-
-    print("Image selected: ${pickedImage.path}");
   }
 
   void _showImageSourceDialog(
@@ -306,7 +304,7 @@ class AddRecipeScreen extends StatelessWidget {
             ListTile(
               leading: Icon(Icons.camera_alt),
               iconColor: Colors.blue,
-              title: Text("Take Photo"),
+              title: Text(context.localized.takePhoto),
               onTap: () {
                 Navigator.pop(context);
                 _loadImage(ImageSource.camera, viewModel);
@@ -315,7 +313,7 @@ class AddRecipeScreen extends StatelessWidget {
             ListTile(
               leading: Icon(Icons.photo_library),
               iconColor: Colors.green,
-              title: Text("Choose From Library"),
+              title: Text(context.localized.chooseFromLibrary),
               onTap: () {
                 Navigator.pop(context);
                 _loadImage(ImageSource.gallery, viewModel);

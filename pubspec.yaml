@@ -10,6 +10,10 @@ dependencies:
   flutter:
     sdk: flutter
 
+  flutter_localizations:
+    sdk: flutter
+  intl: any
+
   # service
   appwrite: ^14.0.0
   
@@ -49,6 +53,7 @@ dependency_overrides:
   flutter_web_auth_2: ^4.1.0
 
 flutter:
+  generate: true
   uses-material-design: true
 
   assets:

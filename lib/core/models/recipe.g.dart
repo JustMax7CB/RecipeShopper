@@ -12,8 +12,8 @@ Recipe _$RecipeFromJson(Map<String, dynamic> json) => Recipe(
       ingredients: (json['ingredients'] as List<dynamic>)
           .map((e) => Ingredient.fromJson(e as Map<String, dynamic>))
           .toList(),
-      imagePath:
-          json['imagePath'] as String? ?? "lib/assets/images/recipe_image.jpg",
+      instructions: json['instructions'] as String?,
+      imagePath: json['imagePath'] as String?,
     );
 
 Map<String, dynamic> _$RecipeToJson(Recipe instance) => <String, dynamic>{
@@ -21,4 +21,5 @@ Map<String, dynamic> _$RecipeToJson(Recipe instance) => <String, dynamic>{
       'name': instance.name,
       'ingredients': instance.ingredients,
       'imagePath': instance.imagePath,
+      'instructions': instance.instructions,
     };

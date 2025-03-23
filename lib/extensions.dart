@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:recipeshopper/assets/localization/app_locale.dart';
 import 'package:recipeshopper/core/models/ingredient.dart';
 import 'package:recipeshopper/core/models/recipe.dart';
 import 'package:recipeshopper/core/models/units.dart';
@@ -22,6 +24,7 @@ extension RecipeToModel on Recipe {
         ingredients: ingredients
             .map((ingredient) => _convertIngredientToModel(ingredient))
             .toList(),
+        instructions: instructions,
         imagePath: imagePath,
       );
 
@@ -44,6 +47,7 @@ extension RecipeModelToRecipe on RecipeModel {
       name: name,
       ingredients:
           ingredients.map((model) => _convertToIngredient(model)).toList(),
+      instructions: instructions,
       imagePath: imagePath);
 
   Ingredient _convertToIngredient(IngredientModel model) => Ingredient(
@@ -55,4 +59,16 @@ extension RecipeModelToRecipe on RecipeModel {
 
   Unit _convertToUnit(UnitEnum unum) =>
       Unit.values.firstWhere((e) => e.name == unum.name);
+}
+
+extension LocalizedString on BuildContext {
+  AppLocalizations get localized => AppLocalizations.of(this)!;
+}
+
+extension TextDirectionLocalized on Locale {
+  TextDirection direction(BuildContext ctx) =>
+      Localizations.localeOf(ctx).languageCode !=
+              SupportedLanguages.hebrew.LangCode
+          ? TextDirection.ltr
+          : TextDirection.rtl;
 }

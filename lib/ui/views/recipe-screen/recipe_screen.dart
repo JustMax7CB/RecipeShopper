@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:recipeshopper/core/models/recipe.dart';
+import 'package:recipeshopper/extensions.dart';
 import 'package:recipeshopper/ui/text_styles.dart';
 import 'package:recipeshopper/ui/widgets/image_resource.dart';
 import 'package:recipeshopper/ui/widgets/svg_icon.dart';
@@ -10,7 +11,6 @@ class RecipeScreen extends StatelessWidget {
   const RecipeScreen(this._recipe, {super.key});
 
   final Recipe _recipe;
-
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +64,12 @@ class RecipeScreen extends StatelessWidget {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(_recipe.name, style: titleTextStyle),
+                                Flexible(
+                                    child: Text(
+                                  _recipe.name,
+                                  style: titleTextStyle,
+                                  softWrap: true,
+                                )),
                                 OutlinedButton(
                                   style: OutlinedButton.styleFrom(
                                     backgroundColor: Color(0xFFF3F3F3),
@@ -102,26 +107,21 @@ class RecipeScreen extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text("Ingredients:",
+                              Text(context.localized.ingredients,
                                   style: recipeIngredientsTitleTextStyle),
                               SizedBox(height: 8),
                               ..._recipe.ingredients.map(
                                 (ingredient) => Padding(
                                   padding: const EdgeInsets.only(left: 8.0),
                                   child: Text(
-                                    "• ${ingredient.quantity} ${ingredient.unit.name} ${ingredient.name}",
+                                    "• ${ingredient.quantity} ${ingredient.unit.getLocalizedName(context)} ${ingredient.name}",
                                     style: recipeIngredientsTextStyle,
                                   ),
                                 ),
                               ),
-                              SizedBox(height: 30),
-                              Text("Instructions:",
-                                  style: recipeIngredientsTitleTextStyle),
-                              SizedBox(height: 8),
-                              Text(
-                                "To make sushi, start by rinsing and cooking sushi rice, then mix it with rice vinegar, sugar, and salt before letting it cool. Prepare your fillings by slicing fresh fish, vegetables, or other desired ingredients. Place a sheet of nori on a bamboo mat, spread an even layer of rice over it, and add the fillings. Using the mat, carefully roll everything into a tight cylinder, then slice it into bite-sized pieces. Serve with soy sauce, wasabi, and pickled ginger.",
-                                style: recipeIngredientsTextStyle,
-                              ),
+                              if (_recipe.instructions != null &&
+                                  _recipe.instructions!.isNotEmpty)
+                                instructions(context)
                             ],
                           ),
                         ),
@@ -136,6 +136,19 @@ class RecipeScreen extends StatelessWidget {
       ),
     );
   }
+
+  Widget instructions(BuildContext context) => Column(
+        children: [
+          SizedBox(height: 30),
+          Text(context.localized.instructions,
+              style: recipeIngredientsTitleTextStyle),
+          SizedBox(height: 8),
+          Text(
+            _recipe.instructions!,
+            style: recipeIngredientsTextStyle,
+          ),
+        ],
+      );
 
   Widget imageWidget() => _recipe.isPlaceholder
       ? Container(

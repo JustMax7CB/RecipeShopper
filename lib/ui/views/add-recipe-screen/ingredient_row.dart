@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:recipeshopper/core/models/ingredient.dart';
 import 'package:recipeshopper/core/models/units.dart';
+import 'package:recipeshopper/extensions.dart';
 import 'package:recipeshopper/ui/text_styles.dart';
 
 class IngredientRow extends StatefulWidget {
@@ -57,7 +58,7 @@ class _IngredientRowState extends State<IngredientRow>
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Flexible(
-            flex: 4,
+            flex: 5,
             child: TextFormField(
               controller: widget._name,
               decoration: InputDecoration(
@@ -67,15 +68,15 @@ class _IngredientRowState extends State<IngredientRow>
                   borderRadius: BorderRadius.circular(5),
                   borderSide: BorderSide(color: Color(0xFFEFEFEF), width: 1),
                 ),
-                contentPadding: EdgeInsets.only(left: 7),
-                hintText: "Ingredient",
+                contentPadding: EdgeInsets.symmetric(horizontal: 8),
+                hintText: context.localized.ingredient,
                 hintStyle: fieldHintTextStyle,
               ),
               keyboardType: TextInputType.text,
             ),
           ),
           Flexible(
-            flex: 2,
+            flex: 3,
             child: TextFormField(
               controller: widget._amount,
               decoration: InputDecoration(
@@ -85,8 +86,8 @@ class _IngredientRowState extends State<IngredientRow>
                   borderRadius: BorderRadius.circular(5),
                   borderSide: BorderSide(color: Color(0xFFEFEFEF), width: 1),
                 ),
-                contentPadding: EdgeInsets.only(left: 7),
-                hintText: "Amount",
+                contentPadding: EdgeInsets.symmetric(horizontal: 8),
+                hintText: context.localized.amount,
                 hintStyle: fieldHintTextStyle,
               ),
               keyboardType: TextInputType.number,
@@ -103,11 +104,17 @@ class _IngredientRowState extends State<IngredientRow>
               child: DropdownButton(
                 underline: SizedBox(),
                 style: fieldHintTextStyle.copyWith(color: Colors.black),
-                padding: EdgeInsets.only(left: 7),
+                padding: EdgeInsets.only(left: 5),
                 value: widget._selectedUnit,
                 items: Unit.values
-                    .map((unit) =>
-                        DropdownMenuItem(value: unit, child: Text(unit.name)))
+                    .map(
+                      (unit) => DropdownMenuItem(
+                        value: unit,
+                        child: Text(
+                          unit.getLocalizedName(context),
+                        ),
+                      ),
+                    )
                     .toList(),
                 onChanged: (value) {
                   setState(() {

@@ -44,5 +44,11 @@
 	<string>Photo library permission needed for assigning recipe images</string>
     <key>NSCameraUsageDescription</key>
     <string>Camera usage permission needed for taking recipe photos</string>
+    <key>CFBundleLocalizations</key>
+    <array>
+      <string>en</string>
+      <string>he</string>
+      <string>ru</string>
+    </array>
 </dict>
 </plist>

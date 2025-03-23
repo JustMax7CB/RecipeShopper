@@ -40,7 +40,7 @@ class AddRecipeViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> createRecipe(String name) async {
+  Future<void> createRecipe() async {
     String? savedImagePath;
     if (_selectedImage != null) {
       savedImagePath = await _saveImageToLocal(_selectedImage!);
@@ -50,9 +50,10 @@ class AddRecipeViewModel extends ChangeNotifier {
 
     final recipe = Recipe(
         id: uuid.v4(),
-        name: name,
+        name: recipeNameController.text,
         ingredients: ingredients.map((ingredient) => ingredient.model).toList(),
-        imagePath: savedImagePath);
+        imagePath: savedImagePath,
+        instructions: recipeInstructionsController.text);
 
     await _recipeRepository.addRecipe(recipe);
   }

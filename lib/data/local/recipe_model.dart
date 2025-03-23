@@ -20,10 +20,14 @@ class RecipeModel {
   @HiveField(3)
   final String? imagePath;
 
+  @HiveField(4)
+  final String? instructions;
+
   RecipeModel(
       {required this.id,
       required this.name,
       required this.ingredients,
+      this.instructions,
       this.imagePath});
 
   factory RecipeModel.fromJson(Map<String, dynamic> json) {
@@ -35,6 +39,7 @@ class RecipeModel {
             .map((ingredient) =>
                 IngredientModel.fromJson(jsonDecode(ingredient)))
             .toList(),
+        instructions: json["instructions"],
         imagePath: json["imagePath"]);
   }
 

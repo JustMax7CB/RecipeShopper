@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:recipeshopper/extensions.dart';
 import 'package:recipeshopper/ui/widgets/image_resource.dart';
 import 'package:recipeshopper/ui/widgets/svg_icon.dart';
 
@@ -40,7 +41,7 @@ class _HomeBottomNavbarState extends State<HomeBottomNavbar> {
             elevation: 0,
             items: [
               BottomNavigationBarItem(
-                label: "Home",
+                label: context.localized.home,
                 icon: Container(
                   padding: selectedIndex == 0 ? EdgeInsets.all(8) : null,
                   decoration: selectedIndex == 0
@@ -56,7 +57,7 @@ class _HomeBottomNavbarState extends State<HomeBottomNavbar> {
                 ),
               ),
               BottomNavigationBarItem(
-                label: "Search",
+                label: context.localized.search,
                 icon: Container(
                   padding: selectedIndex == 1 ? EdgeInsets.all(8) : null,
                   decoration: selectedIndex == 1
@@ -72,7 +73,7 @@ class _HomeBottomNavbarState extends State<HomeBottomNavbar> {
                 ),
               ),
               BottomNavigationBarItem(
-                label: "Favorites",
+                label: context.localized.favorites,
                 icon: Container(
                   padding: selectedIndex == 2 ? EdgeInsets.all(8) : null,
                   decoration: selectedIndex == 2
@@ -88,7 +89,7 @@ class _HomeBottomNavbarState extends State<HomeBottomNavbar> {
                 ),
               ),
               BottomNavigationBarItem(
-                label: "Settings",
+                label: context.localized.settings,
                 icon: Container(
                   padding: selectedIndex == 3 ? EdgeInsets.all(8) : null,
                   decoration: selectedIndex == 3
@@ -104,7 +105,7 @@ class _HomeBottomNavbarState extends State<HomeBottomNavbar> {
                 ),
               ),
               BottomNavigationBarItem(
-                label: "Profile",
+                label: context.localized.profile,
                 icon: Container(
                   padding: selectedIndex == 4 ? EdgeInsets.all(8) : null,
                   decoration: selectedIndex == 4

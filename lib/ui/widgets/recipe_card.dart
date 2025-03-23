@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:recipeshopper/core/models/recipe.dart';
+import 'package:recipeshopper/ui/routes.dart';
 import 'package:recipeshopper/ui/text_styles.dart';
 
 class RecipeCard extends StatefulWidget {
@@ -26,8 +27,8 @@ class _RecipeCardState extends State<RecipeCard> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () =>
-          Navigator.pushNamed(context, "/recipe", arguments: widget._recipe),
+      onTap: () => Navigator.pushNamed(context, Routes.recipe.path,
+          arguments: widget._recipe),
       child: Container(
         width: 160,
         height: 145,

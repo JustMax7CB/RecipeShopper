@@ -14,7 +14,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
       centerTitle: true,
       actions: [
         Container(
-          margin: EdgeInsets.only(right: 10),
+          margin: EdgeInsets.symmetric(horizontal: 10),
           width: 36,
           height: 36,
           decoration: BoxDecoration(

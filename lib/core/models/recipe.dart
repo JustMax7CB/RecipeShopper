@@ -13,11 +13,13 @@ class Recipe implements LocalEntity {
   final String name;
   final List<Ingredient> ingredients;
   final String? imagePath;
+  final String? instructions;
 
   Recipe({
     required this.id,
     required this.name,
     required this.ingredients,
+    this.instructions,
     String? imagePath,
   }) : imagePath = imagePath ?? "lib/assets/images/food_placeholder.png";
 
@@ -30,11 +32,14 @@ class Recipe implements LocalEntity {
   bool get isPlaceholder =>
       imagePath == "lib/assets/images/food_placeholder.png";
 
-  Recipe copyWith({String? name, String? imagePath}) => Recipe(
-      id: id,
-      name: name ?? this.name,
-      ingredients: ingredients,
-      imagePath: imagePath ?? this.imagePath);
+  Recipe copyWith({String? name, String? imagePath, String? instructions}) =>
+      Recipe(
+        id: id,
+        name: name ?? this.name,
+        ingredients: ingredients,
+        instructions: instructions ?? this.instructions,
+        imagePath: imagePath ?? this.imagePath,
+      );
 
   @override
   String get key => id;

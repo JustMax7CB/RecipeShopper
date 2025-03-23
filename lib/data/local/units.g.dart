@@ -15,12 +15,14 @@ class UnitEnumAdapter extends TypeAdapter<UnitEnum> {
     switch (reader.readByte()) {
       case 0:
         return UnitEnum.kg;
-      case 2:
+      case 1:
         return UnitEnum.grams;
-      case 3:
+      case 2:
         return UnitEnum.liters;
+      case 3:
+        return UnitEnum.milliliters;
       case 4:
-        return UnitEnum.pieces;
+        return UnitEnum.units;
       case 5:
         return UnitEnum.cups;
       case 6:
@@ -39,12 +41,15 @@ class UnitEnumAdapter extends TypeAdapter<UnitEnum> {
         writer.writeByte(0);
         break;
       case UnitEnum.grams:
-        writer.writeByte(2);
+        writer.writeByte(1);
         break;
       case UnitEnum.liters:
+        writer.writeByte(2);
+        break;
+      case UnitEnum.milliliters:
         writer.writeByte(3);
         break;
-      case UnitEnum.pieces:
+      case UnitEnum.units:
         writer.writeByte(4);
         break;
       case UnitEnum.cups:

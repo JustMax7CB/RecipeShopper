@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:recipeshopper/extensions.dart';
+import 'package:recipeshopper/ui/routes.dart';
 import 'package:recipeshopper/ui/text_styles.dart';
 import 'package:recipeshopper/ui/viewmodels/home_viewmodel.dart';
 import 'package:recipeshopper/ui/views/home-screen/home_app_bar.dart';
@@ -44,11 +46,12 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("Recipes", style: titleTextStyle),
+                      Text(context.localized.recipes, style: titleTextStyle),
                       Center(
                         child: InkWell(
                             onTap: () {
-                              Navigator.pushNamed(context, "/addRecipe");
+                              Navigator.pushNamed(
+                                  context, Routes.addRecipe.path);
                             },
                             child: SvgIcon(icon: LocalIcons.addRecipe)),
                       )
@@ -70,7 +73,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     }
                     if (viewModel.recipes.isEmpty) {
                       return Center(
-                        child: Text("No recipes found"),
+                        child: Text(context.localized.noRecipes),
                       );
                     }
                     return RefreshIndicator(
