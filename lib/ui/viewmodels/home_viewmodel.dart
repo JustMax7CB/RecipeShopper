@@ -48,12 +48,5 @@ class HomeViewModel extends ChangeNotifier {
     box.listenable().addListener(_hiveListener!);
   }
 
-  Future<void> updateRecipes() async {
-    _isLoading = true;
-    notifyListeners();
-
-    final recipeList = await _recipeRepository.getRecipes();
-  }
-
   Future<void> createShoppingList() async {}
 }
