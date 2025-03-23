@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:recipeshopper/extensions.dart';
+import 'package:recipeshopper/ui/colors.dart';
 import 'package:recipeshopper/ui/widgets/image_resource.dart';
 import 'package:recipeshopper/ui/widgets/svg_icon.dart';
 
@@ -47,7 +48,7 @@ class _HomeBottomNavbarState extends State<HomeBottomNavbar> {
                   decoration: selectedIndex == 0
                       ? BoxDecoration(
                           borderRadius: BorderRadius.circular(12),
-                          color: Color.fromRGBO(217, 217, 217, 0.5),
+                          color: AppColors.bottomNavbarSelectedBgColor,
                         )
                       : null,
                   child: SvgIcon(
@@ -63,7 +64,7 @@ class _HomeBottomNavbarState extends State<HomeBottomNavbar> {
                   decoration: selectedIndex == 1
                       ? BoxDecoration(
                           borderRadius: BorderRadius.circular(12),
-                          color: Color.fromRGBO(217, 217, 217, 0.5),
+                          color: AppColors.bottomNavbarSelectedBgColor,
                         )
                       : null,
                   child: SvgIcon(
@@ -79,7 +80,7 @@ class _HomeBottomNavbarState extends State<HomeBottomNavbar> {
                   decoration: selectedIndex == 2
                       ? BoxDecoration(
                           borderRadius: BorderRadius.circular(12),
-                          color: Color.fromRGBO(217, 217, 217, 0.5),
+                          color: AppColors.bottomNavbarSelectedBgColor,
                         )
                       : null,
                   child: SvgIcon(
@@ -95,7 +96,7 @@ class _HomeBottomNavbarState extends State<HomeBottomNavbar> {
                   decoration: selectedIndex == 3
                       ? BoxDecoration(
                           borderRadius: BorderRadius.circular(12),
-                          color: Color.fromRGBO(217, 217, 217, 0.5),
+                          color: AppColors.bottomNavbarSelectedBgColor,
                         )
                       : null,
                   child: SvgIcon(
@@ -111,7 +112,7 @@ class _HomeBottomNavbarState extends State<HomeBottomNavbar> {
                   decoration: selectedIndex == 4
                       ? BoxDecoration(
                           borderRadius: BorderRadius.circular(12),
-                          color: Color.fromRGBO(217, 217, 217, 0.5),
+                          color: AppColors.bottomNavbarSelectedBgColor,
                         )
                       : null,
                   child: SvgIcon(

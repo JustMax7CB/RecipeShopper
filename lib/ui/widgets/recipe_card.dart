@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:recipeshopper/core/models/recipe.dart';
+import 'package:recipeshopper/ui/colors.dart';
 import 'package:recipeshopper/ui/routes.dart';
 import 'package:recipeshopper/ui/text_styles.dart';
 
@@ -35,14 +36,14 @@ class _RecipeCardState extends State<RecipeCard> {
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.3),
+              color: Colors.black.withAlpha(80),
               blurRadius: 5,
               offset: Offset(0, 2),
             )
           ],
           borderRadius: BorderRadius.circular(12),
-          color: Color(0xFFF5F5F5),
-          border: Border.all(color: Color.fromRGBO(0, 0, 0, 0.6), width: 0.2),
+          color: AppColors.recipeCardBgColor,
+          border: Border.all(color: AppColors.recipeCardBorderColor, width: 0.2),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -67,8 +68,8 @@ class _RecipeCardState extends State<RecipeCard> {
                           isSelected = value!;
                         });
                       },
-                      fillColor: WidgetStatePropertyAll(Color(0xFFFFFFFF)),
-                      checkColor: Color(0xFF000000),
+                      fillColor: WidgetStatePropertyAll(Colors.black),
+                      checkColor: Colors.white,
                     ),
                   ),
                 ],

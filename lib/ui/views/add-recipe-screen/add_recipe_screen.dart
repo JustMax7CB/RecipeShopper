@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:recipeshopper/extensions.dart';
+import 'package:recipeshopper/ui/colors.dart';
 import 'package:recipeshopper/ui/text_styles.dart';
 import 'package:recipeshopper/ui/viewmodels/add_recipe_viewmodel.dart';
 import 'package:recipeshopper/ui/widgets/image_resource.dart';
@@ -17,16 +18,18 @@ class AddRecipeScreen extends StatelessWidget {
     final AddRecipeViewModel viewModel = context.watch<AddRecipeViewModel>();
 
     return Scaffold(
-      backgroundColor: Color.fromRGBO(255, 255, 255, 0.95),
+      backgroundColor: AppColors.scaffoldBgColor,
       body: SafeArea(
         child: Stack(
           children: [
             SingleChildScrollView(
               child: Container(
                 decoration: BoxDecoration(
-                    image: DecorationImage(
-                        image: ImageResource(ImageRes.fadedWood),
-                        fit: BoxFit.cover)),
+                  image: DecorationImage(
+                    image: ImageResource(ImageRes.fadedWood),
+                    fit: BoxFit.cover,
+                  ),
+                ),
                 child: Column(
                   children: [
                     Stack(
@@ -37,16 +40,18 @@ class AddRecipeScreen extends StatelessWidget {
                           child: Container(
                             height: 250,
                             decoration: BoxDecoration(
-                                boxShadow: [
-                                  BoxShadow(
-                                      color: Color.fromRGBO(0, 0, 0, 0.25),
-                                      offset: Offset(0, 4),
-                                      blurRadius: 4)
-                                ],
-                                color: Color(0xFFF4F4F4),
-                                border: Border(
-                                    bottom: BorderSide(
-                                        color: Colors.black, width: 1))),
+                              boxShadow: [
+                                BoxShadow(
+                                    color: AppColors.blackQuarterOpacity,
+                                    offset: Offset(0, 4),
+                                    blurRadius: 4)
+                              ],
+                              color: AppColors.recipeImageBgColor,
+                              border: Border(
+                                bottom:
+                                    BorderSide(color: Colors.black, width: 1),
+                              ),
+                            ),
                             child: Center(
                               child: viewModel.selectedImage == null
                                   ? SvgIcon(icon: LocalIcons.placeholderImage)
@@ -85,7 +90,7 @@ class AddRecipeScreen extends StatelessWidget {
                                 icon: Icon(
                                   Icons.remove_circle_outline,
                                   size: 25,
-                                  color: Color(0xAAFFFFFF),
+                                  color: AppColors.appBarIconColor,
                                   shadows: [
                                     Shadow(
                                         color: Colors.black,
@@ -104,7 +109,7 @@ class AddRecipeScreen extends StatelessWidget {
                             FocusManager.instance.primaryFocus?.unfocus(),
                         controller: viewModel.recipeNameController,
                         decoration: InputDecoration(
-                          fillColor: Color(0xFFFEFEFE),
+                          fillColor: AppColors.textFieldFillColor,
                           filled: true,
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(5),
@@ -132,9 +137,9 @@ class AddRecipeScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(8),
                         gradient: LinearGradient(
                             colors: [
-                              Color(0xFFD6C4BD),
-                              Color(0xFFEFEFEF),
-                              Color(0xFF8D7E7E)
+                              AppColors.saveGradientColor1,
+                              AppColors.saveGradientColor2,
+                              AppColors.saveGradientColor3
                             ],
                             begin: Alignment.bottomLeft,
                             end: Alignment.topRight,
@@ -180,13 +185,13 @@ class AddRecipeScreen extends StatelessWidget {
       padding: EdgeInsets.only(top: 5, bottom: 70),
       margin: EdgeInsets.only(bottom: 8),
       decoration: BoxDecoration(
-        color: Color.fromRGBO(244, 244, 244, 0.75),
+        color: AppColors.addRecipeSectionBgColor,
         border: Border(
           bottom: BorderSide(
-            color: Color.fromRGBO(23, 23, 23, 0.75),
+            color: AppColors.addRecipeSectionBorderColor,
           ),
           top: BorderSide(
-            color: Color.fromRGBO(23, 23, 23, 0.75),
+            color: AppColors.addRecipeSectionBorderColor,
           ),
         ),
       ),
@@ -273,7 +278,7 @@ class AddRecipeScreen extends StatelessWidget {
               onTapOutside: (_) =>
                   FocusManager.instance.primaryFocus?.unfocus(),
               decoration: InputDecoration(
-                fillColor: Color(0xFFFEFEFE),
+                fillColor: AppColors.textFieldFillColor,
                 filled: true,
                 hintText: ctx.localized.instructionHint,
                 hintStyle: fieldHintTextStyle,

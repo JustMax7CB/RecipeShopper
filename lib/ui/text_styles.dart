@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:recipeshopper/ui/colors.dart';
 import 'package:recipeshopper/ui/extensions.dart';
 
 final _kalamTextStyle = TextStyle(fontFamily: "Kalam");
@@ -10,7 +11,7 @@ final TextStyle titleTextStyle = TextStyle(
     fontFamily: "Kalam",
     shadows: [
       Shadow(
-        color: Color(0xFF3D6179),
+        color: AppColors.titleShadowColor,
         blurRadius: 4,
         offset: Offset(1, 2),
       )
@@ -20,7 +21,7 @@ final recipeNameTextStyle =
     _kalamTextStyle.copyWith(fontSize: 15, fontWeight: FontWeight.w400);
 
 final fieldHintTextStyle = _kalamTextStyle.copyWith(
-    fontSize: 12, color: Color(0xFF929090), fontWeight: FontWeight.w400);
+    fontSize: 12, color: AppColors.textFieldHintColor, fontWeight: FontWeight.w400);
 
 final newRecipeSectionTitle = _kalamTextStyle.copyWith(
     fontSize: 20, color: Colors.black, fontWeight: FontWeight.w400);

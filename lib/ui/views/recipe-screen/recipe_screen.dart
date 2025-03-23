@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:recipeshopper/core/models/recipe.dart';
 import 'package:recipeshopper/extensions.dart';
+import 'package:recipeshopper/ui/colors.dart';
 import 'package:recipeshopper/ui/text_styles.dart';
 import 'package:recipeshopper/ui/widgets/image_resource.dart';
 import 'package:recipeshopper/ui/widgets/svg_icon.dart';
@@ -72,7 +73,7 @@ class RecipeScreen extends StatelessWidget {
                                 )),
                                 OutlinedButton(
                                   style: OutlinedButton.styleFrom(
-                                    backgroundColor: Color(0xFFF3F3F3),
+                                    backgroundColor: AppColors.recipeEditBtnBgColor,
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(5),
                                       side: BorderSide(
