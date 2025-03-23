@@ -60,6 +60,7 @@ flutter:
     - lib/assets/images/
     - lib/assets/icons/
     - lib/assets/fonts/Kalam/
+    - .env
 
   fonts:
     - family: Kalam
