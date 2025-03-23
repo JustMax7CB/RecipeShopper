@@ -14,10 +14,10 @@ class RecipeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("${_recipe.imagePath}");
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
+        scrolledUnderElevation: 0.0,
         backgroundColor: Colors.transparent,
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
@@ -138,6 +138,7 @@ class RecipeScreen extends StatelessWidget {
   }
 
   Widget instructions(BuildContext context) => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(height: 30),
           Text(context.localized.instructions,

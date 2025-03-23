@@ -97,7 +97,7 @@ class _RecipeCardState extends State<RecipeCard> {
             widget._recipe.imagePath!,
             width: 160,
             height: 145,
-            fit: BoxFit.cover,
+            fit: BoxFit.fitHeight,
           ),
         )
       : Hero(

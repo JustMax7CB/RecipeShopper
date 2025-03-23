@@ -14,8 +14,9 @@ class RemoteRecipeService implements RecipeService {
 
   @override
   Future<void> saveRecipe(Recipe recipe) async {
-    final remoteImageId = await _uploadRecipeImage(recipe.imagePath!);
-
+    final remoteImageId = recipe.isPlaceholder
+        ? recipe.imagePath
+        : await _uploadRecipeImage(recipe.imagePath!);
 
     final newRecipe = recipe.copyWith(imagePath: remoteImageId);
 

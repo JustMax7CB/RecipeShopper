@@ -25,6 +25,9 @@ class AddRecipeViewModel extends ChangeNotifier {
 
   File? get selectedImage => _selectedImage;
 
+  bool _isLoading = false;
+  bool get isLoading => _isLoading;
+
   set selectedImage(File? file) {
     _selectedImage = file;
     notifyListeners();
@@ -41,12 +44,13 @@ class AddRecipeViewModel extends ChangeNotifier {
   }
 
   Future<void> createRecipe() async {
+    _isLoading = true;
+    notifyListeners();
+
     String? savedImagePath;
     if (_selectedImage != null) {
       savedImagePath = await _saveImageToLocal(_selectedImage!);
     }
-
-    print(_selectedImage);
 
     final recipe = Recipe(
         id: uuid.v4(),
@@ -56,6 +60,9 @@ class AddRecipeViewModel extends ChangeNotifier {
         instructions: recipeInstructionsController.text);
 
     await _recipeRepository.addRecipe(recipe);
+
+    _isLoading = false;
+    notifyListeners();
   }
 
   // Function to save the file in the app's document directory
