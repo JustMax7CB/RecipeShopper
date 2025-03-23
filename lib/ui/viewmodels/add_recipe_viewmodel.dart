@@ -62,7 +62,7 @@ class AddRecipeViewModel extends ChangeNotifier {
 
       await _recipeRepository.addRecipe(recipe);
     } on Exception catch (e) {
-      print(e.toString());
+      print('===== Exception: $e');
     } finally {
       _isLoading = false;
       notifyListeners();
