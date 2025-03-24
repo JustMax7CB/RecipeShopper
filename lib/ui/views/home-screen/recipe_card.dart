@@ -7,29 +7,30 @@ import 'package:recipeshopper/ui/routes.dart';
 import 'package:recipeshopper/ui/text_styles.dart';
 
 class RecipeCard extends StatefulWidget {
-  const RecipeCard({
+  RecipeCard({
     super.key,
     required Recipe recipe,
     this.onClickAction,
     required this.deleteAction,
     this.showDelete = false,
+    this.showSelection = false,
   }) : _recipe = recipe;
 
   final Recipe _recipe;
   final GestureTapCallback? onClickAction;
   final Function(Recipe recipe) deleteAction;
   final bool showDelete;
+  final bool showSelection;
+  bool isSelected = false;
 
   @override
   State<RecipeCard> createState() => _RecipeCardState();
 }
 
 class _RecipeCardState extends State<RecipeCard> {
-  bool isSelected = false;
-
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return InkWell(
       onTap: () => Navigator.pushNamed(context, Routes.recipe.path,
           arguments: widget._recipe),
       child: Container(
@@ -57,22 +58,24 @@ class _RecipeCardState extends State<RecipeCard> {
               child: Stack(
                 children: [
                   imageWidget(),
-
                   // Small white square at top-left
-                  Positioned(
-                    top: -5,
-                    left: -5,
-                    child: Checkbox(
-                      side: BorderSide(
-                          width: 1, color: Colors.black, strokeAlign: -0.5),
-                      value: isSelected,
-                      onChanged: (value) {
-                        setState(() {
-                          isSelected = value!;
-                        });
-                      },
-                      fillColor: WidgetStatePropertyAll(Colors.white),
-                      checkColor: Colors.black,
+                  Visibility(
+                    visible: widget.showSelection,
+                    child: Positioned(
+                      top: -5,
+                      left: -5,
+                      child: Checkbox(
+                        side: BorderSide(
+                            width: 1, color: Colors.black, strokeAlign: -0.5),
+                        value: widget.isSelected,
+                        onChanged: (value) {
+                          setState(() {
+                            widget.isSelected = value!;
+                          });
+                        },
+                        fillColor: WidgetStatePropertyAll(Colors.white),
+                        checkColor: Colors.black,
+                      ),
                     ),
                   ),
                   Visibility(
@@ -84,7 +87,13 @@ class _RecipeCardState extends State<RecipeCard> {
                           onPressed: () => widget.deleteAction(widget._recipe),
                           icon: Icon(
                             Icons.cancel,
-                            color: Colors.red,
+                            color: Colors.red[400],
+                            shadows: [
+                              Shadow(
+                                  color: Colors.black,
+                                  offset: Offset(0, 1),
+                                  blurRadius: 4)
+                            ],
                           )),
                     ),
                   ),

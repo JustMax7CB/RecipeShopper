@@ -49,20 +49,24 @@ class _HomeScreenState extends State<HomeScreen> {
                   flex: 1,
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(context.localized.recipes, style: titleTextStyle),
-                        Center(
-                          child: InkWell(
-                              onTap: () {
-                                Navigator.pushNamed(
-                                    context, Routes.addRecipe.path);
-                              },
-                              child: SvgIcon(icon: LocalIcons.addRecipe)),
-                        )
-                      ],
-                    ),
+                    child: viewModel.isDeleteShown
+                        ? Text(context.localized.backToRemoveDelete,
+                            style: backFromDeleteModeTextStyle)
+                        : Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(context.localized.recipes,
+                                  style: titleTextStyle),
+                              Center(
+                                child: InkWell(
+                                    onTap: () {
+                                      Navigator.pushNamed(
+                                          context, Routes.addRecipe.path);
+                                    },
+                                    child: SvgIcon(icon: LocalIcons.addRecipe)),
+                              )
+                            ],
+                          ),
                   ),
                 ),
                 Expanded(
@@ -96,13 +100,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                   crossAxisSpacing: 20,
                                   mainAxisSpacing: 20),
                           itemBuilder: (context, index) {
-                            return GestureDetector(
+                            return InkWell(
                                 onLongPress: () =>
                                     viewModel.switchDeleteVisibility(true),
                                 child: RecipeCard(
                                   recipe: viewModel.recipes[index],
                                   showDelete: viewModel.isDeleteShown,
-                                  deleteAction: (recipe) => viewModel.deleteRecipe(recipe),
+                                  deleteAction: (recipe) =>
+                                      viewModel.deleteRecipe(recipe),
                                 ));
                           },
                         ),

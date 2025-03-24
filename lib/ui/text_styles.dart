@@ -17,6 +17,8 @@ final TextStyle titleTextStyle = TextStyle(
       )
     ]).withStroke(0.7, Colors.black);
 
+final TextStyle backFromDeleteModeTextStyle = titleTextStyle.copyWith(fontSize: 20, shadows: null);
+
 final recipeNameTextStyle =
     _kalamTextStyle.copyWith(fontSize: 15, fontWeight: FontWeight.w400);
 

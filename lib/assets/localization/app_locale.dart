@@ -1,18 +1,15 @@
 import 'dart:ui';
 
-mixin AppLocale {
-  static const String title = "title";
-}
-
 enum SupportedLanguages {
-  english('en'),
-  hebrew('he'),
-  russian('ru');
+  english('en', "US"),
+  hebrew('he', "IL"),
+  russian('ru', "RU");
 
   final String LangCode;
+  final String countryCode;
 
-  const SupportedLanguages(this.LangCode);
+  const SupportedLanguages(this.LangCode,this.countryCode);
 }
 
 List<Locale> get supportedLocales =>
-    SupportedLanguages.values.map((lang) => Locale(lang.LangCode)).toList();
+    SupportedLanguages.values.map((lang) => Locale(lang.LangCode, lang.countryCode)).toList();
