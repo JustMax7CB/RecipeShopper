@@ -7,7 +7,16 @@ import 'package:recipeshopper/ui/colors.dart';
 import 'package:recipeshopper/ui/text_styles.dart';
 
 class IngredientRow extends StatefulWidget {
-  IngredientRow(this.id, {super.key, required this.onDelete});
+  IngredientRow(
+      this.id, {
+        super.key,
+        required this.onDelete,
+        String? name,
+        double? amount,
+        Unit? unit,
+      })  : _name = TextEditingController(text: name ?? ''),
+        _amount = TextEditingController(text: amount?.toString() ?? ''),
+        _selectedUnit = unit ?? Unit.values.first;
 
   final String id;
   final Function(String id) onDelete;
@@ -28,12 +37,12 @@ class IngredientRow extends StatefulWidget {
 
 class _IngredientRowState extends State<IngredientRow>
     with SingleTickerProviderStateMixin {
+
   @override
-  void initState() {
-    widget._name = TextEditingController();
-    widget._amount = TextEditingController();
-    widget._selectedUnit = Unit.values.first;
-    super.initState();
+  void dispose() {
+    widget._name.dispose();
+    widget._amount.dispose();
+    super.dispose();
   }
 
   @override

@@ -7,16 +7,18 @@ import 'package:recipeshopper/ui/routes.dart';
 import 'package:recipeshopper/ui/text_styles.dart';
 
 class RecipeCard extends StatefulWidget {
-  const RecipeCard(
-      {super.key,
-      required Recipe recipe,
-      this.onClickAction,
-      this.onLongPressAction})
-      : _recipe = recipe;
+  const RecipeCard({
+    super.key,
+    required Recipe recipe,
+    this.onClickAction,
+    required this.deleteAction,
+    this.showDelete = false,
+  }) : _recipe = recipe;
 
   final Recipe _recipe;
   final GestureTapCallback? onClickAction;
-  final GestureTapCallback? onLongPressAction;
+  final Function(Recipe recipe) deleteAction;
+  final bool showDelete;
 
   @override
   State<RecipeCard> createState() => _RecipeCardState();
@@ -43,7 +45,8 @@ class _RecipeCardState extends State<RecipeCard> {
           ],
           borderRadius: BorderRadius.circular(12),
           color: AppColors.recipeCardBgColor,
-          border: Border.all(color: AppColors.recipeCardBorderColor, width: 0.2),
+          border:
+              Border.all(color: AppColors.recipeCardBorderColor, width: 0.2),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -68,8 +71,21 @@ class _RecipeCardState extends State<RecipeCard> {
                           isSelected = value!;
                         });
                       },
-                      fillColor: WidgetStatePropertyAll(Colors.black),
-                      checkColor: Colors.white,
+                      fillColor: WidgetStatePropertyAll(Colors.white),
+                      checkColor: Colors.black,
+                    ),
+                  ),
+                  Visibility(
+                    visible: widget.showDelete,
+                    child: Positioned(
+                      top: -5,
+                      right: -5,
+                      child: IconButton(
+                          onPressed: () => widget.deleteAction(widget._recipe),
+                          icon: Icon(
+                            Icons.cancel,
+                            color: Colors.red,
+                          )),
                     ),
                   ),
                 ],

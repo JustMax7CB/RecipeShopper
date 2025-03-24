@@ -23,24 +23,30 @@ class RecipeModel {
   @HiveField(4)
   final String? instructions;
 
-  RecipeModel(
-      {required this.id,
-      required this.name,
-      required this.ingredients,
-      this.instructions,
-      this.imagePath});
+  @HiveField(5)
+  final String? remoteFileId;
+
+  RecipeModel({
+    required this.id,
+    required this.name,
+    required this.ingredients,
+    this.instructions,
+    this.imagePath,
+    this.remoteFileId,
+  });
 
   factory RecipeModel.fromJson(Map<String, dynamic> json) {
     final ingredients = json["ingredients"] as List<String>;
     return RecipeModel(
-        id: json["id"],
-        name: json["name"],
-        ingredients: ingredients
-            .map((ingredient) =>
-                IngredientModel.fromJson(jsonDecode(ingredient)))
-            .toList(),
-        instructions: json["instructions"],
-        imagePath: json["imagePath"]);
+      id: json["id"],
+      name: json["name"],
+      ingredients: ingredients
+          .map((ingredient) => IngredientModel.fromJson(jsonDecode(ingredient)))
+          .toList(),
+      instructions: json["instructions"],
+      imagePath: json["imagePath"],
+      remoteFileId: json["remoteFileId"],
+    );
   }
 
   @override

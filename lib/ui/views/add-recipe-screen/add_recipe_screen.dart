@@ -3,19 +3,25 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:recipeshopper/core/models/recipe.dart';
 import 'package:recipeshopper/extensions.dart';
 import 'package:recipeshopper/ui/colors.dart';
+import 'package:recipeshopper/ui/routes.dart';
 import 'package:recipeshopper/ui/text_styles.dart';
 import 'package:recipeshopper/ui/viewmodels/add_recipe_viewmodel.dart';
 import 'package:recipeshopper/ui/widgets/image_resource.dart';
 import 'package:recipeshopper/ui/widgets/svg_icon.dart';
 
 class AddRecipeScreen extends StatelessWidget {
-  AddRecipeScreen({super.key});
+  const AddRecipeScreen({super.key, Recipe? recipe}) : _recipe = recipe;
+
+  final Recipe? _recipe;
 
   @override
   Widget build(BuildContext context) {
     final AddRecipeViewModel viewModel = context.watch<AddRecipeViewModel>();
+
+    if (_recipe != null && viewModel.updatedRecipe == null) viewModel.loadRecipe(_recipe);
 
     return Scaffold(
       backgroundColor: AppColors.scaffoldBgColor,
@@ -151,11 +157,7 @@ class AddRecipeScreen extends StatelessWidget {
                             shadowColor: Colors.transparent,
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(8))),
-                        onPressed: () {
-                          viewModel.createRecipe().then(
-                                (value) => Navigator.pop(context),
-                              );
-                        },
+                        onPressed: () => saveAction(context, viewModel),
                         child: Text(
                           context.localized.save,
                           style: newRecipeSaveButtonTextStyle,
@@ -341,5 +343,23 @@ class AddRecipeScreen extends StatelessWidget {
         ));
       },
     );
+  }
+
+  void saveAction(BuildContext context, AddRecipeViewModel viewModel) async {
+    if (viewModel.isUpdate) {
+      viewModel.updateRecipe().then((recipe) {
+        print("======= Updated recipe: $recipe");
+        if (recipe != null) {
+          Navigator.pushReplacementNamed(context, Routes.recipe.path,
+              arguments: recipe);
+        } else {
+          print("==== Failed to update the recipe");
+        }
+      });
+
+      return;
+    }
+
+    viewModel.createRecipe().then((_) => Navigator.pop(context));
   }
 }

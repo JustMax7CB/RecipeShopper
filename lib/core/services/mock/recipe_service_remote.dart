@@ -49,12 +49,13 @@ class RemoteRecipeServiceMock implements RecipeService {
   ]);
 
   @override
-  Future<void> saveRecipe(Recipe recipe) async {
+  Future<Recipe> saveRecipe(Recipe recipe) async {
     await Future.delayed(Duration(milliseconds: 1000));
+    return recipe;
   }
 
   @override
-  Future<void> deleteRecipe(String id) async {
+  Future<void> deleteRecipe(String id, String imageFileId) async {
     await Future.delayed(Duration(milliseconds: 1000));
   }
 
@@ -70,7 +71,7 @@ class RemoteRecipeServiceMock implements RecipeService {
   }
 
   @override
-  Future<void> updateRecipe(Recipe updatedRecipe) async {
+  Future<void> updateRecipe(Recipe updatedRecipe, Recipe originalRecipe) async {
     await Future.delayed(Duration(milliseconds: 1000));
   }
 }

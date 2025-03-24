@@ -18,13 +18,17 @@ class AddRecipeViewModel extends ChangeNotifier {
 
   final Uuid uuid = Uuid();
 
+  Recipe? _originalRecipe;
+  Recipe? _updatedRecipe;
   final List<IngredientRow> ingredients = [];
   final recipeNameController = TextEditingController();
   final recipeInstructionsController = TextEditingController();
   File? _selectedImage;
-
   File? get selectedImage => _selectedImage;
 
+  
+  bool get isUpdate => _originalRecipe != null;
+  Recipe? get updatedRecipe => _updatedRecipe;
   bool _isLoading = false;
   bool get isLoading => _isLoading;
 
@@ -33,7 +37,31 @@ class AddRecipeViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  void _clearIngredients() {
+    ingredients.clear();
+  }
+
+  void loadRecipe(Recipe recipe) {
+    print("===== loading recipe: $recipe");
+    _originalRecipe = _updatedRecipe = recipe;
+    _clearIngredients();
+
+    recipeNameController.text = _originalRecipe!.name;
+    recipeInstructionsController.text = _originalRecipe?.instructions ?? "";
+    if (recipe.imagePath != null) _selectedImage = File(_originalRecipe!.imagePath!);
+    ingredients.addAll(
+      _originalRecipe!.ingredients.map((ingredient) => IngredientRow(
+            ingredient.id,
+            onDelete: removeIngredient,
+            name: ingredient.name,
+            amount: ingredient.quantity,
+            unit: ingredient.unit,
+          )),
+    );
+  }
+
   void removeIngredient(String id) {
+    print("==== Removing ingredient with id: $id");
     ingredients.removeWhere((ingredient) => ingredient.id == id);
     notifyListeners();
   }
@@ -41,6 +69,35 @@ class AddRecipeViewModel extends ChangeNotifier {
   void addIngredient() {
     ingredients.add(IngredientRow(uuid.v4(), onDelete: removeIngredient));
     notifyListeners();
+  }
+
+  Future<Recipe?> updateRecipe() async {
+    _isLoading = true;
+    notifyListeners();
+
+    try {
+      String? savedImagePath = _originalRecipe?.imagePath;
+      if (_selectedImage != null && _selectedImage!.path != _originalRecipe!.imagePath) {
+        savedImagePath = await _saveImageToLocal(_selectedImage!);
+      }
+
+      final updatedRecipe = Recipe(
+          id: _originalRecipe!.id,
+          name: recipeNameController.text,
+          ingredients:
+              ingredients.map((ingredient) => ingredient.model).toList(),
+          imagePath: savedImagePath,
+          instructions: recipeInstructionsController.text);
+
+
+      return await _recipeRepository.updateRecipe(updatedRecipe, _originalRecipe!);
+    } on Exception catch (e) {
+      print('===== Exception: $e');
+      return null;
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
   }
 
   Future<void> createRecipe() async {
@@ -56,7 +113,8 @@ class AddRecipeViewModel extends ChangeNotifier {
       final recipe = Recipe(
           id: uuid.v4(),
           name: recipeNameController.text,
-          ingredients: ingredients.map((ingredient) => ingredient.model).toList(),
+          ingredients:
+              ingredients.map((ingredient) => ingredient.model).toList(),
           imagePath: savedImagePath,
           instructions: recipeInstructionsController.text);
 
@@ -67,8 +125,6 @@ class AddRecipeViewModel extends ChangeNotifier {
       _isLoading = false;
       notifyListeners();
     }
-
-
   }
 
   // Function to save the file in the app's document directory

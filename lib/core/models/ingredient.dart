@@ -39,6 +39,6 @@ class Ingredient implements LocalEntity {
 
   @override
   String toString() {
-    return "Ingredient: [name: $name, quantity: $quantity, unit: $unit]";
+    return "Ingredient: [id: $id, name: $name, quantity: $quantity, unit: $unit]";
   }
 }

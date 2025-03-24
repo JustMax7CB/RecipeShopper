@@ -19,14 +19,14 @@ extension DocumentLog on Map<String, dynamic> {
 
 extension RecipeToModel on Recipe {
   RecipeModel convertRecipeToModel() => RecipeModel(
-        id: id,
-        name: name,
-        ingredients: ingredients
-            .map((ingredient) => _convertIngredientToModel(ingredient))
-            .toList(),
-        instructions: instructions,
-        imagePath: imagePath,
-      );
+      id: id,
+      name: name,
+      ingredients: ingredients
+          .map((ingredient) => _convertIngredientToModel(ingredient))
+          .toList(),
+      instructions: instructions,
+      imagePath: imagePath,
+      remoteFileId: remoteFileId);
 
   IngredientModel _convertIngredientToModel(Ingredient ingredient) =>
       IngredientModel(
@@ -48,7 +48,8 @@ extension RecipeModelToRecipe on RecipeModel {
       ingredients:
           ingredients.map((model) => _convertToIngredient(model)).toList(),
       instructions: instructions,
-      imagePath: imagePath);
+      imagePath: imagePath,
+      remoteFileId: remoteFileId);
 
   Ingredient _convertToIngredient(IngredientModel model) => Ingredient(
         id: model.id,
@@ -71,4 +72,10 @@ extension TextDirectionLocalized on Locale {
               SupportedLanguages.hebrew.LangCode
           ? TextDirection.ltr
           : TextDirection.rtl;
+}
+
+extension RouteArguments on BuildContext {
+  T? getArgument<T>() {
+    return ModalRoute.of(this)?.settings.arguments as T?;
+  }
 }

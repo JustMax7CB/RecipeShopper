@@ -1,5 +1,4 @@
 import 'package:flutter/foundation.dart';
-import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:injectable/injectable.dart';
 import 'package:recipeshopper/core/models/recipe.dart';
@@ -55,21 +54,26 @@ class LocalRecipeService implements RecipeService {
   }
 
   @override
-  Future<void> saveRecipe(Recipe recipe) async {
+  Future<Recipe> saveRecipe(Recipe recipe) async {
     final box = Hive.box<RecipeModel>(_boxName);
     await box.put(recipe.id, recipe.convertRecipeToModel());
+    return recipe;
   }
 
   @override
-  Future<void> updateRecipe(Recipe recipe) async {
+  Future<Recipe> updateRecipe(Recipe recipe, Recipe original) async {
     final box = Hive.box<RecipeModel>(_boxName);
     if (box.containsKey(recipe.id)) {
       await box.put(recipe.id, recipe.convertRecipeToModel());
+      return recipe;
+    } else {
+      throw Exception(
+          "Recipe with ID ${recipe.id} not found in local storage.");
     }
   }
 
   @override
-  Future<void> deleteRecipe(String id) async {
+  Future<void> deleteRecipe(String id, String imageFileId) async {
     final box = Hive.box<RecipeModel>(_boxName);
     await box.delete(id);
   }
