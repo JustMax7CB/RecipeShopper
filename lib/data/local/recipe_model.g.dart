@@ -22,13 +22,14 @@ class RecipeModelAdapter extends TypeAdapter<RecipeModel> {
       ingredients: (fields[2] as List).cast<IngredientModel>(),
       instructions: fields[4] as String?,
       imagePath: fields[3] as String?,
+      remoteFileId: fields[5] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, RecipeModel obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(6)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -38,7 +39,9 @@ class RecipeModelAdapter extends TypeAdapter<RecipeModel> {
       ..writeByte(3)
       ..write(obj.imagePath)
       ..writeByte(4)
-      ..write(obj.instructions);
+      ..write(obj.instructions)
+      ..writeByte(5)
+      ..write(obj.remoteFileId);
   }
 
   @override

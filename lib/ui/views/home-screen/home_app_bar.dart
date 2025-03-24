@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:recipeshopper/locale_provider.dart';
+import 'package:recipeshopper/ui/colors.dart';
 import 'package:recipeshopper/ui/widgets/image_resource.dart';
 import 'package:recipeshopper/ui/widgets/svg_icon.dart';
 
@@ -23,10 +26,10 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
               fit: BoxFit.cover,
             ),
             borderRadius: BorderRadius.circular(6),
-            border: Border.all(color: Color(0xFF635648), width: 1),
+            border: Border.all(color: AppColors.appBarBorderColor, width: 1),
             boxShadow: [
               BoxShadow(
-                color: Color.fromRGBO(0, 0, 0, 0.25),
+                color: AppColors.blackQuarterOpacity,
                 offset: Offset(1, 1),
                 blurRadius: 1,
                 spreadRadius: 1,
@@ -35,8 +38,14 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
           ),
           child: Padding(
             padding: const EdgeInsets.all(4.0),
-            child: SvgIcon(
-              icon: LocalIcons.shoppingCart,
+            child: InkWell(
+              onTap: () {
+                Provider.of<LocaleProvider>(context, listen: false)
+                    .cycleLanguage();
+              },
+              child: SvgIcon(
+                icon: LocalIcons.shoppingCart,
+              ),
             ),
           ),
         )

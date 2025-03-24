@@ -31,12 +31,11 @@ void main() async {
                   create: (_) => locate<HomeViewModel>(),
                   child: HomeScreen(),
                 ),
-            "/addRecipe": (_) => ChangeNotifierProvider(
+            "/addRecipe": (ctx) => ChangeNotifierProvider(
                   create: (_) => locate<AddRecipeViewModel>(),
-                  child: AddRecipeScreen(),
+                  child: AddRecipeScreen(recipe: ctx.getArgument<Recipe?>()),
                 ),
-            "/recipe": (_) =>
-                RecipeScreen(ModalRoute.of(_)!.settings.arguments as Recipe)
+            "/recipe": (ctx) => RecipeScreen(ctx.getArgument<Recipe>()!)
           },
           debugShowCheckedModeBanner: false,
           builder: (context, child) => Directionality(

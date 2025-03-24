@@ -13,12 +13,10 @@ class RemoteRecipeService implements RecipeService {
   RemoteRecipeService() : appWriteDB = Databases(locate<Account>().client);
 
   @override
-  Future<void> saveRecipe(Recipe recipe) async {
-    final remoteImageId = recipe.isPlaceholder
-        ? recipe.imagePath
-        : await _uploadRecipeImage(recipe.imagePath!);
-
-    final newRecipe = recipe.copyWith(imagePath: remoteImageId);
+  Future<Recipe> saveRecipe(Recipe recipe) async {
+    final newRecipe = recipe.copyWith(
+        imagePath: recipe.imagePath,
+        remoteFileId: await _uploadRecipeImage(recipe.imagePath!));
 
     final response = await appWriteDB.createDocument(
         databaseId: EnvVariables.dbId,
@@ -27,6 +25,8 @@ class RemoteRecipeService implements RecipeService {
         data: newRecipe.toJson());
 
     response.data.printPretty();
+
+    return newRecipe;
   }
 
   Future<String> _uploadRecipeImage(String path) async {
@@ -41,12 +41,21 @@ class RemoteRecipeService implements RecipeService {
     return response.$id;
   }
 
+  Future<void> _deleteRecipeImage(String fileId) async {
+    final storage = Storage(locate<Client>());
+
+  await storage.deleteFile(
+        bucketId: EnvVariables.recipeImagesBucketId, fileId: fileId);
+  }
+
   @override
-  Future<void> deleteRecipe(String id) async {
+  Future<void> deleteRecipe(String id, String imageFileId) async {
     await appWriteDB.deleteDocument(
         databaseId: EnvVariables.dbId,
         collectionId: EnvVariables.recipeCollectionId,
         documentId: id);
+
+    await _deleteRecipeImage(imageFileId);
   }
 
   @override
@@ -69,12 +78,21 @@ class RemoteRecipeService implements RecipeService {
   }
 
   @override
-  Future<void> updateRecipe(Recipe updatedRecipe) async {
+  Future<void> updateRecipe(Recipe updatedRecipe, Recipe originalRecipe) async {
+    final remoteImageId = updatedRecipe.isPlaceholder
+        ? updatedRecipe.imagePath
+        : (updatedRecipe.imagePath != null &&
+                updatedRecipe.imagePath != originalRecipe.imagePath
+            ? await _uploadRecipeImage(updatedRecipe.imagePath!)
+            : null);
+
+    final newRecipe = updatedRecipe.copyWith(imagePath: remoteImageId);
+
     final response = await appWriteDB.updateDocument(
         databaseId: EnvVariables.dbId,
         collectionId: EnvVariables.recipeCollectionId,
         documentId: updatedRecipe.id,
-        data: updatedRecipe.toJson());
+        data: newRecipe.toJson());
 
     response.data.printPretty();
   }

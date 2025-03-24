@@ -2,31 +2,35 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:recipeshopper/core/models/recipe.dart';
+import 'package:recipeshopper/ui/colors.dart';
 import 'package:recipeshopper/ui/routes.dart';
 import 'package:recipeshopper/ui/text_styles.dart';
 
 class RecipeCard extends StatefulWidget {
-  const RecipeCard(
-      {super.key,
-      required Recipe recipe,
-      this.onClickAction,
-      this.onLongPressAction})
-      : _recipe = recipe;
+  RecipeCard({
+    super.key,
+    required Recipe recipe,
+    this.onClickAction,
+    required this.deleteAction,
+    this.showDelete = false,
+    this.showSelection = false,
+  }) : _recipe = recipe;
 
   final Recipe _recipe;
   final GestureTapCallback? onClickAction;
-  final GestureTapCallback? onLongPressAction;
+  final Function(Recipe recipe) deleteAction;
+  final bool showDelete;
+  final bool showSelection;
+  bool isSelected = false;
 
   @override
   State<RecipeCard> createState() => _RecipeCardState();
 }
 
 class _RecipeCardState extends State<RecipeCard> {
-  bool isSelected = false;
-
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return InkWell(
       onTap: () => Navigator.pushNamed(context, Routes.recipe.path,
           arguments: widget._recipe),
       child: Container(
@@ -35,14 +39,15 @@ class _RecipeCardState extends State<RecipeCard> {
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.3),
+              color: Colors.black.withAlpha(80),
               blurRadius: 5,
               offset: Offset(0, 2),
             )
           ],
           borderRadius: BorderRadius.circular(12),
-          color: Color(0xFFF5F5F5),
-          border: Border.all(color: Color.fromRGBO(0, 0, 0, 0.6), width: 0.2),
+          color: AppColors.recipeCardBgColor,
+          border:
+              Border.all(color: AppColors.recipeCardBorderColor, width: 0.2),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -53,22 +58,43 @@ class _RecipeCardState extends State<RecipeCard> {
               child: Stack(
                 children: [
                   imageWidget(),
-
                   // Small white square at top-left
-                  Positioned(
-                    top: -5,
-                    left: -5,
-                    child: Checkbox(
-                      side: BorderSide(
-                          width: 1, color: Colors.black, strokeAlign: -0.5),
-                      value: isSelected,
-                      onChanged: (value) {
-                        setState(() {
-                          isSelected = value!;
-                        });
-                      },
-                      fillColor: WidgetStatePropertyAll(Color(0xFFFFFFFF)),
-                      checkColor: Color(0xFF000000),
+                  Visibility(
+                    visible: widget.showSelection,
+                    child: Positioned(
+                      top: -5,
+                      left: -5,
+                      child: Checkbox(
+                        side: BorderSide(
+                            width: 1, color: Colors.black, strokeAlign: -0.5),
+                        value: widget.isSelected,
+                        onChanged: (value) {
+                          setState(() {
+                            widget.isSelected = value!;
+                          });
+                        },
+                        fillColor: WidgetStatePropertyAll(Colors.white),
+                        checkColor: Colors.black,
+                      ),
+                    ),
+                  ),
+                  Visibility(
+                    visible: widget.showDelete,
+                    child: Positioned(
+                      top: -5,
+                      right: -5,
+                      child: IconButton(
+                          onPressed: () => widget.deleteAction(widget._recipe),
+                          icon: Icon(
+                            Icons.cancel,
+                            color: Colors.red[400],
+                            shadows: [
+                              Shadow(
+                                  color: Colors.black,
+                                  offset: Offset(0, 1),
+                                  blurRadius: 4)
+                            ],
+                          )),
                     ),
                   ),
                 ],

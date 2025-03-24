@@ -17,11 +17,19 @@ class HomeViewModel extends ChangeNotifier {
   VoidCallback? _hiveListener;
 
   List<Recipe> get recipes => _recipes;
+  bool _isDeleteShown = false;
+
+  bool get isDeleteShown => _isDeleteShown;
 
   bool get isLoading => _isLoading;
 
   ValueListenable<Box<RecipeModel>> get recipesListenable =>
       _recipeRepository.listenToRecipeModels();
+
+  void switchDeleteVisibility(bool value) {
+    _isDeleteShown = value;
+    notifyListeners();
+  }
 
   List<Recipe> getRecipes(Box<RecipeModel> box) {
     return box.values.map((model) => model.convertToRecipe()).toList();
@@ -46,6 +54,27 @@ class HomeViewModel extends ChangeNotifier {
       notifyListeners();
     };
     box.listenable().addListener(_hiveListener!);
+  }
+
+  Future<void> deleteRecipe(Recipe recipeToDelete) async {
+    _isLoading = true;
+    notifyListeners();
+
+    try {
+      print("Trying to delete recipe: $recipeToDelete");
+      await _recipeRepository.deleteRecipe(
+          recipeToDelete.id, recipeToDelete.remoteFileId!);
+      recipes.removeWhere((recipe) => recipe.id == recipeToDelete.id);
+    }
+    on Exception catch (e) {
+      print("====== Exception: $e");
+    }
+    finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+
+
   }
 
   Future<void> createShoppingList() async {}

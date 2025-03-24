@@ -1,5 +1,6 @@
 {
   "recipes" : "Recipes",
+  "backToRemoveDelete": "Press back to disable delete mode",
   "noRecipes": "No recipes found",
   "home": "Home",
   "search": "Search",

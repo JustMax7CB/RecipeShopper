@@ -26,19 +26,24 @@ class RecipeRepository {
   }
 
   Future<void> addRecipe(Recipe recipe) async {
-    await _localRecipeService.saveRecipe(recipe);
-    await _remoteRecipeService.saveRecipe(recipe);
+    final savedRemotelyRecipe = await _remoteRecipeService.saveRecipe(recipe);
+    await _localRecipeService.saveRecipe(savedRemotelyRecipe);
   }
 
   Future<Recipe?> getRecipeById(String id) async {
     return await _localRecipeService.getRecipeById(id);
   }
 
-  Future<void> deleteRecipe(String id) async {
-    await _localRecipeService.deleteRecipe(id);
+  Future<void> deleteRecipe(String id, String imageFileId) async {
+    await _localRecipeService.deleteRecipe(id, imageFileId);
+    await _remoteRecipeService.deleteRecipe(id, imageFileId);
   }
 
-  Future<void> updateRecipe(Recipe updatedRecipe) async {
-    await _localRecipeService.updateRecipe(updatedRecipe);
+  Future<Recipe> updateRecipe(
+      Recipe updatedRecipe, Recipe originalRecipe) async {
+    final recipe =
+        await _localRecipeService.updateRecipe(updatedRecipe, originalRecipe);
+    await _remoteRecipeService.updateRecipe(updatedRecipe, originalRecipe);
+    return recipe;
   }
 }

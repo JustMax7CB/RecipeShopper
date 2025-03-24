@@ -14,6 +14,7 @@ Recipe _$RecipeFromJson(Map<String, dynamic> json) => Recipe(
           .toList(),
       instructions: json['instructions'] as String?,
       imagePath: json['imagePath'] as String?,
+      remoteFileId: json['remoteFileId'] as String?,
     );
 
 Map<String, dynamic> _$RecipeToJson(Recipe instance) => <String, dynamic>{
@@ -22,4 +23,5 @@ Map<String, dynamic> _$RecipeToJson(Recipe instance) => <String, dynamic>{
       'ingredients': instance.ingredients,
       'imagePath': instance.imagePath,
       'instructions': instance.instructions,
+      'remoteFileId': instance.remoteFileId,
     };

@@ -46,10 +46,10 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i51.LocalRecipeService>(),
           gh<_i187.RemoteRecipeService>(),
         ));
-    gh.factory<_i212.AddRecipeViewModel>(
-        () => _i212.AddRecipeViewModel(gh<_i653.RecipeRepository>()));
     gh.factory<_i210.HomeViewModel>(
         () => _i210.HomeViewModel(gh<_i653.RecipeRepository>()));
+    gh.factory<_i212.AddRecipeViewModel>(
+        () => _i212.AddRecipeViewModel(gh<_i653.RecipeRepository>()));
     return this;
   }
 }

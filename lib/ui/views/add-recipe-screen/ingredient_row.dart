@@ -3,10 +3,20 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:recipeshopper/core/models/ingredient.dart';
 import 'package:recipeshopper/core/models/units.dart';
 import 'package:recipeshopper/extensions.dart';
+import 'package:recipeshopper/ui/colors.dart';
 import 'package:recipeshopper/ui/text_styles.dart';
 
 class IngredientRow extends StatefulWidget {
-  IngredientRow(this.id, {super.key, required this.onDelete});
+  IngredientRow(
+      this.id, {
+        super.key,
+        required this.onDelete,
+        String? name,
+        double? amount,
+        Unit? unit,
+      })  : _name = TextEditingController(text: name ?? ''),
+        _amount = TextEditingController(text: amount?.toString() ?? ''),
+        _selectedUnit = unit ?? Unit.values.first;
 
   final String id;
   final Function(String id) onDelete;
@@ -27,12 +37,12 @@ class IngredientRow extends StatefulWidget {
 
 class _IngredientRowState extends State<IngredientRow>
     with SingleTickerProviderStateMixin {
+
   @override
-  void initState() {
-    widget._name = TextEditingController();
-    widget._amount = TextEditingController();
-    widget._selectedUnit = Unit.values.first;
-    super.initState();
+  void dispose() {
+    widget._name.dispose();
+    widget._amount.dispose();
+    super.dispose();
   }
 
   @override
@@ -62,11 +72,11 @@ class _IngredientRowState extends State<IngredientRow>
             child: TextFormField(
               controller: widget._name,
               decoration: InputDecoration(
-                fillColor: Color(0xFFFEFEFE),
+                fillColor: AppColors.textFieldFillColor,
                 filled: true,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(5),
-                  borderSide: BorderSide(color: Color(0xFFEFEFEF), width: 1),
+                  borderSide: BorderSide(color: AppColors.textFieldBorderColor, width: 1),
                 ),
                 contentPadding: EdgeInsets.symmetric(horizontal: 8),
                 hintText: context.localized.ingredient,
@@ -80,11 +90,11 @@ class _IngredientRowState extends State<IngredientRow>
             child: TextFormField(
               controller: widget._amount,
               decoration: InputDecoration(
-                fillColor: Color(0xFFFEFEFE),
+                fillColor: AppColors.textFieldFillColor,
                 filled: true,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(5),
-                  borderSide: BorderSide(color: Color(0xFFEFEFEF), width: 1),
+                  borderSide: BorderSide(color: AppColors.textFieldBorderColor, width: 1),
                 ),
                 contentPadding: EdgeInsets.symmetric(horizontal: 8),
                 hintText: context.localized.amount,
@@ -99,7 +109,7 @@ class _IngredientRowState extends State<IngredientRow>
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5),
                 border: Border.all(color: Colors.black, width: 1),
-                color: Color(0xFFFEFEFE),
+                color: AppColors.textFieldFillColor,
               ),
               child: DropdownButton(
                 underline: SizedBox(),
