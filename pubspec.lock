@@ -291,6 +291,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_bugfender:
+    dependency: "direct main"
+    description:
+      name: flutter_bugfender
+      sha256: "5bc90af995a65930967048b74107779f25dbed07ba7122ff30312f8bb64c6c30"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.1.0"
   flutter_lints:
     dependency: "direct dev"
     description:

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bugfender/flutter_bugfender.dart';
 import 'package:injectable/injectable.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:recipeshopper/core/models/recipe.dart';
@@ -43,6 +44,7 @@ class AddRecipeViewModel extends ChangeNotifier {
 
   void loadRecipe(Recipe recipe) {
     print("===== loading recipe: $recipe");
+    FlutterBugfender.debug("=== [AddRecipeViewModel]  Loading recipe ${recipe.id} ${recipe.name}");
     _originalRecipe = _updatedRecipe = recipe;
     _clearIngredients();
 
@@ -72,6 +74,7 @@ class AddRecipeViewModel extends ChangeNotifier {
   }
 
   Future<Recipe?> updateRecipe() async {
+    FlutterBugfender.debug("=== [AddRecipeViewModel]  Updating recipe ${_originalRecipe!.id} ${recipeNameController.text}");
     _isLoading = true;
     notifyListeners();
 
@@ -93,6 +96,7 @@ class AddRecipeViewModel extends ChangeNotifier {
       return await _recipeRepository.updateRecipe(updatedRecipe, _originalRecipe!);
     } on Exception catch (e) {
       print('===== Exception: $e');
+      FlutterBugfender.error(e.toString());
       return null;
     } finally {
       _isLoading = false;
@@ -101,6 +105,8 @@ class AddRecipeViewModel extends ChangeNotifier {
   }
 
   Future<void> createRecipe() async {
+    FlutterBugfender.debug("=== [AddRecipeViewModel]  Creating recipe ${recipeNameController.text}");
+
     _isLoading = true;
     notifyListeners();
 
