@@ -19,7 +19,12 @@ workflows:
         script: flutter pub get
 
       - name: Build Android Debug APK
-        script: flutter build apk --debug
+        script: flutter build apk --debug \
+          --dart-define=PROJECT_ID=$PROJECT_ID \
+          --dart-define=DB_ID=$DB_ID \
+          --dart-define=RECIPE_COLLECTION_ID=$RECIPE_COLLECTION_ID \
+          --dart-define=INGREDIENTS_COLLECTION_ID=$INGREDIENTS_COLLECTION_ID \
+          --dart-define=RECIPE_IMAGES_BUCKET_ID=$RECIPE_IMAGES_BUCKET_ID
 
     artifacts:
       - build/app/outputs/flutter-apk/app-debug.apk
