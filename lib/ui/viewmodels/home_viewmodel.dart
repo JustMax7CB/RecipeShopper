@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter_bugfender/flutter_bugfender.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:injectable/injectable.dart';
 import 'package:recipeshopper/core/models/recipe.dart';
@@ -68,6 +69,7 @@ class HomeViewModel extends ChangeNotifier {
     }
     on Exception catch (e) {
       print("====== Exception: $e");
+      FlutterBugfender.error("=== [HomeViewModel] exception: $e");
     }
     finally {
       _isLoading = false;
