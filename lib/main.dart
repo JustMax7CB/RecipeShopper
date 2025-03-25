@@ -6,6 +6,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:recipeshopper/core/di/locator.dart';
 import 'package:recipeshopper/core/models/recipe.dart';
+import 'package:recipeshopper/environment.dart';
 import 'package:recipeshopper/extensions.dart';
 import 'package:recipeshopper/ui/viewmodels/viewmodels_export.dart';
 import 'package:recipeshopper/ui/views/views_export.dart';
@@ -16,11 +17,12 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await FlutterBugfender.init("pzLhvaHX2w06g9eTel51MqihKV1f4NdK",
       enableCrashReporting: true, // these are optional, but recommended
-      enableUIEventLogging: true,
-      enableAndroidLogcatLogging: true);
+      enableUIEventLogging: false,
+      enableAndroidLogcatLogging: false);
   final appDocumentDir = await getApplicationDocumentsDirectory();
   Hive.init(appDocumentDir.path);
   setupLocator();
+  EnvVariables().checkIds();
 
   runApp(
     ChangeNotifierProvider(
