@@ -18,11 +18,32 @@
   "takePhoto": "Сделать фото",
   "chooseFromLibrary": "Выбрать из галереи",
   "unit_kg": "кг",
-  "unit_grams": "г",
-  "unit_liters": "литры",
+  "unit_grams": "грамм",
+  "unit_liters": "литр",
   "unit_ml": "мл",
   "unit_units": "единицы",
   "unit_cups": "чашки",
   "unit_teaspoons": "чайные ложки",
-  "unit_tablespoons": "столовые ложки"
+  "unit_tablespoons": "столовые ложки",
+  "darkMode": "Темный режим",
+  "preferredUnits": "Предпочитаемые единицы",
+  "language": "Язык",
+  "recipeSortMode": "Режим сортировки рецептов",
+  "autoSync": "Авто-синхронизация",
+  "sync": "Синхронизировать сейчас",
+  "clear": "Очистить",
+  "syncData": "Синхронизация данных",
+  "clearData": "Очистить данные",
+  "appVersion": "Версия приложения v{version}",
+  "@appVersion": {
+    "placeholders": {
+      "version": {
+        "type": "String",
+        "example": "0.0.1"
+      }
+    }
+  },
+  "english": "Английский",
+  "hebrew": "Иврит",
+  "russian": "Русский"
 }

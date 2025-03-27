@@ -1,6 +1,6 @@
 {
   "recipes": "מתכונים",
-  "backToRemoveDelete": "לחץ חזרה כדי לצאת ממצב מחיקה",
+  "backToRemoveDelete": "לחץ חזרה כדי לבטל מצב מחיקה",
   "noRecipes": "לא נמצאו מתכונים",
   "home": "בית",
   "search": "חיפוש",
@@ -17,12 +17,33 @@
   "save": "שמור",
   "takePhoto": "צלם תמונה",
   "chooseFromLibrary": "בחר מהגלריה",
-  "unit_kg": "ק״ג",
+  "unit_kg": "ק\"ג",
   "unit_grams": "גרם",
   "unit_liters": "ליטר",
-  "unit_ml": "מ״ל",
+  "unit_ml": "מ\"ל",
   "unit_units": "יחידות",
   "unit_cups": "כוסות",
   "unit_teaspoons": "כפיות",
-  "unit_tablespoons": "כפות"
+  "unit_tablespoons": "כפות",
+  "darkMode": "מצב כהה",
+  "preferredUnits": "יחידות מועדפות",
+  "language": "שפה",
+  "recipeSortMode": "מצב מיון מתכונים",
+  "sync": "סנכרן כעת",
+  "clear": "נקה",
+  "autoSync": "סנכרון אוטומטי",
+  "syncData": "סנכרון נתונים",
+  "clearData": "ניקוי נתונים",
+  "appVersion": "גרסת אפליקציה v{version}",
+  "@appVersion": {
+    "placeholders": {
+      "version": {
+        "type": "String",
+        "example": "0.0.1"
+      }
+    }
+  },
+  "english": "אנגלית",
+  "hebrew": "עברית",
+  "russian": "רוסית"
 }

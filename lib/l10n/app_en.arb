@@ -24,5 +24,26 @@
   "unit_units": "units",
   "unit_cups": "cups",
   "unit_teaspoons": "teaspoons",
-  "unit_tablespoons": "tablespoons"
+  "unit_tablespoons": "tablespoons",
+  "darkMode": "Dark Mode",
+  "preferredUnits": "Preferred Units",
+  "language": "Language",
+  "recipeSortMode": "Recipe Sorting Mode",
+  "autoSync": "Auto-Sync",
+  "sync": "Sync Now",
+  "clear": "Clear",
+  "syncData": "Sync Data",
+  "clearData": "Clear Data",
+  "appVersion": "App version v{version}",
+  "@appVersion": {
+    "placeholders": {
+      "version": {
+        "type": "String",
+        "example": "0.0.1"
+      }
+    }
+  },
+  "english": "English",
+  "hebrew": "Hebrew",
+  "russian": "Russian"
 }

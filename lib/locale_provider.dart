@@ -19,5 +19,17 @@ class LocaleProvider extends ChangeNotifier {
     final newLang = SupportedLanguages.values[_langIndex];
     setLocale(Locale(newLang.LangCode, newLang.countryCode));
   }
-}
 
+  String get fontFamily {
+    switch (_locale.languageCode) {
+      case "en":
+        return "Kalam";
+      case "he":
+        return "Fredoka";
+      case "ru":
+        return "Oswald";
+      default:
+        return "Kalam";
+    }
+  }
+}

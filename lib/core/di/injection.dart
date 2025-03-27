@@ -3,6 +3,7 @@ import 'injection.config.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 import 'package:recipeshopper/environment.dart' as Env;
+import 'package:shared_preferences/shared_preferences.dart';
 
 final getIt = GetIt.instance;
 
@@ -20,4 +21,10 @@ void configureDependencies() {
   getIt.registerLazySingleton<Account>(() => Account(client));
 
   getIt.init();
+}
+
+@module
+abstract class RegisterModule {
+  @preResolve // Ensures SharedPreferences is fully initialized before use
+  Future<SharedPreferences> get prefs => SharedPreferences.getInstance();
 }

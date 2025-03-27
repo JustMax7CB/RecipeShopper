@@ -31,6 +31,7 @@ dependencies:
   flutter_svg: ^2.0.17
   image_picker: ^1.1.2
   flutter_slidable: ^4.0.0
+  toggle_switch: ^2.3.0
   
   path_provider: ^2.1.5
   json_serializable: ^6.9.0
@@ -39,6 +40,8 @@ dependencies:
   hive_listener: ^1.2.1
   hive_flutter: ^1.1.0
   flutter_bugfender: ^3.1.0
+  shared_preferences: ^2.5.2
+  package_info_plus: ^8.3.0
 
 
 dev_dependencies:
@@ -69,4 +72,22 @@ flutter:
         - asset: lib/assets/fonts/Kalam/Kalam-Light.ttf
           weight: 200
         - asset: lib/assets/fonts/Kalam/Kalam-Regular.ttf
+          weight: 400
+
+    - family: Fredoka
+      fonts:
+        - asset: lib/assets/fonts/Fredoka/Fredoka-Bold.ttf
+          weight: 600
+        - asset: lib/assets/fonts/Fredoka/Fredoka-Light.ttf
+          weight: 200
+        - asset: lib/assets/fonts/Fredoka/Fredoka-Regular.ttf
+          weight: 400
+
+    - family: Oswald
+      fonts:
+        - asset: lib/assets/fonts/Oswald/Oswald-Bold.ttf
+          weight: 600
+        - asset: lib/assets/fonts/Oswald/Oswald-Light.ttf
+          weight: 200
+        - asset: lib/assets/fonts/Oswald/Oswald-Regular.ttf
           weight: 400
