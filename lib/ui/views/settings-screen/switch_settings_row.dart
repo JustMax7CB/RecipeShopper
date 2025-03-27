@@ -1,24 +1,27 @@
+import 'package:animated_toggle_switch/animated_toggle_switch.dart';
 import 'package:flutter/material.dart';
 import 'package:recipeshopper/ui/colors.dart';
 import 'package:recipeshopper/ui/text_styles.dart';
-import 'package:toggle_switch/toggle_switch.dart';
 
 class SwitchSettingsRow extends StatelessWidget {
   const SwitchSettingsRow(this.settingsName,
       {required this.onChanged,
       required this.value,
-      this.icons = const [Icons.check, Icons.disabled_by_default_outlined],
+      this.icons = const [
+        Icon(Icons.check),
+        Icon(Icons.disabled_by_default_outlined)
+      ],
       this.activeBgColors = const [
-        [Colors.green],
-        [Colors.red]
+        Colors.green,
+        Colors.red
       ],
       super.key});
 
   final String settingsName;
   final bool value;
   final void Function(bool value) onChanged;
-  final List<IconData>? icons;
-  final List<List<Color>> activeBgColors;
+  final List<Icon>? icons;
+  final List<Color> activeBgColors;
 
   @override
   Widget build(BuildContext context) {
@@ -41,25 +44,17 @@ class SwitchSettingsRow extends StatelessWidget {
             settingsName,
             style: settingNameTextStyle,
           ),
-          ToggleSwitch(
-            initialLabelIndex: value ? 1 : 0,
-            minWidth: 50,
-            minHeight: 30,
-            borderColor: [Colors.black],
-            borderWidth: 1,
-            inactiveBgColor: AppColors.textFieldHintColor.withAlpha(150),
-            activeFgColor: Colors.black,
-            cornerRadius: 8.0,
-            totalSwitches: 2,
-            icons: icons,
-            iconSize: 20.0,
-            activeBgColors: activeBgColors,
-            animate: true,
-            curve: Curves.easeIn,
-            states: [true, false],
-            onToggle: (index) {
-              onChanged(index == 1);
-            },
+          AnimatedToggleSwitch<bool>.rolling(
+            height: 35,
+            iconList: icons,
+            current: value,
+            styleList: [
+              ToggleStyle(backgroundColor: activeBgColors[0]),
+              ToggleStyle(backgroundColor: activeBgColors[1]),
+
+            ],
+            values: [false, true],
+            onChanged: onChanged,
           )
         ],
       ),

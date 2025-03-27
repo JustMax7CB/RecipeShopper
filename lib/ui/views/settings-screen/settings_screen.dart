@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:recipeshopper/assets/localization/app_locale.dart';
 import 'package:recipeshopper/extensions.dart';
 import 'package:recipeshopper/locale_provider.dart';
-import 'package:recipeshopper/ui/colors.dart';
 import 'package:recipeshopper/ui/text_styles.dart';
 import 'package:recipeshopper/ui/viewmodels/settings_view_model.dart';
 import 'package:recipeshopper/ui/views/settings-screen/button_settings_row.dart';
@@ -22,9 +21,7 @@ class SettingsScreen extends StatelessWidget {
       appBar: AppBar(
         toolbarHeight: 70,
         leading: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
+            onPressed: () => Navigator.pop(context),
             icon: Icon(
               Icons.arrow_back_ios_sharp,
               size: 25,
@@ -70,11 +67,8 @@ class SettingsScreen extends StatelessWidget {
               context.localized.darkMode,
               value: viewModel.darkModeValue,
               onChanged: viewModel.changeDarkModeValue,
-              icons: [Icons.light_mode, Icons.dark_mode],
-              activeBgColors: [
-                [Colors.amberAccent],
-                [Colors.red]
-              ],
+              icons: [Icon(Icons.light_mode), Icon(Icons.dark_mode)],
+              activeBgColors: [Colors.amberAccent, Colors.black26],
             ),
             DropdownSettingsRow<SupportedLanguages>(
               context.localized.language,
@@ -99,8 +93,13 @@ class SettingsScreen extends StatelessWidget {
             ButtonSettingsRow(
               context.localized.syncData,
               buttonText: context.localized.sync,
-              onTap: () {},
-            )
+              onTap: viewModel.syncData,
+            ),
+            ButtonSettingsRow(
+              context.localized.clearData,
+              buttonText: context.localized.clear,
+              onTap: () async => await viewModel.clearData(),
+            ),
           ],
         ),
       ),

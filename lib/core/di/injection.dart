@@ -12,19 +12,17 @@ final getIt = GetIt.instance;
   preferRelativeImports: true, // default
   asExtension: true, // default
 )
-void configureDependencies() {
+Future<void> configureDependencies() async {
   Client client = Client()
       .setEndpoint("https://cloud.appwrite.io/v1")
       .setProject(Env.EnvVariables.projectId);
+  final prefs = await SharedPreferences.getInstance();
 
   getIt.registerLazySingleton<Client>(() => client);
   getIt.registerLazySingleton<Account>(() => Account(client));
 
+  getIt.registerSingleton<SharedPreferences>(prefs);
+
   getIt.init();
 }
 
-@module
-abstract class RegisterModule {
-  @preResolve // Ensures SharedPreferences is fully initialized before use
-  Future<SharedPreferences> get prefs => SharedPreferences.getInstance();
-}

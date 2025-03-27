@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:recipeshopper/extensions.dart';
 import 'package:recipeshopper/ui/colors.dart';
+import 'package:recipeshopper/ui/routes.dart';
 import 'package:recipeshopper/ui/widgets/image_resource.dart';
 import 'package:recipeshopper/ui/widgets/svg_icon.dart';
 
@@ -99,9 +100,12 @@ class _HomeBottomNavbarState extends State<HomeBottomNavbar> {
                           color: AppColors.bottomNavbarSelectedBgColor,
                         )
                       : null,
-                  child: SvgIcon(
-                    icon: LocalIcons.settings,
-                    width: 20,
+                  child: GestureDetector(
+                    onTap: () => Navigator.pushNamed(context, Routes.settings.path),
+                    child: SvgIcon(
+                      icon: LocalIcons.settings,
+                      width: 20,
+                    ),
                   ),
                 ),
               ),

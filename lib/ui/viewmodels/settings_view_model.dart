@@ -2,14 +2,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:injectable/injectable.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:recipeshopper/assets/localization/app_locale.dart';
+import 'package:recipeshopper/core/repositories/recipe_repository.dart';
 import 'package:recipeshopper/core/services/shared_preferences.dart';
 import 'package:recipeshopper/locale_provider.dart';
 
 @Injectable()
 class SettingsViewModel extends ChangeNotifier {
   final SharedPrefsService _sharedPrefsService;
+  final RecipeRepository _recipeRepository;
 
-  SettingsViewModel(this._sharedPrefsService) {
+  SettingsViewModel(this._sharedPrefsService, this._recipeRepository) {
     _init();
   }
 
@@ -34,6 +36,8 @@ class SettingsViewModel extends ChangeNotifier {
 
     final packageInfo = await PackageInfo.fromPlatform();
     _appVersion = packageInfo.version;
+
+    notifyListeners();
   }
 
   void changeDarkModeValue(bool value) {
@@ -75,5 +79,7 @@ class SettingsViewModel extends ChangeNotifier {
 
   Future<void> syncData() async {}
 
-  Future<void> clearData() async {}
+  Future<void> clearData() async {
+    await _recipeRepository.deleteAllRecipes();
+  }
 }

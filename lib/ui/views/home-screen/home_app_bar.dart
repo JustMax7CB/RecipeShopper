@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:recipeshopper/locale_provider.dart';
 import 'package:recipeshopper/ui/colors.dart';
 import 'package:recipeshopper/ui/widgets/image_resource.dart';
 import 'package:recipeshopper/ui/widgets/svg_icon.dart';
@@ -39,10 +37,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
           child: Padding(
             padding: const EdgeInsets.all(4.0),
             child: InkWell(
-              onTap: () {
-                Provider.of<LocaleProvider>(context, listen: false)
-                    .cycleLanguage();
-              },
+              onTap: () {},
               child: SvgIcon(
                 icon: LocalIcons.shoppingCart,
               ),

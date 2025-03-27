@@ -46,4 +46,9 @@ class RecipeRepository {
     await _remoteRecipeService.updateRecipe(updatedRecipe, originalRecipe);
     return recipe;
   }
+
+  Future<void> deleteAllRecipes() async {
+    await _localRecipeService.deleteAll();
+    await _remoteRecipeService.deleteAll();
+  }
 }

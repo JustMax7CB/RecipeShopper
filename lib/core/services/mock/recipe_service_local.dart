@@ -75,4 +75,9 @@ class LocalRecipeServiceMock implements RecipeService {
   Future<void> updateRecipe(Recipe updatedRecipe, Recipe originalRecipe) async {
     await Future.delayed(Duration(milliseconds: 1000));
   }
+
+  @override
+  Future<void> deleteAll() async {
+    await Future.delayed(Duration(milliseconds: 1000));
+  }
 }

@@ -31,7 +31,7 @@ dependencies:
   flutter_svg: ^2.0.17
   image_picker: ^1.1.2
   flutter_slidable: ^4.0.0
-  toggle_switch: ^2.3.0
+  animated_toggle_switch: ^0.8.4
   
   path_provider: ^2.1.5
   json_serializable: ^6.9.0

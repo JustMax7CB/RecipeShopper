@@ -80,7 +80,8 @@ class LocalRecipeService implements RecipeService {
     await box.delete(id);
   }
 
-  Future<void> clearAllRecipes() async {
+  @override
+  Future<void> deleteAll() async {
     final box = Hive.box<RecipeModel>(_boxName);
     await box.deleteAll(box.keys);
   }

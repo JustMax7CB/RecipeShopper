@@ -23,18 +23,21 @@ void main() async {
       enableAndroidLogcatLogging: false);
   final appDocumentDir = await getApplicationDocumentsDirectory();
   Hive.init(appDocumentDir.path);
-  setupLocator();
+  await setupLocator();
+
+  final localeProvider = await LocaleProvider.create();
 
   runApp(
     ChangeNotifierProvider(
-      create: (_) => LocaleProvider(),
+      create: (_) => localeProvider,
       child: Consumer<LocaleProvider>(
-        builder: (context, localeProvider, child) => MaterialApp(
+        builder: (context, localeProvider, child) {
+          return MaterialApp(
           theme: ThemeData(fontFamily: localeProvider.fontFamily),
           localizationsDelegates: AppLocalizations.localizationsDelegates,
           supportedLocales: AppLocalizations.supportedLocales,
           locale: localeProvider.locale,
-          initialRoute: Routes.settings.path,
+          initialRoute: Routes.home.path,
           routes: {
             Routes.home.path: (_) => ChangeNotifierProvider(
                   create: (_) => locate<HomeViewModel>(),
@@ -56,7 +59,8 @@ void main() async {
             textDirection: Localizations.localeOf(context).direction(context),
             child: child!,
           ),
-        ),
+        );
+        },
       ),
     ),
   );
