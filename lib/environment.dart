@@ -1,14 +1,18 @@
 import 'package:flutter_bugfender/flutter_bugfender.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class EnvVariables {
-  static const String projectId = String.fromEnvironment('PROJECT_ID');
-  static const String dbId = String.fromEnvironment('DB_ID');
-  static const String recipeCollectionId =
-      String.fromEnvironment('RECIPE_COLLECTION_ID');
-  static const String ingredientsCollectionId =
-      String.fromEnvironment('INGREDIENTS_COLLECTION_ID');
-  static const String recipeImagesBucketId =
-      String.fromEnvironment("RECIPE_IMAGES_BUCKET_ID");
+  static final String projectId =
+      dotenv.get('PROJECT_ID', fallback: "default_project_id");
+
+  static final String dbId = dotenv.get('DB_ID', fallback: "default_db_id");
+  static final String recipeCollectionId =
+      dotenv.get('RECIPE_COLLECTION_ID', fallback: "default_recipe_coll_id");
+  static final String ingredientsCollectionId = dotenv
+      .get('INGREDIENTS_COLLECTION_ID', fallback: "default_ingredient_coll_id");
+  static final String recipeImagesBucketId = dotenv.get(
+      "RECIPE_IMAGES_BUCKET_ID",
+      fallback: "default_recipe_image_bucket_id");
 
   void checkIds() {
     FlutterBugfender.debug("PROJECT_ID: $projectId");

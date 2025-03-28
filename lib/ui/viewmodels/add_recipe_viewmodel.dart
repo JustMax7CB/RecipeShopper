@@ -124,6 +124,7 @@ class AddRecipeViewModel extends ChangeNotifier {
           imagePath: savedImagePath,
           instructions: recipeInstructionsController.text);
 
+      FlutterBugfender.debug("=== [AddRecipeViewModel]  Storing recipe: $recipe");
       await _recipeRepository.addRecipe(recipe);
     } on Exception catch (e) {
       print('===== Exception: $e');
