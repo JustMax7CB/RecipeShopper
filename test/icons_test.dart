@@ -14,6 +14,7 @@ void main() {
     expect(File(Icons.placeholderImage).existsSync(), isTrue);
     expect(File(Icons.placeholderImageAdd).existsSync(), isTrue);
     expect(File(Icons.profile).existsSync(), isTrue);
+    expect(File(Icons.recipeshopper).existsSync(), isTrue);
     expect(File(Icons.search).existsSync(), isTrue);
     expect(File(Icons.settings).existsSync(), isTrue);
     expect(File(Icons.share).existsSync(), isTrue);

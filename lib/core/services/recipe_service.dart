@@ -6,4 +6,5 @@ abstract class RecipeService {
   Future<Recipe> saveRecipe(Recipe recipe);
   Future<void> updateRecipe(Recipe updatedRecipe, Recipe originalRecipe);
   Future<void> deleteRecipe(String id, String imageFileId);
+  Future<void> deleteAll();
 }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:recipeshopper/ui/colors.dart';
 import 'package:recipeshopper/ui/extensions.dart';
 
-final _kalamTextStyle = TextStyle(fontFamily: "Kalam");
+final _kalamTextStyle = TextStyle(fontWeight: FontWeight.w400);
 
 final TextStyle titleTextStyle = TextStyle(
     color: Colors.white,
@@ -17,13 +17,16 @@ final TextStyle titleTextStyle = TextStyle(
       )
     ]).withStroke(0.7, Colors.black);
 
-final TextStyle backFromDeleteModeTextStyle = titleTextStyle.copyWith(fontSize: 20, shadows: null);
+final TextStyle backFromDeleteModeTextStyle =
+    titleTextStyle.copyWith(fontSize: 20, shadows: null);
 
 final recipeNameTextStyle =
     _kalamTextStyle.copyWith(fontSize: 15, fontWeight: FontWeight.w400);
 
 final fieldHintTextStyle = _kalamTextStyle.copyWith(
-    fontSize: 12, color: AppColors.textFieldHintColor, fontWeight: FontWeight.w400);
+    fontSize: 12,
+    color: AppColors.textFieldHintColor,
+    fontWeight: FontWeight.w400);
 
 final newRecipeSectionTitle = _kalamTextStyle.copyWith(
     fontSize: 20, color: Colors.black, fontWeight: FontWeight.w400);
@@ -34,12 +37,23 @@ final newRecipeAddIngredientTextStyle = _kalamTextStyle.copyWith(
 final newRecipeSaveButtonTextStyle =
     _kalamTextStyle.copyWith(fontSize: 20, letterSpacing: 0.1);
 
-final recipeIngredientsTitleTextStyle = _kalamTextStyle.copyWith(
-  fontSize: 18,
-  fontWeight: FontWeight.w400
-);
+final recipeIngredientsTitleTextStyle =
+    _kalamTextStyle.copyWith(fontSize: 18, fontWeight: FontWeight.w400);
 
-final recipeIngredientsTextStyle = _kalamTextStyle.copyWith(
-  fontSize: 16,
-  height:1.4
-);
+final recipeIngredientsTextStyle =
+    _kalamTextStyle.copyWith(fontSize: 16, height: 1.4);
+
+final settingNameTextStyle = _kalamTextStyle.copyWith(
+    color: Colors.white,
+    fontSize: 22,
+    letterSpacing: 1.1,
+    fontWeight: FontWeight.w600,
+    shadows: []).withStroke(0.7, Colors.black);
+
+final settingDropdownHintTextStyle = _kalamTextStyle.copyWith(
+    fontSize: 14,
+    color: AppColors.dropdownHintColor,
+    fontWeight: FontWeight.w400);
+
+final settingDropdownValueTextStyle =
+    settingDropdownHintTextStyle.copyWith(color: Colors.black);

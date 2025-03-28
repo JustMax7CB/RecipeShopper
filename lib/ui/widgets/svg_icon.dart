@@ -13,7 +13,8 @@ enum LocalIcons {
   logo(res.Icons.splashLogo),
   placeholderImage(res.Icons.placeholderImage),
   share(res.Icons.share),
-  pencil(res.Icons.pencil);
+  pencil(res.Icons.pencil),
+  appbarLogo(res.Icons.recipeshopper);
 
   const LocalIcons(this.path);
 

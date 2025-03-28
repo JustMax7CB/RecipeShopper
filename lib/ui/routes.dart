@@ -1,7 +1,9 @@
 enum Routes {
+  main("/"),
   home("/home"),
   addRecipe("/addRecipe"),
-  recipe("/recipe");
+  recipe("/recipe"),
+  settings("/settings");
 
   final String path;
 

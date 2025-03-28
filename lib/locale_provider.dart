@@ -1,9 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:recipeshopper/assets/localization/app_locale.dart';
+import 'package:provider/provider.dart';
+import 'package:recipeshopper/core/services/shared_preferences.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LocaleProvider extends ChangeNotifier {
-  int _langIndex = 0; // Store language index here
   Locale _locale = Locale('en', 'US');
+
+  LocaleProvider(this._locale); // Accept initial locale
+
+  static Future<LocaleProvider> create() async {
+    final prefs = await SharedPreferences.getInstance();
+    final savedLanguageCode = prefs.getString(SharedPrefKey.language.key) ?? 'en';
+
+    return LocaleProvider(Locale(savedLanguageCode));
+  }
 
   Locale get locale => _locale;
 
@@ -14,10 +24,16 @@ class LocaleProvider extends ChangeNotifier {
     }
   }
 
-  void cycleLanguage() {
-    _langIndex = (_langIndex + 1) % SupportedLanguages.values.length;
-    final newLang = SupportedLanguages.values[_langIndex];
-    setLocale(Locale(newLang.LangCode, newLang.countryCode));
+  String get fontFamily {
+    switch (_locale.languageCode) {
+      case "en":
+        return "Kalam";
+      case "he":
+        return "Fredoka";
+      case "ru":
+        return "Oswald";
+      default:
+        return "Kalam";
+    }
   }
 }
-

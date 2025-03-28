@@ -3,8 +3,8 @@ import 'injection.dart';
 
 final locator = GetIt.instance;
 
-void setupLocator() {
-  configureDependencies(); // Calls Injection's generated setup
+Future<void> setupLocator() async {
+  await configureDependencies(); // Calls Injection's generated setup
 }
 
 /// A shortcut function to access dependencies easily

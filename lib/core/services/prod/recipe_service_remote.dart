@@ -1,4 +1,5 @@
 import 'package:appwrite/appwrite.dart';
+import 'package:appwrite/models.dart';
 import 'package:injectable/injectable.dart';
 import 'package:recipeshopper/core/di/locator.dart';
 import 'package:recipeshopper/core/models/recipe.dart';
@@ -44,7 +45,7 @@ class RemoteRecipeService implements RecipeService {
   Future<void> _deleteRecipeImage(String fileId) async {
     final storage = Storage(locate<Client>());
 
-  await storage.deleteFile(
+    await storage.deleteFile(
         bucketId: EnvVariables.recipeImagesBucketId, fileId: fileId);
   }
 
@@ -95,5 +96,26 @@ class RemoteRecipeService implements RecipeService {
         data: newRecipe.toJson());
 
     response.data.printPretty();
+  }
+
+  @override
+  Future<void> deleteAll() async {
+    final storage = Storage(locate<Client>());
+    final response = await appWriteDB.listDocuments(
+      databaseId: EnvVariables.dbId,
+      collectionId: EnvVariables.recipeCollectionId,
+    );
+
+    for (Document doc in response.documents) {
+      await appWriteDB.deleteDocument(
+        databaseId: EnvVariables.dbId,
+        collectionId: EnvVariables.recipeCollectionId,
+        documentId: doc.$id,
+      );
+      await storage.deleteFile(
+        bucketId: EnvVariables.recipeImagesBucketId,
+        fileId: doc.data["remoteFileId"],
+      );
+    }
   }
 }

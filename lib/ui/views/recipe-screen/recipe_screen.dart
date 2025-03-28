@@ -82,9 +82,10 @@ class RecipeScreen extends StatelessWidget {
                                           color: Colors.black, width: 0.6),
                                     ),
                                   ),
-                                  onPressed: () => Navigator.pushReplacementNamed(
-                                      context, Routes.addRecipe.path,
-                                      arguments: _recipe),
+                                  onPressed: () =>
+                                      Navigator.pushReplacementNamed(
+                                          context, Routes.addRecipe.path,
+                                          arguments: _recipe),
                                   child: SvgIcon(
                                     icon: LocalIcons.pencil,
                                     width: 22,
