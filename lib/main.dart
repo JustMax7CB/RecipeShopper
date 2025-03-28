@@ -6,6 +6,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:recipeshopper/core/di/locator.dart';
 import 'package:recipeshopper/core/models/recipe.dart';
+import 'package:recipeshopper/environment.dart';
 import 'package:recipeshopper/extensions.dart';
 import 'package:recipeshopper/ui/routes.dart';
 import 'package:recipeshopper/ui/viewmodels/viewmodels_export.dart';
@@ -24,6 +25,8 @@ void main() async {
   await setupLocator();
 
   final localeProvider = await LocaleProvider.create();
+
+  EnvVariables().checkIds();
 
   runApp(
     ChangeNotifierProvider(
