@@ -9,7 +9,8 @@ void main() {
     expect(File(Images.cookBook).existsSync(), isTrue);
     expect(File(Images.fadedWoodBg).existsSync(), isTrue);
     expect(File(Images.foodPlaceholder).existsSync(), isTrue);
-    expect(File(Images.wood_texture).existsSync(), isTrue);
     expect(File(Images.recipeImage).existsSync(), isTrue);
+    expect(File(Images.splashLogo).existsSync(), isTrue);
+    expect(File(Images.woodTexture).existsSync(), isTrue);
   });
 }

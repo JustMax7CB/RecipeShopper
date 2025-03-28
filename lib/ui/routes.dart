@@ -1,4 +1,5 @@
 enum Routes {
+  main("/"),
   home("/home"),
   addRecipe("/addRecipe"),
   recipe("/recipe"),

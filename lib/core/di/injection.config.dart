@@ -14,6 +14,7 @@ import 'package:shared_preferences/shared_preferences.dart' as _i460;
 
 import '../../ui/viewmodels/add_recipe_viewmodel.dart' as _i212;
 import '../../ui/viewmodels/home_viewmodel.dart' as _i210;
+import '../../ui/viewmodels/main_viewmodel.dart' as _i460;
 import '../../ui/viewmodels/settings_view_model.dart' as _i497;
 import '../repositories/recipe_repository.dart' as _i653;
 import '../services/mock/recipe_service_local.dart' as _i597;
@@ -35,6 +36,7 @@ extension GetItInjectableX on _i174.GetIt {
       environment,
       environmentFilter,
     );
+    gh.factory<_i460.MainViewModel>(() => _i460.MainViewModel());
     gh.singleton<_i51.LocalRecipeService>(() => _i51.LocalRecipeService());
     gh.singleton<_i187.RemoteRecipeService>(() => _i187.RemoteRecipeService());
     gh.lazySingleton<_i826.SharedPrefsService>(

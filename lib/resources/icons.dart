@@ -14,6 +14,7 @@ class Icons {
   static const String placeholderImageAdd =
       'lib/assets/icons/placeholder_image_add.svg';
   static const String profile = 'lib/assets/icons/profile.svg';
+  static const String recipeshopper = 'lib/assets/icons/recipeshopper.svg';
   static const String search = 'lib/assets/icons/search.svg';
   static const String settings = 'lib/assets/icons/settings.svg';
   static const String share = 'lib/assets/icons/share.svg';

@@ -12,8 +12,8 @@ class SwitchSettingsRow extends StatelessWidget {
         Icon(Icons.disabled_by_default_outlined)
       ],
       this.activeBgColors = const [
-        Colors.green,
-        Colors.red
+        Color(0x661FED1F),
+        Color(0x66B81212)
       ],
       super.key});
 
@@ -35,7 +35,7 @@ class SwitchSettingsRow extends StatelessWidget {
           horizontal:
               BorderSide(color: AppColors.settingsTileBorderColor, width: 1),
         ),
-        color: AppColors.recipeImageBgColor.withAlpha(127),
+        color: AppColors.recipeImageBgColor.withAlpha(60),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -45,6 +45,7 @@ class SwitchSettingsRow extends StatelessWidget {
             style: settingNameTextStyle,
           ),
           AnimatedToggleSwitch<bool>.rolling(
+            animationDuration: Duration(milliseconds: 100),
             height: 35,
             iconList: icons,
             current: value,

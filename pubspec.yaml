@@ -44,6 +44,7 @@ dependencies:
   package_info_plus: ^8.3.0
 
 
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -51,6 +52,10 @@ dev_dependencies:
   injectable_generator: ^2.6.2
   build_runner: ^2.4.15
   hive_generator: ^2.0.1
+  flutter_launcher_icons: ^0.14.3
+  flutter_native_splash: ^2.4.4
+
+
 
 dependency_overrides:
   flutter_web_auth_2: ^4.1.0

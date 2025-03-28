@@ -8,8 +8,10 @@ import 'package:recipeshopper/core/di/locator.dart';
 import 'package:recipeshopper/core/models/recipe.dart';
 import 'package:recipeshopper/extensions.dart';
 import 'package:recipeshopper/ui/routes.dart';
+import 'package:recipeshopper/ui/viewmodels/main_viewmodel.dart';
 import 'package:recipeshopper/ui/viewmodels/settings_view_model.dart';
 import 'package:recipeshopper/ui/viewmodels/viewmodels_export.dart';
+import 'package:recipeshopper/ui/views/main-screen/main-screen.dart';
 import 'package:recipeshopper/ui/views/settings-screen/settings_screen.dart';
 import 'package:recipeshopper/ui/views/views_export.dart';
 
@@ -33,33 +35,37 @@ void main() async {
       child: Consumer<LocaleProvider>(
         builder: (context, localeProvider, child) {
           return MaterialApp(
-          theme: ThemeData(fontFamily: localeProvider.fontFamily),
-          localizationsDelegates: AppLocalizations.localizationsDelegates,
-          supportedLocales: AppLocalizations.supportedLocales,
-          locale: localeProvider.locale,
-          initialRoute: Routes.home.path,
-          routes: {
-            Routes.home.path: (_) => ChangeNotifierProvider(
-                  create: (_) => locate<HomeViewModel>(),
-                  child: HomeScreen(),
-                ),
-            Routes.addRecipe.path: (ctx) => ChangeNotifierProvider(
-                  create: (_) => locate<AddRecipeViewModel>(),
-                  child: AddRecipeScreen(recipe: ctx.getArgument<Recipe?>()),
-                ),
-            Routes.recipe.path: (ctx) =>
-                RecipeScreen(ctx.getArgument<Recipe>()!),
-            Routes.settings.path: (_) => ChangeNotifierProvider(
-                  create: (_) => locate<SettingsViewModel>(),
-                  child: SettingsScreen(),
-                ),
-          },
-          debugShowCheckedModeBanner: false,
-          builder: (context, child) => Directionality(
-            textDirection: Localizations.localeOf(context).direction(context),
-            child: child!,
-          ),
-        );
+            theme: ThemeData(fontFamily: localeProvider.fontFamily),
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            locale: localeProvider.locale,
+            initialRoute: Routes.main.path,
+            routes: {
+              Routes.main.path: (_) => ChangeNotifierProvider(
+                    create: (_) => locate<MainViewModel>(),
+                    child: MainScreen(),
+                  ),
+              Routes.home.path: (_) => ChangeNotifierProvider(
+                    create: (_) => locate<HomeViewModel>(),
+                    child: HomeScreen(),
+                  ),
+              Routes.addRecipe.path: (ctx) => ChangeNotifierProvider(
+                    create: (_) => locate<AddRecipeViewModel>(),
+                    child: AddRecipeScreen(recipe: ctx.getArgument<Recipe?>()),
+                  ),
+              Routes.recipe.path: (ctx) =>
+                  RecipeScreen(ctx.getArgument<Recipe>()!),
+              Routes.settings.path: (_) => ChangeNotifierProvider(
+                    create: (_) => locate<SettingsViewModel>(),
+                    child: SettingsScreen(),
+                  ),
+            },
+            debugShowCheckedModeBanner: false,
+            builder: (context, child) => Directionality(
+              textDirection: Localizations.localeOf(context).direction(context),
+              child: child!,
+            ),
+          );
         },
       ),
     ),
