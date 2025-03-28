@@ -8,11 +8,7 @@ import 'package:recipeshopper/core/di/locator.dart';
 import 'package:recipeshopper/core/models/recipe.dart';
 import 'package:recipeshopper/extensions.dart';
 import 'package:recipeshopper/ui/routes.dart';
-import 'package:recipeshopper/ui/viewmodels/main_viewmodel.dart';
-import 'package:recipeshopper/ui/viewmodels/settings_view_model.dart';
 import 'package:recipeshopper/ui/viewmodels/viewmodels_export.dart';
-import 'package:recipeshopper/ui/views/main-screen/main-screen.dart';
-import 'package:recipeshopper/ui/views/settings-screen/settings_screen.dart';
 import 'package:recipeshopper/ui/views/views_export.dart';
 
 import 'locale_provider.dart';
@@ -45,20 +41,12 @@ void main() async {
                     create: (_) => locate<MainViewModel>(),
                     child: MainScreen(),
                   ),
-              Routes.home.path: (_) => ChangeNotifierProvider(
-                    create: (_) => locate<HomeViewModel>(),
-                    child: HomeScreen(),
-                  ),
               Routes.addRecipe.path: (ctx) => ChangeNotifierProvider(
                     create: (_) => locate<AddRecipeViewModel>(),
                     child: AddRecipeScreen(recipe: ctx.getArgument<Recipe?>()),
                   ),
               Routes.recipe.path: (ctx) =>
                   RecipeScreen(ctx.getArgument<Recipe>()!),
-              Routes.settings.path: (_) => ChangeNotifierProvider(
-                    create: (_) => locate<SettingsViewModel>(),
-                    child: SettingsScreen(),
-                  ),
             },
             debugShowCheckedModeBanner: false,
             builder: (context, child) => Directionality(
