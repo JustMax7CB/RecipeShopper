@@ -18,6 +18,7 @@ class AddRecipeViewModel extends ChangeNotifier {
   final RecipeRepository _recipeRepository;
 
   final Uuid uuid = Uuid();
+  final formKey = GlobalKey<FormState>();
 
   Recipe? _originalRecipe;
   Recipe? _updatedRecipe;
@@ -25,12 +26,14 @@ class AddRecipeViewModel extends ChangeNotifier {
   final recipeNameController = TextEditingController();
   final recipeInstructionsController = TextEditingController();
   File? _selectedImage;
+
   File? get selectedImage => _selectedImage;
 
-  
   bool get isUpdate => _originalRecipe != null;
+
   Recipe? get updatedRecipe => _updatedRecipe;
   bool _isLoading = false;
+
   bool get isLoading => _isLoading;
 
   set selectedImage(File? file) {
@@ -44,13 +47,15 @@ class AddRecipeViewModel extends ChangeNotifier {
 
   void loadRecipe(Recipe recipe) {
     print("===== loading recipe: $recipe");
-    FlutterBugfender.debug("=== [AddRecipeViewModel]  Loading recipe ${recipe.id} ${recipe.name}");
+    FlutterBugfender.debug(
+        "=== [AddRecipeViewModel]  Loading recipe ${recipe.id} ${recipe.name}");
     _originalRecipe = _updatedRecipe = recipe;
     _clearIngredients();
 
     recipeNameController.text = _originalRecipe!.name;
     recipeInstructionsController.text = _originalRecipe?.instructions ?? "";
-    if (recipe.imagePath != null) _selectedImage = File(_originalRecipe!.imagePath!);
+    if (recipe.imagePath != null)
+      _selectedImage = File(_originalRecipe!.imagePath!);
     ingredients.addAll(
       _originalRecipe!.ingredients.map((ingredient) => IngredientRow(
             ingredient.id,
@@ -74,13 +79,15 @@ class AddRecipeViewModel extends ChangeNotifier {
   }
 
   Future<Recipe?> updateRecipe() async {
-    FlutterBugfender.debug("=== [AddRecipeViewModel]  Updating recipe ${_originalRecipe!.id} ${recipeNameController.text}");
+    FlutterBugfender.debug(
+        "=== [AddRecipeViewModel]  Updating recipe ${_originalRecipe!.id} ${recipeNameController.text}");
     _isLoading = true;
     notifyListeners();
 
     try {
       String? savedImagePath = _originalRecipe?.imagePath;
-      if (_selectedImage != null && _selectedImage!.path != _originalRecipe!.imagePath) {
+      if (_selectedImage != null &&
+          _selectedImage!.path != _originalRecipe!.imagePath) {
         savedImagePath = await _saveImageToLocal(_selectedImage!);
       }
 
@@ -92,8 +99,8 @@ class AddRecipeViewModel extends ChangeNotifier {
           imagePath: savedImagePath,
           instructions: recipeInstructionsController.text);
 
-
-      return await _recipeRepository.updateRecipe(updatedRecipe, _originalRecipe!);
+      return await _recipeRepository.updateRecipe(
+          updatedRecipe, _originalRecipe!);
     } on Exception catch (e) {
       print('===== Exception: $e');
       FlutterBugfender.error(e.toString());
@@ -104,8 +111,9 @@ class AddRecipeViewModel extends ChangeNotifier {
     }
   }
 
-  Future<void> createRecipe() async {
-    FlutterBugfender.debug("=== [AddRecipeViewModel]  Creating recipe ${recipeNameController.text}");
+  Future<Recipe?> createRecipe() async {
+    FlutterBugfender.debug(
+        "=== [AddRecipeViewModel]  Creating recipe ${recipeNameController.text}");
 
     _isLoading = true;
     notifyListeners();
@@ -124,10 +132,13 @@ class AddRecipeViewModel extends ChangeNotifier {
           imagePath: savedImagePath,
           instructions: recipeInstructionsController.text);
 
-      FlutterBugfender.debug("=== [AddRecipeViewModel]  Storing recipe: $recipe");
+      FlutterBugfender.debug(
+          "=== [AddRecipeViewModel]  Storing recipe: $recipe");
       await _recipeRepository.addRecipe(recipe);
+      return recipe;
     } on Exception catch (e) {
       print('===== Exception: $e');
+      return null;
     } finally {
       _isLoading = false;
       notifyListeners();

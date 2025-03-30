@@ -1,5 +1,5 @@
 {
-  "recipes" : "Recipes",
+  "recipes": "Recipes",
   "backToRemoveDelete": "Press back to disable delete mode",
   "noRecipes": "No recipes found",
   "home": "Home",
@@ -44,6 +44,8 @@
     }
   },
   "english": "English",
-  "hebrew": "Hebrew",
-  "russian": "Russian"
+  "hebrew": "עברית",
+  "russian": "Русский",
+  "emptyIngredientName": "Ingredient name cannot be empty",
+  "emptyIngredientAmount": "Ingredient amount cannot be empty"
 }

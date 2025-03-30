@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:recipeshopper/core/constants.dart';
 import 'package:recipeshopper/core/models/ingredient.dart';
 import 'package:recipeshopper/core/models/units.dart';
 import 'package:recipeshopper/extensions.dart';
@@ -8,13 +9,13 @@ import 'package:recipeshopper/ui/text_styles.dart';
 
 class IngredientRow extends StatefulWidget {
   IngredientRow(
-      this.id, {
-        super.key,
-        required this.onDelete,
-        String? name,
-        double? amount,
-        Unit? unit,
-      })  : _name = TextEditingController(text: name ?? ''),
+    this.id, {
+    super.key,
+    required this.onDelete,
+    String? name,
+    double? amount,
+    Unit? unit,
+  })  : _name = TextEditingController(text: name ?? ''),
         _amount = TextEditingController(text: amount?.toString() ?? ''),
         _selectedUnit = unit ?? Unit.values.first;
 
@@ -37,12 +38,25 @@ class IngredientRow extends StatefulWidget {
 
 class _IngredientRowState extends State<IngredientRow>
     with SingleTickerProviderStateMixin {
-
   @override
   void dispose() {
     widget._name.dispose();
     widget._amount.dispose();
     super.dispose();
+  }
+
+  String? validateName(String? value) {
+    if (value == null || value.isEmpty) {
+      return context.localized.emptyIngredientName;
+    }
+    return null;
+  }
+
+  String? validateAmount(String? value) {
+    if (value == null || value.isEmpty) {
+      return context.localized.emptyIngredientAmount;
+    }
+    return null;
   }
 
   @override
@@ -70,13 +84,16 @@ class _IngredientRowState extends State<IngredientRow>
           Flexible(
             flex: 5,
             child: TextFormField(
+              validator: validateName,
+              maxLength: Constants.ingredientNameMaxLength,
               controller: widget._name,
               decoration: InputDecoration(
                 fillColor: AppColors.textFieldFillColor,
                 filled: true,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(5),
-                  borderSide: BorderSide(color: AppColors.textFieldBorderColor, width: 1),
+                  borderSide: BorderSide(
+                      color: AppColors.textFieldBorderColor, width: 1),
                 ),
                 contentPadding: EdgeInsets.symmetric(horizontal: 8),
                 hintText: context.localized.ingredient,
@@ -86,15 +103,18 @@ class _IngredientRowState extends State<IngredientRow>
             ),
           ),
           Flexible(
-            flex: 3,
+            flex: 2,
             child: TextFormField(
+              validator: validateAmount,
+              maxLength: 4,
               controller: widget._amount,
               decoration: InputDecoration(
                 fillColor: AppColors.textFieldFillColor,
                 filled: true,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(5),
-                  borderSide: BorderSide(color: AppColors.textFieldBorderColor, width: 1),
+                  borderSide: BorderSide(
+                      color: AppColors.textFieldBorderColor, width: 1),
                 ),
                 contentPadding: EdgeInsets.symmetric(horizontal: 8),
                 hintText: context.localized.amount,
@@ -112,9 +132,13 @@ class _IngredientRowState extends State<IngredientRow>
                 color: AppColors.textFieldFillColor,
               ),
               child: DropdownButton(
+                isExpanded: true,
                 underline: SizedBox(),
                 style: fieldHintTextStyle.copyWith(color: Colors.black),
-                padding: EdgeInsets.only(left: 5),
+                padding: Localizations.localeOf(context).direction(context) ==
+                        TextDirection.rtl
+                    ? EdgeInsets.only(right: 5)
+                    : EdgeInsets.only(left: 5),
                 value: widget._selectedUnit,
                 items: Unit.values
                     .map(

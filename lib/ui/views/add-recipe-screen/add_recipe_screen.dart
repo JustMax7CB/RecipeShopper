@@ -21,7 +21,8 @@ class AddRecipeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final AddRecipeViewModel viewModel = context.watch<AddRecipeViewModel>();
 
-    if (_recipe != null && viewModel.updatedRecipe == null) viewModel.loadRecipe(_recipe);
+    if (_recipe != null && viewModel.updatedRecipe == null)
+      viewModel.loadRecipe(_recipe);
 
     return Scaffold(
       backgroundColor: AppColors.scaffoldBgColor,
@@ -208,13 +209,16 @@ class AddRecipeScreen extends StatelessWidget {
             child: Column(
               children: [
                 SizedBox(
-                  child: ListView.builder(
-                    physics: NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: vm.ingredients.length,
-                    itemBuilder: (context, index) => Container(
-                        margin: EdgeInsets.only(bottom: 10),
-                        child: vm.ingredients[index]),
+                  child: Form(
+                    key: vm.formKey,
+                    child: ListView.builder(
+                      physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: vm.ingredients.length,
+                      itemBuilder: (context, index) => Container(
+                          margin: EdgeInsets.only(bottom: 10),
+                          child: vm.ingredients[index]),
+                    ),
                   ),
                 ),
                 Align(
@@ -345,13 +349,14 @@ class AddRecipeScreen extends StatelessWidget {
     );
   }
 
-  void saveAction(BuildContext context, AddRecipeViewModel viewModel) async {
+  void saveAction(BuildContext context, AddRecipeViewModel viewModel) {
+    final navigator = Navigator.of(context);
+
     if (viewModel.isUpdate) {
       viewModel.updateRecipe().then((recipe) {
         print("======= Updated recipe: $recipe");
         if (recipe != null) {
-          Navigator.pushReplacementNamed(context, Routes.recipe.path,
-              arguments: recipe);
+          navigator.pushReplacementNamed(Routes.recipe.path, arguments: recipe);
         } else {
           print("==== Failed to update the recipe");
         }
@@ -360,6 +365,6 @@ class AddRecipeScreen extends StatelessWidget {
       return;
     }
 
-    viewModel.createRecipe().then((_) => Navigator.pop(context));
+    viewModel.createRecipe().then((_) => navigator.pop());
   }
 }
