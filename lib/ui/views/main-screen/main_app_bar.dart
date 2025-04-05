@@ -55,7 +55,6 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
           ],
           image: DecorationImage(
             image: ImageResource(ImageRes.woodTexture),
-            colorFilter: ColorFilter.linearToSrgbGamma(),
             fit: BoxFit.cover, // Ensure it covers the full space
           ),
         ),
