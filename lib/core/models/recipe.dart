@@ -21,9 +21,9 @@ class Recipe implements LocalEntity {
     required this.name,
     required this.ingredients,
     this.instructions,
-    String? imagePath,
+    this.imagePath,
     this.remoteFileId,
-  }) : imagePath = imagePath ?? "lib/assets/images/food_placeholder.png";
+  });
 
   factory Recipe.fromJson(Map<String, dynamic> json) => _$RecipeFromJson(json);
 
@@ -32,7 +32,7 @@ class Recipe implements LocalEntity {
   String get json => jsonEncode(toJson());
 
   bool get isPlaceholder =>
-      imagePath == "lib/assets/images/food_placeholder.png";
+      imagePath == null;
 
   Recipe copyWith(
           {String? name,

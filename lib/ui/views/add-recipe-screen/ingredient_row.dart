@@ -88,6 +88,7 @@ class _IngredientRowState extends State<IngredientRow>
               maxLength: Constants.ingredientNameMaxLength,
               controller: widget._name,
               decoration: InputDecoration(
+                counterText: '',
                 fillColor: AppColors.textFieldFillColor,
                 filled: true,
                 border: OutlineInputBorder(
@@ -109,6 +110,7 @@ class _IngredientRowState extends State<IngredientRow>
               maxLength: 4,
               controller: widget._amount,
               decoration: InputDecoration(
+                counterText: '',
                 fillColor: AppColors.textFieldFillColor,
                 filled: true,
                 border: OutlineInputBorder(

@@ -15,19 +15,22 @@ class RemoteRecipeService implements RecipeService {
 
   @override
   Future<Recipe> saveRecipe(Recipe recipe) async {
-    final newRecipe = recipe.copyWith(
-        imagePath: recipe.imagePath,
-        remoteFileId: await _uploadRecipeImage(recipe.imagePath!));
+    var finalRecipe = recipe;
+    if (recipe.imagePath != null) {
+      finalRecipe = recipe.copyWith(
+          imagePath: recipe.imagePath,
+          remoteFileId: await _uploadRecipeImage(recipe.imagePath!));
+    }
 
     final response = await appWriteDB.createDocument(
         databaseId: EnvVariables.dbId,
         collectionId: EnvVariables.recipeCollectionId,
         documentId: recipe.id,
-        data: newRecipe.toJson());
+        data: finalRecipe.toJson());
 
     response.data.printPretty();
 
-    return newRecipe;
+    return finalRecipe;
   }
 
   Future<String> _uploadRecipeImage(String path) async {

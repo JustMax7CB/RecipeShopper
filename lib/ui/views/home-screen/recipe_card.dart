@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:recipeshopper/core/models/recipe.dart';
+import 'package:recipeshopper/resources/resources.dart' as res;
 import 'package:recipeshopper/ui/colors.dart';
 import 'package:recipeshopper/ui/routes.dart';
 import 'package:recipeshopper/ui/text_styles.dart';
@@ -120,7 +121,7 @@ class _RecipeCardState extends State<RecipeCard> {
       ? ClipRRect(
           borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
           child: Image.asset(
-            widget._recipe.imagePath!,
+            res.Images.foodPlaceholder,
             width: 160,
             height: 145,
             fit: BoxFit.fitHeight,

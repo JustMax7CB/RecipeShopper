@@ -21,8 +21,9 @@ class AddRecipeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final AddRecipeViewModel viewModel = context.watch<AddRecipeViewModel>();
 
-    if (_recipe != null && viewModel.updatedRecipe == null)
+    if (_recipe != null && viewModel.updatedRecipe == null) {
       viewModel.loadRecipe(_recipe);
+    }
 
     return Scaffold(
       backgroundColor: AppColors.scaffoldBgColor,
