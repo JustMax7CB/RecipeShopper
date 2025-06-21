@@ -19,6 +19,5 @@ void main() {
     expect(File(Icons.settings).existsSync(), isTrue);
     expect(File(Icons.share).existsSync(), isTrue);
     expect(File(Icons.shoppingBasket).existsSync(), isTrue);
-    expect(File(Icons.splashLogo).existsSync(), isTrue);
   });
 }

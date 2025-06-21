@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:recipeshopper/ui/colors.dart';
+import 'package:recipeshopper/ui/routes.dart';
 import 'package:recipeshopper/ui/widgets/image_resource.dart';
 import 'package:recipeshopper/ui/widgets/svg_icon.dart';
 
@@ -37,7 +38,7 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
           child: Padding(
             padding: const EdgeInsets.all(4.0),
             child: InkWell(
-              onTap: () {},
+              onTap: () => Navigator.pushNamed(context, Routes.shoppingList.path),
               child: SvgIcon(
                 icon: LocalIcons.shoppingCart,
               ),

@@ -34,6 +34,8 @@ class IngredientRow extends StatefulWidget {
       name: _name.text,
       quantity: double.parse(_amount.text),
       unit: _selectedUnit);
+
+  bool get isEmpty => _name.text.isEmpty && _amount.text.isEmpty;
 }
 
 class _IngredientRowState extends State<IngredientRow>

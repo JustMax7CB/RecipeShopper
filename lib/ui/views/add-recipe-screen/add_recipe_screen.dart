@@ -355,11 +355,11 @@ class AddRecipeScreen extends StatelessWidget {
 
     if (viewModel.isUpdate) {
       viewModel.updateRecipe().then((recipe) {
-        print("======= Updated recipe: $recipe");
+        debugPrint("======= Updated recipe: $recipe");
         if (recipe != null) {
           navigator.pushReplacementNamed(Routes.recipe.path, arguments: recipe);
         } else {
-          print("==== Failed to update the recipe");
+          debugPrint("==== Failed to update the recipe");
         }
       });
 

@@ -14,7 +14,7 @@ class LocalRecipeService implements RecipeService {
   static const String _boxName = 'recipeBox';
 
   LocalRecipeService() {
-    init().then((_) => print("Initialized Local Recipe Service"));
+    init().then((_) => debugPrint("Initialized Local Recipe Service"));
   }
 
   bool isBoxOpen() {
@@ -63,6 +63,18 @@ class LocalRecipeService implements RecipeService {
   }
 
   @override
+  Future<List<Recipe>> saveRecipeBulk(List<Recipe> recipes) async {
+    final box = Hive.box<RecipeModel>(_boxName);
+
+    final Map<dynamic, RecipeModel> recipeMap = {
+      for (var recipe in recipes) recipe.id: recipe.convertRecipeToModel(),
+    };
+
+    await box.putAll(recipeMap);
+    return recipes;
+  }
+
+  @override
   Future<Recipe> updateRecipe(Recipe recipe, Recipe original) async {
     final box = Hive.box<RecipeModel>(_boxName);
     if (box.containsKey(recipe.id)) {
@@ -75,7 +87,7 @@ class LocalRecipeService implements RecipeService {
   }
 
   @override
-  Future<void> deleteRecipe(String id, String imageFileId) async {
+  Future<void> deleteRecipe(String id, {String? imageFileId}) async {
     final box = Hive.box<RecipeModel>(_boxName);
     await box.delete(id);
   }

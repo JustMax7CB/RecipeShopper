@@ -3,7 +3,8 @@ enum Routes {
   home("/home"),
   addRecipe("/addRecipe"),
   recipe("/recipe"),
-  settings("/settings");
+  settings("/settings"),
+  shoppingList("/shoppingList");
 
   final String path;
 

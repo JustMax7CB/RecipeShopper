@@ -128,11 +128,17 @@ class _RecipeCardState extends State<RecipeCard> {
           ),
         )
       : Hero(
-          tag: widget._recipe.imagePath!,
+          tag: widget._recipe.localImagePath!,
           child: ClipRRect(
             borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
             child: Image.file(
-              File(widget._recipe.imagePath!),
+              errorBuilder: (_, __, ___) => Image.asset(
+                res.Images.foodPlaceholder,
+                width: 160,
+                height: 145,
+                fit: BoxFit.fitHeight,
+              ),
+              File(widget._recipe.localImagePath!),
               width: 160,
               height: 145,
               fit: BoxFit.cover,
