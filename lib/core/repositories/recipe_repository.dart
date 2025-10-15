@@ -31,6 +31,8 @@ class RecipeRepository {
   
   Future<void> synchronizeRecipes() async {
     final remoteRecipes = await _remoteRecipeService.getAllRecipes();
+    debugPrint("Fetched remote recipes: $remoteRecipes");
+
     final localRecipes = await getLocalRecipes();
 
     final areEqual = Set.from(remoteRecipes).length == Set.from(localRecipes).length &&

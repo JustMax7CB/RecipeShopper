@@ -3,6 +3,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:recipeshopper/core/constants.dart';
 import 'package:recipeshopper/core/models/ingredient.dart';
 import 'package:recipeshopper/core/models/units.dart';
+import 'package:recipeshopper/core/utils/new_recipe_validators.dart';
 import 'package:recipeshopper/extensions.dart';
 import 'package:recipeshopper/ui/colors.dart';
 import 'package:recipeshopper/ui/text_styles.dart';
@@ -15,51 +16,32 @@ class IngredientRow extends StatefulWidget {
     String? name,
     double? amount,
     Unit? unit,
-  })  : _name = TextEditingController(text: name ?? ''),
-        _amount = TextEditingController(text: amount?.toString() ?? ''),
-        _selectedUnit = unit ?? Unit.values.first;
+  })  : nameController = TextEditingController(text: name ?? ''),
+        amountController = TextEditingController(text: amount?.toString() ?? ''),
+        selectedUnit = unit ?? Unit.values.first;
 
   final String id;
   final Function(String id) onDelete;
 
-  late final TextEditingController _name;
-  late final TextEditingController _amount;
-  late Unit _selectedUnit;
+  late final TextEditingController nameController;
+  late final TextEditingController amountController;
+  late Unit selectedUnit;
 
   @override
   State<IngredientRow> createState() => _IngredientRowState();
 
   Ingredient get model => Ingredient(
       id: id,
-      name: _name.text,
-      quantity: double.parse(_amount.text),
-      unit: _selectedUnit);
+      name: nameController.text,
+      quantity: double.parse(amountController.text),
+      unit: selectedUnit);
 
-  bool get isEmpty => _name.text.isEmpty && _amount.text.isEmpty;
+  bool get isEmpty => nameController.text.isEmpty && amountController.text.isEmpty;
 }
 
 class _IngredientRowState extends State<IngredientRow>
     with SingleTickerProviderStateMixin {
   @override
-  void dispose() {
-    widget._name.dispose();
-    widget._amount.dispose();
-    super.dispose();
-  }
-
-  String? validateName(String? value) {
-    if (value == null || value.isEmpty) {
-      return context.localized.emptyIngredientName;
-    }
-    return null;
-  }
-
-  String? validateAmount(String? value) {
-    if (value == null || value.isEmpty) {
-      return context.localized.emptyIngredientAmount;
-    }
-    return null;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -86,9 +68,9 @@ class _IngredientRowState extends State<IngredientRow>
           Flexible(
             flex: 5,
             child: TextFormField(
-              validator: validateName,
+              validator: (val) => NewRecipeValidators.ingredientNameValidator(val, context),
               maxLength: Constants.ingredientNameMaxLength,
-              controller: widget._name,
+              controller: widget.nameController,
               decoration: InputDecoration(
                 counterText: '',
                 fillColor: AppColors.textFieldFillColor,
@@ -108,9 +90,9 @@ class _IngredientRowState extends State<IngredientRow>
           Flexible(
             flex: 2,
             child: TextFormField(
-              validator: validateAmount,
+              validator: (val) => NewRecipeValidators.ingredientAmountValidator(val, context),
               maxLength: 4,
-              controller: widget._amount,
+              controller: widget.amountController,
               decoration: InputDecoration(
                 counterText: '',
                 fillColor: AppColors.textFieldFillColor,
@@ -143,7 +125,7 @@ class _IngredientRowState extends State<IngredientRow>
                         TextDirection.rtl
                     ? EdgeInsets.only(right: 5)
                     : EdgeInsets.only(left: 5),
-                value: widget._selectedUnit,
+                value: widget.selectedUnit,
                 items: Unit.values
                     .map(
                       (unit) => DropdownMenuItem(
@@ -156,7 +138,7 @@ class _IngredientRowState extends State<IngredientRow>
                     .toList(),
                 onChanged: (value) {
                   setState(() {
-                    widget._selectedUnit = value!;
+                    widget.selectedUnit = value!;
                   });
                 },
               ),
@@ -169,6 +151,6 @@ class _IngredientRowState extends State<IngredientRow>
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return "[IngredientRow] Id: ${widget.id}, Name: ${widget._name.text}, Amount: ${widget._amount.text}";
+    return "[IngredientRow] Id: ${widget.id}, Name: ${widget.nameController.text}, Amount: ${widget.amountController.text}";
   }
 }

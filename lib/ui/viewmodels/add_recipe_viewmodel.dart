@@ -10,14 +10,11 @@ import 'package:uuid/uuid.dart';
 
 @injectable
 class AddRecipeViewModel extends ChangeNotifier {
-  AddRecipeViewModel(this._recipeRepository) {
-    ingredients.add(IngredientRow(uuid.v4(), onDelete: removeIngredient));
-  }
+  AddRecipeViewModel(this._recipeRepository);
 
   final RecipeRepository _recipeRepository;
 
   final Uuid uuid = Uuid();
-  final formKey = GlobalKey<FormState>();
 
   Recipe? _originalRecipe;
   Recipe? _updatedRecipe;

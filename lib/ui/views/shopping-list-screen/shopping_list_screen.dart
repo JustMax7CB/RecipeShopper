@@ -10,7 +10,8 @@ class ShoppingListScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = context.watch<ShoppingListViewModel>();
+    final viewModel = context.watch<ShoppingListViewModel>()
+      ..resolveIngredientsFromRecipes();
     return Scaffold(
       body: Container(
         padding: EdgeInsets.only(top: 20),
@@ -58,16 +59,20 @@ class ShoppingListScreen extends StatelessWidget {
                   ),
                 ),
                 child: ListView.builder(
+                  itemExtent: 60,
                   itemCount: viewModel.ingredientCount,
                   itemBuilder: (context, index) {
                     return Padding(
                       padding: const EdgeInsets.only(left: 30.0, right: 5.0),
                       child: ListTile(
-                        minTileHeight: 10,
-                        title: Text(viewModel.ingredientString(index), style: recipeIngredientsTitleTextStyle,),
+                        title: Text(
+                          maxLines: 1,
+                          viewModel.ingredientString(index),
+                          style: recipeIngredientsTitleTextStyle,
+                        ),
                         trailing: Transform(
                           transform: Matrix4.identity()
-                            ..scale(1.3)
+                            ..scale(1.2)
                             ..translate(0.0, -2.0),
                           alignment: Alignment.center,
                           child: Checkbox(

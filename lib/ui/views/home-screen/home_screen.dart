@@ -4,6 +4,7 @@ import 'package:recipeshopper/extensions.dart';
 import 'package:recipeshopper/ui/routes.dart';
 import 'package:recipeshopper/ui/text_styles.dart';
 import 'package:recipeshopper/ui/viewmodels/home_viewmodel.dart';
+import 'package:recipeshopper/ui/viewmodels/shopping_list_viewmodel.dart';
 import 'package:recipeshopper/ui/views/home-screen/recipe_card.dart';
 import 'package:recipeshopper/ui/widgets/svg_icon.dart';
 
@@ -18,22 +19,25 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+
   @override
   void initState() {
     super.initState();
     // Load recipes when the screen is initialized
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       context.read<HomeViewModel>().loadRecipes();
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = context.watch<HomeViewModel>();
+    final homeViewModel = context.watch<HomeViewModel>();
+    final shoppingViewModel = context.read<ShoppingListViewModel>();
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (_, __) {
-        if (viewModel.isDeleteShown) viewModel.switchDeleteVisibility(false);
+        if (homeViewModel.isDeleteShown)
+          homeViewModel.switchDeleteVisibility(false);
       },
       child: SafeArea(
         child: Padding(
@@ -44,7 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 flex: 1,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: viewModel.isDeleteShown
+                  child: homeViewModel.isDeleteShown
                       ? Text(context.localized.backToRemoveDelete,
                           style: backFromDeleteModeTextStyle)
                       : Row(
@@ -54,10 +58,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                 style: titleTextStyle),
                             Center(
                               child: InkWell(
-                                  onTap: () {
-                                    Navigator.pushNamed(
-                                        context, Routes.addRecipe.path);
-                                  },
+                                  onTap: () => Navigator.pushNamed(
+                                      context, Routes.addRecipe.path),
                                   child: SvgIcon(icon: LocalIcons.addRecipe)),
                             )
                           ],
@@ -94,15 +96,23 @@ class _HomeScreenState extends State<HomeScreen> {
                             crossAxisSpacing: 20,
                             mainAxisSpacing: 20),
                         itemBuilder: (context, index) {
-                          return InkWell(
+                          final recipe = viewModel.recipes[index];
+                          return GestureDetector(
                               onLongPress: () =>
                                   viewModel.switchDeleteVisibility(true),
                               child: RecipeCard(
-                                recipe: viewModel.recipes[index],
-                                showDelete: viewModel.isDeleteShown,
-                                deleteAction: (recipe) =>
-                                    viewModel.deleteRecipe(recipe),
-                              ));
+                                  recipe: recipe,
+                                  showDelete: viewModel.isDeleteShown,
+                                  showSelection: viewModel.isDeleteShown,
+                                  isSelected:
+                                      shoppingViewModel.containsRecipe(recipe),
+                                  deleteAction: (recipe) =>
+                                      viewModel.deleteRecipe(recipe),
+                                  selectAction: (recipe) {
+                                    setState(() {
+                                      shoppingViewModel.toggleRecipe(recipe);
+                                    });
+                                  }));
                         },
                       ),
                     );

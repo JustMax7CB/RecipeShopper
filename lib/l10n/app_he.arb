@@ -1,6 +1,6 @@
 {
   "recipes": "מתכונים",
-  "backToRemoveDelete": "לחץ חזרה כדי לבטל מצב מחיקה",
+  "backToRemoveDelete": "לחץ חזרה כדי לסגור",
   "noRecipes": "לא נמצאו מתכונים",
   "home": "בית",
   "search": "חיפוש",
@@ -8,11 +8,11 @@
   "settings": "הגדרות",
   "profile": "פרופיל",
   "recipeName": "שם המתכון",
-  "ingredients": "רכיבים",
-  "ingredient": "רכיב",
+  "ingredients": "מרכיבים",
+  "ingredient": "מרכיב",
   "amount": "כמות",
-  "addIngredient": "הוסף רכיב",
-  "instructions": "הוראות",
+  "addIngredient": "הוסף מרכיב",
+  "instructions": "הוראות הכנה",
   "instructionHint": "כתוב הוראות למתכון...",
   "save": "שמור",
   "takePhoto": "צלם תמונה",
@@ -28,13 +28,13 @@
   "darkMode": "מצב כהה",
   "preferredUnits": "יחידות מועדפות",
   "language": "שפה",
-  "recipeSortMode": "מצב מיון מתכונים",
-  "sync": "סנכרן כעת",
-  "clear": "נקה",
+  "recipeSortMode": "סדר מיון מתכונים",
   "autoSync": "סנכרון אוטומטי",
-  "syncData": "סנכרון נתונים",
-  "clearData": "ניקוי נתונים",
-  "appVersion": "גרסת אפליקציה v{version}",
+  "sync": "סנכרן עכשיו",
+  "clear": "נקה",
+  "syncData": "סנכרן נתונים",
+  "clearData": "נקה נתונים",
+  "appVersion": "גרסת האפליקציה v{version}",
   "@appVersion": {
     "placeholders": {
       "version": {
@@ -45,5 +45,8 @@
   },
   "english": "English",
   "hebrew": "עברית",
-  "russian": "Русский"
+  "russian": "Русский",
+  "emptyIngredientName": "שם המרכיב לא יכול להיות ריק",
+  "emptyIngredientAmount": "כמות המרכיב לא יכולה להיות ריקה",
+  "emptyRecipeName": "שם המתכון לא יכול להיות ריק"
 }

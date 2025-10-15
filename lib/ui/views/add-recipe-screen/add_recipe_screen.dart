@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:recipeshopper/core/models/recipe.dart';
+import 'package:recipeshopper/core/utils/new_recipe_validators.dart';
 import 'package:recipeshopper/extensions.dart';
 import 'package:recipeshopper/ui/colors.dart';
 import 'package:recipeshopper/ui/routes.dart';
@@ -12,173 +13,218 @@ import 'package:recipeshopper/ui/viewmodels/add_recipe_viewmodel.dart';
 import 'package:recipeshopper/ui/widgets/image_resource.dart';
 import 'package:recipeshopper/ui/widgets/svg_icon.dart';
 
-class AddRecipeScreen extends StatelessWidget {
+class AddRecipeScreen extends StatefulWidget {
   const AddRecipeScreen({super.key, Recipe? recipe}) : _recipe = recipe;
 
   final Recipe? _recipe;
 
   @override
-  Widget build(BuildContext context) {
-    final AddRecipeViewModel viewModel = context.watch<AddRecipeViewModel>();
+  State<AddRecipeScreen> createState() => _AddRecipeScreenState();
+}
 
-    if (_recipe != null && viewModel.updatedRecipe == null) {
-      viewModel.loadRecipe(_recipe);
+class _AddRecipeScreenState extends State<AddRecipeScreen> {
+  final _formKey = GlobalKey<FormState>();
+
+  AddRecipeViewModel? _viewModel;
+
+  @override
+  void dispose() {
+    for (var ingredientRow in _viewModel!.ingredients) {
+      ingredientRow.nameController.dispose();
+      ingredientRow.amountController.dispose();
+    }
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    _viewModel = context.watch<AddRecipeViewModel>();
+
+    if (_viewModel == null) {
+      return Center(
+        child: Column(
+          children: [
+            CircularProgressIndicator(),
+            Text("ViewModel didn't load properly!")
+          ],
+        ),
+      );
+    }
+
+    if (widget._recipe != null && _viewModel!.updatedRecipe == null) {
+      _viewModel!.loadRecipe(widget._recipe!);
     }
 
     return Scaffold(
       backgroundColor: AppColors.scaffoldBgColor,
       body: SafeArea(
-        child: Stack(
-          children: [
-            SingleChildScrollView(
-              child: Container(
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: ImageResource(ImageRes.fadedWood),
-                    fit: BoxFit.cover,
+        child: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: ImageResource(ImageRes.fadedWood),
+              fit: BoxFit.cover,
+            ),
+          ),
+          child: Column(
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Consumer<AddRecipeViewModel>(
+                    builder: (_, value, __) => value.isLoading
+                        ? Center(child: CircularProgressIndicator())
+                        : Form(
+                          key: _formKey,
+                          child: Column(
+                            children: [
+                              Stack(
+                                children: [
+                                  GestureDetector(
+                                    onTap: () => _showImageSourceDialog(
+                                        context, _viewModel!),
+                                    child: Container(
+                                      height: 250,
+                                      decoration: BoxDecoration(
+                                        boxShadow: [
+                                          BoxShadow(
+                                              color: AppColors
+                                                  .blackQuarterOpacity,
+                                              offset: Offset(0, 4),
+                                              blurRadius: 4)
+                                        ],
+                                        color: AppColors.recipeImageBgColor,
+                                        border: Border(
+                                          bottom: BorderSide(
+                                              color: Colors.black,
+                                              width: 1),
+                                        ),
+                                      ),
+                                      child: Center(
+                                        child: _viewModel!.selectedImage ==
+                                                null
+                                            ? SvgIcon(
+                                                icon: LocalIcons
+                                                    .placeholderImage)
+                                            : Image.file(
+                                                _viewModel!.selectedImage!,
+                                                fit: BoxFit.cover,
+                                                width: double.infinity,
+                                                height: double.infinity,
+                                              ),
+                                      ),
+                                    ),
+                                  ),
+                                  IconButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      icon: Icon(
+                                        Icons.arrow_back_ios_sharp,
+                                        size: 25,
+                                        color: Colors.white,
+                                        shadows: [
+                                          Shadow(
+                                              color: Colors.black,
+                                              offset: Offset(0, 1),
+                                              blurRadius: 8)
+                                        ],
+                                      )),
+                                  if (_viewModel!.selectedImage != null)
+                                    Positioned(
+                                      left:
+                                          MediaQuery.sizeOf(context).width /
+                                              2.3,
+                                      top: 70,
+                                      child: IconButton(
+                                          onPressed: () {
+                                            _viewModel!.selectedImage =
+                                                null;
+                                          },
+                                          icon: Icon(
+                                            Icons.remove_circle_outline,
+                                            size: 25,
+                                            color:
+                                                AppColors.appBarIconColor,
+                                            shadows: [
+                                              Shadow(
+                                                  color: Colors.black,
+                                                  offset: Offset(0, 1),
+                                                  blurRadius: 8)
+                                            ],
+                                          )),
+                                    ),
+                                ],
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 20.0, horizontal: 12),
+                                child: TextFormField(
+                                  onTapOutside: (_) => FocusManager
+                                      .instance.primaryFocus
+                                      ?.unfocus(),
+                                  controller:
+                                      _viewModel!.recipeNameController,
+                                  decoration: InputDecoration(
+                                    fillColor: AppColors.textFieldFillColor,
+                                    filled: true,
+                                    border: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(5),
+                                        borderSide: BorderSide(
+                                            color: Colors.black, width: 1)),
+                                    hintText: context.localized.recipeName,
+                                    hintStyle: fieldHintTextStyle,
+                                  ),
+                                  validator: (val) => NewRecipeValidators
+                                      .recipeNameValidator(val, context),
+                                ),
+                              ),
+                              ingredientsSection(_viewModel!, context),
+                              instructionsSection(_viewModel!, context),
+                            ],
+                          ),
+                        ),
                   ),
                 ),
-                child: Column(
-                  children: [
-                    Stack(
-                      children: [
-                        GestureDetector(
-                          onTap: () =>
-                              _showImageSourceDialog(context, viewModel),
-                          child: Container(
-                            height: 250,
-                            decoration: BoxDecoration(
-                              boxShadow: [
-                                BoxShadow(
-                                    color: AppColors.blackQuarterOpacity,
-                                    offset: Offset(0, 4),
-                                    blurRadius: 4)
-                              ],
-                              color: AppColors.recipeImageBgColor,
-                              border: Border(
-                                bottom:
-                                    BorderSide(color: Colors.black, width: 1),
-                              ),
-                            ),
-                            child: Center(
-                              child: viewModel.selectedImage == null
-                                  ? SvgIcon(icon: LocalIcons.placeholderImage)
-                                  : Image.file(
-                                      viewModel.selectedImage!,
-                                      fit: BoxFit.cover,
-                                      width: double.infinity,
-                                      height: double.infinity,
-                                    ),
-                            ),
-                          ),
-                        ),
-                        IconButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            icon: Icon(
-                              Icons.arrow_back_ios_sharp,
-                              size: 25,
-                              color: Colors.white,
-                              shadows: [
-                                Shadow(
-                                    color: Colors.black,
-                                    offset: Offset(0, 1),
-                                    blurRadius: 8)
-                              ],
-                            )),
-                        if (viewModel.selectedImage != null)
-                          Positioned(
-                            left: MediaQuery.sizeOf(context).width / 2.3,
-                            top: 70,
-                            child: IconButton(
-                                onPressed: () {
-                                  viewModel.selectedImage = null;
-                                },
-                                icon: Icon(
-                                  Icons.remove_circle_outline,
-                                  size: 25,
-                                  color: AppColors.appBarIconColor,
-                                  shadows: [
-                                    Shadow(
-                                        color: Colors.black,
-                                        offset: Offset(0, 1),
-                                        blurRadius: 8)
-                                  ],
-                                )),
-                          ),
-                      ],
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 20.0, horizontal: 12),
-                      child: TextFormField(
-                        onTapOutside: (_) =>
-                            FocusManager.instance.primaryFocus?.unfocus(),
-                        controller: viewModel.recipeNameController,
-                        decoration: InputDecoration(
-                          fillColor: AppColors.textFieldFillColor,
-                          filled: true,
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5),
-                              borderSide:
-                                  BorderSide(color: Colors.black, width: 1)),
-                          hintText: context.localized.recipeName,
-                          hintStyle: fieldHintTextStyle,
-                        ),
-                      ),
-                    ),
-                    ingredientsSection(viewModel, context),
-                    instructionsSection(viewModel, context),
-                    Container(
-                      margin: EdgeInsets.only(top: 35, bottom: 70),
-                      width: 150,
-                      height: 45,
-                      decoration: BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                              color: Color.fromRGBO(0, 0, 0, 0.25),
-                              offset: Offset(1, 2),
-                              blurRadius: 2),
-                        ],
-                        border: Border.all(color: Colors.black, width: 0.4),
-                        borderRadius: BorderRadius.circular(8),
-                        gradient: LinearGradient(
-                            colors: [
-                              AppColors.saveGradientColor1,
-                              AppColors.saveGradientColor2,
-                              AppColors.saveGradientColor3
-                            ],
-                            begin: Alignment.bottomLeft,
-                            end: Alignment.topRight,
-                            transform: GradientRotation(-0.5)),
-                      ),
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.transparent,
-                            shadowColor: Colors.transparent,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8))),
-                        onPressed: () => saveAction(context, viewModel),
-                        child: Text(
-                          context.localized.save,
-                          style: newRecipeSaveButtonTextStyle,
-                        ),
-                      ),
-                    )
+              ),
+              Container(
+                margin: const EdgeInsets.symmetric(vertical: 15),
+                width: 150,
+                height: 45,
+                decoration: BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                        color: Color.fromRGBO(0, 0, 0, 0.25),
+                        offset: Offset(1, 2),
+                        blurRadius: 2),
                   ],
+                  border: Border.all(color: Colors.black, width: 0.4),
+                  borderRadius: BorderRadius.circular(8),
+                  gradient: LinearGradient(
+                      colors: [
+                        AppColors.saveGradientColor1,
+                        AppColors.saveGradientColor2,
+                        AppColors.saveGradientColor3
+                      ],
+                      begin: Alignment.bottomLeft,
+                      end: Alignment.topRight,
+                      transform: GradientRotation(-0.5)),
                 ),
-              ),
-            ),
-            Consumer<AddRecipeViewModel>(
-              builder: (context, value, child) => Visibility(
-                visible: value.isLoading,
-                child: Center(
-                  child: CircularProgressIndicator(),
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      side: BorderSide(width: 0.7, color: Colors.black45),
+                      backgroundColor: Colors.transparent,
+                      shadowColor: Colors.transparent,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8))),
+                  onPressed: () => saveAction(context, _viewModel!),
+                  child: Text(
+                    context.localized.save,
+                    style: newRecipeSaveButtonTextStyle,
+                  ),
                 ),
-              ),
-            ),
-          ],
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -186,7 +232,7 @@ class AddRecipeScreen extends StatelessWidget {
 
   Widget ingredientsSection(AddRecipeViewModel vm, BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(top: 5, bottom: 70),
+      padding: EdgeInsets.only(top: 5, bottom: 20),
       margin: EdgeInsets.only(bottom: 8),
       decoration: BoxDecoration(
         color: AppColors.addRecipeSectionBgColor,
@@ -209,21 +255,22 @@ class AddRecipeScreen extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
             child: Column(
               children: [
-                SizedBox(
-                  child: Form(
-                    key: vm.formKey,
+                if (vm.ingredients.isNotEmpty)
+                  SizedBox(
                     child: ListView.builder(
                       physics: NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
                       itemCount: vm.ingredients.length,
                       itemBuilder: (context, index) => Container(
-                          margin: EdgeInsets.only(bottom: 10),
-                          child: vm.ingredients[index]),
+                        margin: EdgeInsets.only(bottom: 10),
+                        child: vm.ingredients[index],
+                      ),
                     ),
                   ),
-                ),
                 Align(
-                  alignment: Alignment.centerLeft,
+                  alignment: vm.ingredients.isEmpty
+                      ? Alignment.center
+                      : Alignment.centerLeft,
                   child: OutlinedButton(
                       style: OutlinedButton.styleFrom(
                           shape: RoundedRectangleBorder(
@@ -260,7 +307,7 @@ class AddRecipeScreen extends StatelessWidget {
 
   Widget instructionsSection(AddRecipeViewModel viewModel, BuildContext ctx) {
     return Container(
-      padding: EdgeInsets.only(top: 5),
+      padding: EdgeInsets.only(top: 10),
       decoration: BoxDecoration(
         color: Color.fromRGBO(244, 244, 244, 0.75),
         border: Border(
@@ -279,7 +326,7 @@ class AddRecipeScreen extends StatelessWidget {
             style: newRecipeSectionTitle,
           ),
           Padding(
-            padding: const EdgeInsets.fromLTRB(12, 10, 12, 20),
+            padding: const EdgeInsets.fromLTRB(12, 20, 12, 20),
             child: TextFormField(
               controller: viewModel.recipeInstructionsController,
               onTapOutside: (_) =>
@@ -314,7 +361,6 @@ class AddRecipeScreen extends StatelessWidget {
     }
 
     // Assign the selected image to the ViewModel
-
     viewModel.selectedImage = File(pickedImage.path);
   }
 
@@ -351,6 +397,10 @@ class AddRecipeScreen extends StatelessWidget {
   }
 
   void saveAction(BuildContext context, AddRecipeViewModel viewModel) {
+    if (!_formKey.currentState!.validate()) {
+      return;
+    }
+
     final navigator = Navigator.of(context);
 
     if (viewModel.isUpdate) {

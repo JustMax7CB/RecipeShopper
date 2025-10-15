@@ -1,6 +1,6 @@
 {
   "recipes": "Recipes",
-  "backToRemoveDelete": "Press back to disable delete mode",
+  "backToRemoveDelete": "Press back to dismiss",
   "noRecipes": "No recipes found",
   "home": "Home",
   "search": "Search",
@@ -18,8 +18,8 @@
   "takePhoto": "Take Photo",
   "chooseFromLibrary": "Choose From Gallery",
   "unit_kg": "kg",
-  "unit_grams": "grams",
-  "unit_liters": "liters",
+  "unit_grams": "gr",
+  "unit_liters": "liter",
   "unit_ml": "ml",
   "unit_units": "units",
   "unit_cups": "cups",
@@ -47,5 +47,6 @@
   "hebrew": "עברית",
   "russian": "Русский",
   "emptyIngredientName": "Ingredient name cannot be empty",
-  "emptyIngredientAmount": "Ingredient amount cannot be empty"
+  "emptyIngredientAmount": "Ingredient amount cannot be empty",
+  "emptyRecipeName": "Recipe name cannot be empty"
 }

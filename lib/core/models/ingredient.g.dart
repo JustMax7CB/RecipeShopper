@@ -23,8 +23,8 @@ Map<String, dynamic> _$IngredientToJson(Ingredient instance) =>
 
 const _$UnitEnumMap = {
   Unit.kg: 'kg',
-  Unit.grams: 'grams',
-  Unit.liters: 'liters',
+  Unit.grams: 'gr',
+  Unit.liters: 'l',
   Unit.milliliters: 'ml',
   Unit.units: 'units',
   Unit.cups: 'cups',
