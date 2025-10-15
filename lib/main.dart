@@ -57,11 +57,15 @@ void main() async {
                   ),
               Routes.recipe.path: (ctx) =>
                   RecipeScreen(ctx.getArgument<Recipe>()!),
+              Routes.shoppingList.path: (ctx) => ShoppingListScreen(),
             },
             debugShowCheckedModeBanner: false,
-            builder: (context, child) => Directionality(
-              textDirection: Localizations.localeOf(context).direction(context),
-              child: child!,
+            builder: (context, child) => ChangeNotifierProvider(
+              create: (_) => locate<ShoppingListViewModel>(),
+              child: Directionality(
+                textDirection: Localizations.localeOf(context).direction(context),
+                child: child!,
+              ),
             ),
           );
         },

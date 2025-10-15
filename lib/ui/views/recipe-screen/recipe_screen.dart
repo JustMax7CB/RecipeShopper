@@ -113,8 +113,9 @@ class RecipeScreen extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(context.localized.ingredients,
-                                  style: recipeIngredientsTitleTextStyle),
+                              if (_recipe.ingredients.isNotEmpty)
+                                Text(context.localized.ingredients,
+                                    style: recipeIngredientsTitleTextStyle),
                               SizedBox(height: 8),
                               ..._recipe.ingredients.map(
                                 (ingredient) => Padding(
@@ -176,7 +177,7 @@ class RecipeScreen extends StatelessWidget {
           ),
         )
       : Hero(
-          tag: _recipe.imagePath!,
+          tag: _recipe.localImagePath!,
           child: Container(
             height: 270,
             decoration: BoxDecoration(
@@ -189,7 +190,7 @@ class RecipeScreen extends StatelessWidget {
               ],
               image: DecorationImage(
                 fit: BoxFit.cover,
-                image: FileImage(File(_recipe.imagePath!)),
+                image: FileImage(File(_recipe.localImagePath!)),
               ),
               border: Border(bottom: BorderSide(color: Colors.black, width: 1)),
             ),

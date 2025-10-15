@@ -41,7 +41,7 @@ class HomeViewModel extends ChangeNotifier {
     notifyListeners();
 
     // Load recipes from repository (assuming it fetches from API or other source)
-    final recipesList = await _recipeRepository.getRecipes();
+    final recipesList = await _recipeRepository.getLocalRecipes();
     _recipes = recipesList;
 
     _isLoading = false;
@@ -62,13 +62,13 @@ class HomeViewModel extends ChangeNotifier {
     notifyListeners();
 
     try {
-      print("Trying to delete recipe: $recipeToDelete");
+      debugPrint("Trying to delete recipe: $recipeToDelete");
       await _recipeRepository.deleteRecipe(
-          recipeToDelete.id, recipeToDelete.remoteFileId!);
+          recipeToDelete.id);
       recipes.removeWhere((recipe) => recipe.id == recipeToDelete.id);
     }
     on Exception catch (e) {
-      print("====== Exception: $e");
+      debugPrint("====== Exception: $e");
       FlutterBugfender.error("=== [HomeViewModel] exception: $e");
     }
     finally {

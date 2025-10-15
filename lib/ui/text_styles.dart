@@ -35,10 +35,10 @@ final newRecipeAddIngredientTextStyle = _kalamTextStyle.copyWith(
     fontSize: 14, color: Colors.black, fontWeight: FontWeight.w400);
 
 final newRecipeSaveButtonTextStyle =
-    _kalamTextStyle.copyWith(fontSize: 20, letterSpacing: 0.1);
+    _kalamTextStyle.copyWith(fontSize: 24, letterSpacing: 0.2, color: Colors.black, fontWeight: FontWeight.w500);
 
 final recipeIngredientsTitleTextStyle =
-    _kalamTextStyle.copyWith(fontSize: 18, fontWeight: FontWeight.w400);
+    _kalamTextStyle.copyWith(fontSize: 20, fontWeight: FontWeight.w500);
 
 final recipeIngredientsTextStyle =
     _kalamTextStyle.copyWith(fontSize: 16, height: 1.4);

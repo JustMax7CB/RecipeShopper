@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:json_annotation/json_annotation.dart';
 import 'package:recipeshopper/core/models/local_entity.dart';
+import 'package:recipeshopper/core/utils/unit_converters.dart';
 
 import 'units.dart';
 
@@ -33,6 +34,15 @@ class Ingredient implements LocalEntity {
       Ingredient.fromJson(jsonDecode(jsonString));
 
   String toJson() => json.encode(_$IngredientToJson(this));
+
+  Ingredient operator +(Ingredient other) {
+    if (unit == other.unit) return addQuantity(other.quantity);
+
+    final convertedQuantity = UnitConverter.convert(other, this);
+    return addQuantity(convertedQuantity);
+
+  }
+
 
   @override
   String get key => id;

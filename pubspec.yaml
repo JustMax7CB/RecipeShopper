@@ -1,7 +1,7 @@
 name: recipeshopper
-description: "A new Flutter project."
+description: "A Recipes storing app that can generate shopping lists based on the recipes"
 publish_to: 'none'
-version: 0.1.0
+version: 0.0.1
 
 environment:
   sdk: ^3.6.2

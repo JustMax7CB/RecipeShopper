@@ -2,37 +2,36 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:recipeshopper/core/models/recipe.dart';
+import 'package:recipeshopper/resources/resources.dart' as res;
 import 'package:recipeshopper/ui/colors.dart';
 import 'package:recipeshopper/ui/routes.dart';
 import 'package:recipeshopper/ui/text_styles.dart';
 
-class RecipeCard extends StatefulWidget {
-  RecipeCard({
-    super.key,
-    required Recipe recipe,
-    this.onClickAction,
-    required this.deleteAction,
-    this.showDelete = false,
-    this.showSelection = false,
-  }) : _recipe = recipe;
+class RecipeCard extends StatelessWidget {
+  RecipeCard(
+      {super.key,
+      required Recipe recipe,
+      this.onClickAction,
+      required this.deleteAction,
+      this.showDelete = false,
+      this.showSelection = false,
+      required this.selectAction,
+      this.isSelected = false})
+      : _recipe = recipe;
 
   final Recipe _recipe;
   final GestureTapCallback? onClickAction;
   final Function(Recipe recipe) deleteAction;
   final bool showDelete;
   final bool showSelection;
-  bool isSelected = false;
+  final Function(Recipe recipe) selectAction;
+  final bool isSelected;
 
-  @override
-  State<RecipeCard> createState() => _RecipeCardState();
-}
-
-class _RecipeCardState extends State<RecipeCard> {
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () => Navigator.pushNamed(context, Routes.recipe.path,
-          arguments: widget._recipe),
+    return GestureDetector(
+      onTap: () =>
+          Navigator.pushNamed(context, Routes.recipe.path, arguments: _recipe),
       child: Container(
         width: 160,
         height: 145,
@@ -46,8 +45,9 @@ class _RecipeCardState extends State<RecipeCard> {
           ],
           borderRadius: BorderRadius.circular(12),
           color: AppColors.recipeCardBgColor,
-          border:
-              Border.all(color: AppColors.recipeCardBorderColor, width: 0.2),
+          border: isSelected
+              ? Border.all(color: AppColors.recipeCardBorderColor, width: 2)
+              : Border.all(color: AppColors.recipeCardBorderColor, width: 0.2),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -60,31 +60,27 @@ class _RecipeCardState extends State<RecipeCard> {
                   imageWidget(),
                   // Small white square at top-left
                   Visibility(
-                    visible: widget.showSelection,
+                    visible: showSelection,
                     child: Positioned(
                       top: -5,
                       left: -5,
                       child: Checkbox(
                         side: BorderSide(
                             width: 1, color: Colors.black, strokeAlign: -0.5),
-                        value: widget.isSelected,
-                        onChanged: (value) {
-                          setState(() {
-                            widget.isSelected = value!;
-                          });
-                        },
+                        value: isSelected,
+                        onChanged: (_) => selectAction(_recipe),
                         fillColor: WidgetStatePropertyAll(Colors.white),
                         checkColor: Colors.black,
                       ),
                     ),
                   ),
                   Visibility(
-                    visible: widget.showDelete,
+                    visible: showDelete,
                     child: Positioned(
                       top: -5,
                       right: -5,
                       child: IconButton(
-                          onPressed: () => widget.deleteAction(widget._recipe),
+                          onPressed: () => deleteAction(_recipe),
                           icon: Icon(
                             Icons.cancel,
                             color: Colors.red[400],
@@ -105,7 +101,7 @@ class _RecipeCardState extends State<RecipeCard> {
               flex: 2,
               child: Center(
                 child: Text(
-                  widget._recipe.name,
+                  _recipe.name,
                   style: recipeNameTextStyle,
                 ),
               ),
@@ -116,22 +112,28 @@ class _RecipeCardState extends State<RecipeCard> {
     );
   }
 
-  Widget imageWidget() => widget._recipe.isPlaceholder
+  Widget imageWidget() => _recipe.isPlaceholder
       ? ClipRRect(
           borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
           child: Image.asset(
-            widget._recipe.imagePath!,
+            res.Images.foodPlaceholder,
             width: 160,
             height: 145,
             fit: BoxFit.fitHeight,
           ),
         )
       : Hero(
-          tag: widget._recipe.imagePath!,
+          tag: _recipe.localImagePath!,
           child: ClipRRect(
             borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
             child: Image.file(
-              File(widget._recipe.imagePath!),
+              errorBuilder: (_, __, ___) => Image.asset(
+                res.Images.foodPlaceholder,
+                width: 160,
+                height: 145,
+                fit: BoxFit.fitHeight,
+              ),
+              File(_recipe.localImagePath!),
               width: 160,
               height: 145,
               fit: BoxFit.cover,

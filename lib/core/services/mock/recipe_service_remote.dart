@@ -55,7 +55,13 @@ class RemoteRecipeServiceMock implements RecipeService {
   }
 
   @override
-  Future<void> deleteRecipe(String id, String imageFileId) async {
+  Future<List<Recipe>> saveRecipeBulk(List<Recipe> recipes) async {
+    await Future.delayed(Duration(milliseconds: 1000));
+    return recipes;
+  }
+
+  @override
+  Future<void> deleteRecipe(String id, {String? imageFileId}) async {
     await Future.delayed(Duration(milliseconds: 1000));
   }
 

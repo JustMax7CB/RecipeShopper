@@ -12,8 +12,8 @@ class Recipe implements LocalEntity {
   final String id;
   final String name;
   final List<Ingredient> ingredients;
-  final String? imagePath;
   final String? instructions;
+  final String? localImagePath;
   final String? remoteFileId;
 
   Recipe({
@@ -21,9 +21,9 @@ class Recipe implements LocalEntity {
     required this.name,
     required this.ingredients,
     this.instructions,
-    String? imagePath,
+    this.localImagePath,
     this.remoteFileId,
-  }) : imagePath = imagePath ?? "lib/assets/images/food_placeholder.png";
+  });
 
   factory Recipe.fromJson(Map<String, dynamic> json) => _$RecipeFromJson(json);
 
@@ -32,7 +32,7 @@ class Recipe implements LocalEntity {
   String get json => jsonEncode(toJson());
 
   bool get isPlaceholder =>
-      imagePath == "lib/assets/images/food_placeholder.png";
+      localImagePath == null;
 
   Recipe copyWith(
           {String? name,
@@ -44,7 +44,7 @@ class Recipe implements LocalEntity {
         name: name ?? this.name,
         ingredients: ingredients,
         instructions: instructions ?? this.instructions,
-        imagePath: imagePath ?? this.imagePath,
+        localImagePath: imagePath ?? this.localImagePath,
         remoteFileId: remoteFileId ?? this.remoteFileId,
       );
 
@@ -56,7 +56,7 @@ class Recipe implements LocalEntity {
 
   @override
   String toString() {
-    return 'Recipe: [ID: $id, name: $name, ingredients: $ingredients, imagePath: $imagePath, remoteFileId: $remoteFileId]';
+    return 'Recipe: [ID: $id, name: $name, ingredients: $ingredients, imagePath: $localImagePath, remoteFileId: $remoteFileId]';
   }
 
   @override

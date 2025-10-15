@@ -77,7 +77,9 @@ class SettingsViewModel extends ChangeNotifier {
         SharedPrefKey.autoSync.key, autoSyncEnabled);
   }
 
-  Future<void> syncData() async {}
+  Future<void> syncData() async {
+    await _recipeRepository.synchronizeRecipes();
+  }
 
   Future<void> clearData() async {
     await _recipeRepository.deleteAllRecipes();

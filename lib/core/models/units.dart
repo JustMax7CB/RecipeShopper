@@ -6,11 +6,11 @@ enum Unit implements Comparable<Unit> {
   @JsonValue("kg")
   kg("kg"),
 
-  @JsonValue("grams")
-  grams("grams"),
+  @JsonValue("gr")
+  grams("gr"),
 
-  @JsonValue("liters")
-  liters("liters"),
+  @JsonValue("liter")
+  liters("liter"),
 
   @JsonValue("ml")
   milliliters("ml"),
@@ -33,12 +33,13 @@ enum Unit implements Comparable<Unit> {
   }
 
   String getLocalizedName(BuildContext context) {
+    debugPrint("[Unit][getLocalizedName] getting localizedName for: $localizationKey");
     switch (localizationKey) {
       case 'kg':
         return context.localized.unit_kg;
-      case 'grams':
+      case 'gr':
         return context.localized.unit_grams;
-      case 'liters':
+      case 'liter':
         return context.localized.unit_liters;
       case 'ml':
         return context.localized.unit_ml;

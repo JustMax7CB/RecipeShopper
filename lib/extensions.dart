@@ -25,7 +25,7 @@ extension RecipeToModel on Recipe {
           .map((ingredient) => _convertIngredientToModel(ingredient))
           .toList(),
       instructions: instructions,
-      imagePath: imagePath,
+      imagePath: localImagePath,
       remoteFileId: remoteFileId);
 
   IngredientModel _convertIngredientToModel(Ingredient ingredient) =>
@@ -48,7 +48,7 @@ extension RecipeModelToRecipe on RecipeModel {
       ingredients:
           ingredients.map((model) => _convertToIngredient(model)).toList(),
       instructions: instructions,
-      imagePath: imagePath,
+      localImagePath: imagePath,
       remoteFileId: remoteFileId);
 
   Ingredient _convertToIngredient(IngredientModel model) => Ingredient(

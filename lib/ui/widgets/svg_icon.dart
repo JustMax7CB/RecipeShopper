@@ -10,7 +10,6 @@ enum LocalIcons {
   profile(res.Icons.profile),
   shoppingCart(res.Icons.shoppingBasket),
   addRecipe(res.Icons.addRecipeIcon),
-  logo(res.Icons.splashLogo),
   placeholderImage(res.Icons.placeholderImage),
   share(res.Icons.share),
   pencil(res.Icons.pencil),

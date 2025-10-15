@@ -6,7 +6,8 @@ enum ImageRes {
   recipeImage(Images.recipeImage),
   fadedWood(Images.fadedWoodBg),
   foodPlaceholder(Images.foodPlaceholder),
-  woodTexture(Images.woodTexture);
+  woodTexture(Images.woodTexture),
+  notepadBg(Images.notepadBg);
 
   const ImageRes(this.path);
 

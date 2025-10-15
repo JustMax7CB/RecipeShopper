@@ -19,5 +19,4 @@ class Icons {
   static const String settings = 'lib/assets/icons/settings.svg';
   static const String share = 'lib/assets/icons/share.svg';
   static const String shoppingBasket = 'lib/assets/icons/shopping_basket.svg';
-  static const String splashLogo = 'lib/assets/icons/splash_logo.svg';
 }
